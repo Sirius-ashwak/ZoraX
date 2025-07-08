@@ -1,0 +1,83 @@
+{
+    "zencoder.enableRepoIndexing": true,
+    "workbench.colorTheme": "Default Dark Modern",
+    "editor.mouseWheelZoom": true,
+    
+    // Disable all CSS validation to prevent Tailwind directive warnings
+    "css.validate": false,
+    "css.lint.unknownAtRules": "ignore",
+    "css.lint.invalidApply": "ignore",
+    "css.lint.unknownProperties": "ignore",
+    "scss.validate": false,
+    "scss.lint.unknownAtRules": "ignore",
+    "scss.lint.invalidApply": "ignore",
+    "less.validate": false,
+    "less.lint.unknownAtRules": "ignore",
+    "less.lint.invalidApply": "ignore",
+    
+    // Enhanced Tailwind CSS IntelliSense configuration
+    "tailwindCSS.includeLanguages": {
+        "html": "html",
+        "javascript": "javascript",
+        "typescript": "typescript",
+        "javascriptreact": "javascriptreact",
+        "typescriptreact": "typescriptreact",
+        "css": "css"
+    },
+    "tailwindCSS.experimental.classRegex": [
+        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+        ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+        ["clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+        ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+    ],
+    "tailwindCSS.validate": true,
+    "tailwindCSS.lint.cssConflict": "warning",
+    "tailwindCSS.lint.invalidApply": "ignore",
+    "tailwindCSS.lint.invalidConfigPath": "error",
+    "tailwindCSS.lint.invalidScreen": "error",
+    "tailwindCSS.lint.invalidTailwindDirective": "ignore",
+    "tailwindCSS.lint.invalidVariant": "error",
+    "tailwindCSS.lint.recommendedVariantOrder": "warning",
+    
+    // File associations for better Tailwind support
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    
+    // Enhanced editor settings for CSS/Tailwind
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "editor.inlineSuggest.enabled": true,
+    
+    // PostCSS language support (helps with @tailwind directives)
+    "postcss.validate": false,
+    
+    // Emmet configuration for better HTML/JSX support with Tailwind
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact",
+        "typescript": "typescriptreact"
+    },
+    "emmet.triggerExpansionOnTab": false,
+    
+    // Additional language server settings
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "typescript.suggest.autoImports": true,
+    
+    // CSS Language Server specific settings to ignore Tailwind warnings
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features",
+        "editor.suggest.insertMode": "replace"
+    },
+    
+    // Disable problematic CSS linting across all contexts
+    "css.customData": [],
+    "css.completion.triggerPropertyValueCompletion": false,
+    "css.completion.completePropertyWithSemicolon": false,
+    
+    // Additional PostCSS and Tailwind settings
+    "tailwindCSS.rootFontSize": 16,
+    "tailwindCSS.colorDecorators": true,
+    "tailwindCSS.showPixelEquivalents": true,
+    "tailwindCSS.hooverPreview": true
+}

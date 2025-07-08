@@ -15,6 +15,7 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -25,11 +26,22 @@ dist-ssr
 .env
 .bolt
 
+# IDE and editor specific
+.history/
+.vs/
+.vscode/launch.json
+.vscode/tasks.json
+*.code-workspace
+
 # Task files and documentation (development/internal use)
 tasks/
+project-status.md
 *.md
 !README.md
 !CONTRIBUTING.md
+!docs/*.md
+
+# Task completion and summary files
 TASK*.md
 task*.md
 *-guide.md
@@ -37,32 +49,61 @@ task*.md
 *-completion*.md
 *-summary.md
 *-report.md
+*_COMPLETION*.md
+*_SUMMARY.md
+*_REPORT.md
 onboarding-debug-guide.md
 startup-troubleshooting.md
 test-*.md
+DEMO_SCRIPT.md
+CSS_OPTIMIZATIONS.md
+FIGMA_IMPORT_GUIDE.md
+PROJECT_COMPLETION_SUMMARY.md
+SUBMISSION.md
+TYPESCRIPT_FIXES.md
 
-# Build artifacts and caches
+# Development and debugging files
+onboarding-debug-guide.md
+task2-recreated-onboarding-guide.md
+test-campaign-flow.md
+test-task2-onboarding.md
+
+# Build artifacts and caches (but keep source code)
 artifacts/
 dist/
 build/
 coverage/
 .nyc_output/
 
-# Test files (if not needed in production)
-e2e/
+# Test files (keep test source, exclude generated reports)
 playwright-report/
 test-results/
 
-# Backend files (if separate repo)
-backend/
+# Backend: Keep source code, ignore build/runtime files
+backend/dist/
+backend/node_modules/
+backend/uploads/
+backend/.env
+backend/*.log
 
-# Batch files and scripts (Windows specific)
+# Batch files and scripts (Windows specific) - but keep essential scripts
 *.bat
+start-*.bat
+deploy-*.bat
+test-*.bat
+# Keep essential deployment and blockchain scripts
+!scripts/*.js
+!scripts/*.ts
 
-# Hardhat/Blockchain artifacts
+# Hardhat/Blockchain artifacts (keep source, ignore generated)
 cache/
 typechain/
 deployments/
+
+# Keep important blockchain files
+!contracts/*.sol
+!test/*.js
+!test/*.ts
 
 # Jest config duplicates
 jest.config.js
@@ -71,3 +112,53 @@ jest.config.js
 *.backup
 *.tmp
 *.temp
+*~
+.#*
+\#*#
+.*.swp
+.*.swo
+
+# Development status files
+status.md
+status.txt
+notes.md
+notes.txt
+TODO.md
+CHANGELOG.local.md
+
+# VS Code specific (additional)
+.vscode/settings.json.backup
+.vscode/tasks.json.backup
+
+# === IMPORTANT: Files that MUST be included ===
+# These rules ensure essential files are never accidentally ignored
+
+# Always include essential config files
+!package.json
+!package-lock.json
+!tsconfig*.json
+!vite.config.ts
+!tailwind.config.js
+!postcss.config.*
+!hardhat.config.*
+!eslint.config.js
+!playwright.config.ts
+
+# Always include source code
+!src/**/*
+!contracts/**/*
+!scripts/**/*
+!test/**/*.js
+!test/**/*.ts
+!backend/src/**/*
+!backend/package.json
+!backend/tsconfig.json
+
+# Always include essential documentation
+!docs/**/*
+!README.md
+!CONTRIBUTING.md
+
+# Always include environment examples
+!.env.example
+!backend/.env.example

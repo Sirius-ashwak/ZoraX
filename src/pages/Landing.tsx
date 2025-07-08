@@ -118,7 +118,7 @@ export const LandingPage = ({ onGetStarted, onNavigate }: LandingPageProps) => {
 
         {/* Feature Grid */}
         <section className="min-h-screen">
-          <FeatureGrid isActive={currentSection === 7} />
+          <FeatureGrid />
         </section>
 
         {/* Final CTA */}

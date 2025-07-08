@@ -2,10 +2,6 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { Coins, Brain, Heart, ArrowRight } from 'lucide-react';
 
-interface FeatureGridProps {
-  isActive: boolean;
-}
-
 const features = [
   {
     icon: Coins,
@@ -30,9 +26,9 @@ const features = [
   }
 ];
 
-export const FeatureGrid = ({ isActive }: FeatureGridProps) => {
+export const FeatureGrid = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { threshold: 0.2, once: false });
+  const isInView = useInView(ref, { once: false });
 
   return (
     <div 
