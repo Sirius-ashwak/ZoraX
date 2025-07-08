@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Search, Filter, TrendingUp, Clock, Target } from 'lucide-react';
+import { Search, Filter, TrendingUp, Clock, Target, Heart } from 'lucide-react';
 import { CampaignCard } from '../components/CampaignCard';
-import { SupportModal } from '../components/SupportModal';
 import { useTotalCampaigns } from '../hooks/useCredVault';
 
 // Mock data for demonstration
@@ -48,174 +47,205 @@ const mockCampaigns = [
     description: "Creating comprehensive video tutorials about DeFi, NFTs, and Web3 development for beginners.",
     imageUri: "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=800",
     goalAmount: "1.5",
-    raisedAmount: "1.6",
-    supporterCount: 23,
-    endTime: Date.now() / 1000 - 86400 * 2, // Completed 2 days ago
+    raisedAmount: "1.8",
+    supporterCount: 24,
+    endTime: Date.now() / 1000 + 86400 * 8, // 8 days from now
     creator: "0x4567...8901",
-    isActive: false,
+    isActive: true,
+  },
+  {
+    id: 5,
+    title: "Sustainable Tech Innovation",
+    description: "Developing eco-friendly blockchain solutions and carbon-neutral smart contracts for environmental protection.",
+    imageUri: "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800",
+    goalAmount: "7.0",
+    raisedAmount: "4.1",
+    supporterCount: 63,
+    endTime: Date.now() / 1000 + 86400 * 20, // 20 days from now
+    creator: "0x5678...9012",
+    isActive: true,
+  },
+  {
+    id: 6,
+    title: "Community Podcast Production",
+    description: "Launching a weekly podcast featuring interviews with Web3 builders, creators, and innovators in the space.",
+    imageUri: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=800",
+    goalAmount: "3.0",
+    raisedAmount: "1.2",
+    supporterCount: 18,
+    endTime: Date.now() / 1000 + 86400 * 30, // 30 days from now
+    creator: "0x6789...0123",
+    isActive: true,
   },
 ];
 
-export function Explore() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<'trending' | 'newest' | 'ending'>('trending');
-  const [filterBy, setFilterBy] = useState<'all' | 'active' | 'completed'>('all');
-  const [selectedCampaign, setSelectedCampaign] = useState<number | null>(null);
-  const [showSupportModal, setShowSupportModal] = useState(false);
+type SortOption = 'trending' | 'recent' | 'ending-soon' | 'goal-amount';
+type FilterOption = 'all' | 'art' | 'music' | 'gaming' | 'education' | 'tech';
+
+export const Explore: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<SortOption>('trending');
+  const [filterBy, setFilterBy] = useState<FilterOption>('all');
+  const [showFilters, setShowFilters] = useState(false);
 
   const { data: totalCampaigns } = useTotalCampaigns();
 
-  const filteredCampaigns = mockCampaigns
-    .filter(campaign => {
-      const matchesSearch = campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           campaign.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesFilter = filterBy === 'all' || 
-                           (filterBy === 'active' && campaign.isActive) ||
-                           (filterBy === 'completed' && !campaign.isActive);
-      return matchesSearch && matchesFilter;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'trending':
-          return (parseFloat(b.raisedAmount) / parseFloat(b.goalAmount)) - 
-                 (parseFloat(a.raisedAmount) / parseFloat(a.goalAmount));
-        case 'newest':
-          return b.id - a.id;
-        case 'ending':
-          return a.endTime - b.endTime;
-        default:
-          return 0;
-      }
-    });
+  const filteredCampaigns = mockCampaigns.filter(campaign => {
+    const matchesSearch = campaign.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         campaign.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    if (filterBy === 'all') return matchesSearch;
+    
+    // Simple category filtering based on keywords
+    const categoryKeywords = {
+      art: ['art', 'digital', 'creative'],
+      music: ['music', 'album', 'sound'],
+      gaming: ['game', 'gaming', 'interactive'],
+      education: ['educational', 'tutorial', 'learning'],
+      tech: ['tech', 'blockchain', 'innovation']
+    };
+    
+    const keywords = categoryKeywords[filterBy] || [];
+    const matchesCategory = keywords.some(keyword => 
+      campaign.title.toLowerCase().includes(keyword) || 
+      campaign.description.toLowerCase().includes(keyword)
+    );
+    
+    return matchesSearch && matchesCategory;
+  });
 
-  const handleSupport = (campaignId: number) => {
-    setSelectedCampaign(campaignId);
-    setShowSupportModal(true);
-  };
-
-  const handleViewDetails = (campaignId: number) => {
-    // Navigate to campaign details page
-    console.log('View details for campaign:', campaignId);
-  };
+  const sortedCampaigns = [...filteredCampaigns].sort((a, b) => {
+    switch (sortBy) {
+      case 'trending':
+        return b.supporterCount - a.supporterCount;
+      case 'recent':
+        return b.id - a.id;
+      case 'ending-soon':
+        return a.endTime - b.endTime;
+      case 'goal-amount':
+        return parseFloat(b.goalAmount) - parseFloat(a.goalAmount);
+      default:
+        return 0;
+    }
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Explore Campaigns</h1>
-            <p className="text-gray-600">
-              Discover and support amazing creators building the future onchain
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Discover Amazing Campaigns
+            </h1>
+            <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
+              Support creators, earn exclusive NFTs, and be part of innovative projects shaping the future.
             </p>
-          </div>
-          
-          {/* Search and Filters */}
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search campaigns..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
             
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Filter className="w-5 h-5 text-gray-400" />
-                <select
-                  value={filterBy}
-                  onChange={(e) => setFilterBy(e.target.value as any)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="all">All Campaigns</option>
-                  <option value="active">Active</option>
-                  <option value="completed">Completed</option>
-                </select>
+            {/* Search Bar */}
+            <div className="max-w-2xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search campaigns..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                />
               </div>
-              
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="trending">Trending</option>
-                <option value="newest">Newest</option>
-                <option value="ending">Ending Soon</option>
-              </select>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
-            <TrendingUp className="w-8 h-8 text-green-500 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">
-              {totalCampaigns?.toString() || '4'}
+      {/* Filters and Sort */}
+      <div className="bg-white border-b border-gray-200 sticky top-16 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between py-4">
+            <div className="flex items-center space-x-4 mb-4 md:mb-0">
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                <Filter className="w-4 h-4" />
+                <span>Filters</span>
+              </button>
+              
+              <div className="text-sm text-gray-600">
+                {sortedCampaigns.length} campaigns found
+              </div>
             </div>
-            <div className="text-sm text-gray-500">Total Campaigns</div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
-            <Target className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">15.9</div>
-            <div className="text-sm text-gray-500">ETH Raised</div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
-            <Clock className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-            <div className="text-2xl font-bold text-gray-900">3</div>
-            <div className="text-sm text-gray-500">Active Campaigns</div>
-          </div>
-        </div>
 
-        {/* Campaigns Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredCampaigns.map((campaign) => (
-            <CampaignCard
-              key={campaign.id}
-              campaign={campaign}
-              onSupport={handleSupport}
-              onViewDetails={handleViewDetails}
-            />
-          ))}
-        </div>
-
-        {filteredCampaigns.length === 0 && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-8 h-8 text-gray-400" />
+            <div className="flex items-center space-x-4">
+              <span className="text-sm font-medium text-gray-700">Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="trending">Trending</option>
+                <option value="recent">Most Recent</option>
+                <option value="ending-soon">Ending Soon</option>
+                <option value="goal-amount">Goal Amount</option>
+              </select>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No campaigns found</h3>
-            <p className="text-gray-600">
-              Try adjusting your search terms or filters
-            </p>
+          </div>
+
+          {/* Filter Options */}
+          {showFilters && (
+            <div className="pb-4 border-t border-gray-200 pt-4">
+              <div className="flex flex-wrap gap-2">
+                {(['all', 'art', 'music', 'gaming', 'education', 'tech'] as FilterOption[]).map((filter) => (
+                  <button
+                    key={filter}
+                    onClick={() => setFilterBy(filter)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      filterBy === filter
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {filter.charAt(0).toUpperCase() + filter.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Campaigns Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {sortedCampaigns.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Heart className="w-12 h-12 text-gray-400" />
+            </div>
+            <h3 className="text-xl font-medium text-gray-900 mb-2">No campaigns found</h3>
+            <p className="text-gray-600">Try adjusting your search or filters to find more campaigns.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {sortedCampaigns.map((campaign) => (
+              <CampaignCard
+                key={campaign.id}
+                campaignId={campaign.id}
+                isOwner={false}
+              />
+            ))}
           </div>
         )}
       </div>
 
-      {/* Support Modal */}
-      {selectedCampaign && (
-        <SupportModal
-          isOpen={showSupportModal}
-          onClose={() => {
-            setShowSupportModal(false);
-            setSelectedCampaign(null);
-          }}
-          campaignId={selectedCampaign}
-          campaignTitle={mockCampaigns.find(c => c.id === selectedCampaign)?.title || ''}
-          onSuccess={() => {
-            // Refresh data or show success message
-            console.log('Support successful!');
-          }}
-        />
+      {/* Load More */}
+      {sortedCampaigns.length > 0 && (
+        <div className="text-center pb-16">
+          <button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200">
+            Load More Campaigns
+          </button>
+        </div>
       )}
     </div>
   );
-}
+};

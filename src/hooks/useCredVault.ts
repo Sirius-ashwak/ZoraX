@@ -1,80 +1,177 @@
-import { useContract, useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useReadContract, useWriteContract } from 'wagmi';
 import { parseEther } from 'viem';
-import CredVaultABI from '../../artifacts/contracts/CredVault.sol/CredVault.json';
 
-const CONTRACT_ADDRESS = process.env.VITE_CREDVAULT_CONTRACT_ADDRESS || '0x...';
+// Manually create a mock ABI to resolve import issues
+const CredVaultABI = [
+  {
+    "inputs": [
+      {"internalType": "string", "name": "title", "type": "string"},
+      {"internalType": "string", "name": "description", "type": "string"},
+      {"internalType": "string", "name": "imageUri", "type": "string"},
+      {"internalType": "uint256", "name": "goalAmount", "type": "uint256"},
+      {"internalType": "uint256", "name": "duration", "type": "uint256"}
+    ],
+    "name": "createCampaign",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "uint256", "name": "campaignId", "type": "uint256"},
+      {"internalType": "string", "name": "tokenUri", "type": "string"}
+    ],
+    "name": "supportCampaign",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "uint256", "name": "campaignId", "type": "uint256"}
+    ],
+    "name": "getCampaign",
+    "outputs": [
+      {"internalType": "string", "name": "title", "type": "string"},
+      {"internalType": "string", "name": "description", "type": "string"},
+      {"internalType": "string", "name": "imageUri", "type": "string"},
+      {"internalType": "uint256", "name": "goalAmount", "type": "uint256"},
+      {"internalType": "uint256", "name": "raisedAmount", "type": "uint256"},
+      {"internalType": "uint256", "name": "deadline", "type": "uint256"},
+      {"internalType": "address", "name": "creator", "type": "address"},
+      {"internalType": "bool", "name": "active", "type": "bool"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "creator", "type": "address"}
+    ],
+    "name": "getCreatorProfile",
+    "outputs": [
+      {"internalType": "string", "name": "name", "type": "string"},
+      {"internalType": "string", "name": "bio", "type": "string"},
+      {"internalType": "string", "name": "imageUri", "type": "string"},
+      {"internalType": "uint256", "name": "totalRaised", "type": "uint256"},
+      {"internalType": "uint256", "name": "campaignCount", "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getTotalCampaigns",
+    "outputs": [
+      {"internalType": "uint256", "name": "", "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "creator", "type": "address"}
+    ],
+    "name": "getCreatorCampaigns",
+    "outputs": [
+      {"internalType": "uint256[]", "name": "", "type": "uint256[]"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "supporter", "type": "address"}
+    ],
+    "name": "getSupporterTokens",
+    "outputs": [
+      {"internalType": "uint256[]", "name": "", "type": "uint256[]"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+] as const;
+
+const CONTRACT_ADDRESS = import.meta.env.VITE_CREDVAULT_CONTRACT_ADDRESS || '0x1234567890123456789012345678901234567890';
 
 export function useCredVault() {
-  const contract = useContract({
+  return {
     address: CONTRACT_ADDRESS,
-    abi: CredVaultABI.abi,
-  });
-
-  return contract;
+    abi: CredVaultABI,
+  };
 }
 
 export function useCreateCampaign() {
-  const { config } = usePrepareContractWrite({
-    address: CONTRACT_ADDRESS,
-    abi: CredVaultABI.abi,
-    functionName: 'createCampaign',
-  });
+  const { writeContract } = useWriteContract();
 
-  return useContractWrite(config);
+  const createCampaign = (title: string, description: string, imageUri: string, goalAmount: string, duration: number) => {
+    writeContract({
+      address: CONTRACT_ADDRESS as `0x${string}`,
+      abi: CredVaultABI,
+      functionName: 'createCampaign',
+      args: [title, description, imageUri, parseEther(goalAmount), BigInt(duration)],
+    });
+  };
+
+  return { createCampaign };
 }
 
-export function useSupportCampaign(campaignId: number, amount: string, tokenUri: string) {
-  const { config } = usePrepareContractWrite({
-    address: CONTRACT_ADDRESS,
-    abi: CredVaultABI.abi,
-    functionName: 'supportCampaign',
-    args: [campaignId, tokenUri],
-    value: parseEther(amount),
-  });
+export function useSupportCampaign() {
+  const { writeContract } = useWriteContract();
 
-  return useContractWrite(config);
+  const supportCampaign = (campaignId: number, amount: string, tokenUri: string) => {
+    writeContract({
+      address: CONTRACT_ADDRESS as `0x${string}`,
+      abi: CredVaultABI,
+      functionName: 'supportCampaign',
+      args: [BigInt(campaignId), tokenUri],
+      value: parseEther(amount),
+    });
+  };
+
+  return { supportCampaign };
 }
 
 export function useCampaign(campaignId: number) {
-  return useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: CredVaultABI.abi,
+  return useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CredVaultABI,
     functionName: 'getCampaign',
-    args: [campaignId],
+    args: [BigInt(campaignId)],
   });
 }
 
 export function useCreatorProfile(address: string) {
-  return useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: CredVaultABI.abi,
+  return useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CredVaultABI,
     functionName: 'getCreatorProfile',
-    args: [address],
+    args: [address as `0x${string}`],
   });
 }
 
 export function useTotalCampaigns() {
-  return useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: CredVaultABI.abi,
+  return useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CredVaultABI,
     functionName: 'getTotalCampaigns',
   });
 }
 
 export function useCreatorCampaigns(address: string) {
-  return useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: CredVaultABI.abi,
+  return useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CredVaultABI,
     functionName: 'getCreatorCampaigns',
-    args: [address],
+    args: [address as `0x${string}`],
   });
 }
 
 export function useSupporterTokens(address: string) {
-  return useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: CredVaultABI.abi,
+  return useReadContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: CredVaultABI,
     functionName: 'getSupporterTokens',
-    args: [address],
+    args: [address as `0x${string}`],
   });
 }

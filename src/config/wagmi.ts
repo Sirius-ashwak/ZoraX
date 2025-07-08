@@ -1,28 +1,20 @@
-import { getDefaultWallets } from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig } from 'wagmi';
-import { optimism, optimismGoerli, hardhat } from 'wagmi/chains';
+import { getDefaultConfig } from '@rainbow-me/rainbowkit';
+import { optimism, optimismSepolia } from 'wagmi/chains';
 import { http } from 'viem';
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [
-    optimism,
-    optimismGoerli,
-    ...(process.env.NODE_ENV === 'development' ? [hardhat] : []),
-  ],
-  [http()]
-);
+// Define RPC URLs with fallbacks
+const optimismRpcUrl = import.meta.env.VITE_OPTIMISM_RPC_URL || 'https://mainnet.optimism.io';
+const optimismSepoliaRpcUrl = import.meta.env.VITE_OPTIMISM_SEPOLIA_RPC_URL || 'https://sepolia.optimism.io';
 
-const { connectors } = getDefaultWallets({
-  appName: 'CredVault',
-  projectId: process.env.VITE_WALLET_CONNECT_PROJECT_ID || 'your-project-id',
-  chains,
+export const config = getDefaultConfig({
+  appName: 'CredVault - Creator Economy Platform',
+  projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID || 'bc8552ee128eb75bef290f9ed41f7f41',
+  chains: [optimism, optimismSepolia],
+  transports: {
+    [optimism.id]: http(optimismRpcUrl),
+    [optimismSepolia.id]: http(optimismSepoliaRpcUrl),
+  },
+  ssr: false,
 });
 
-export const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-  webSocketPublicClient,
-});
-
-export { chains };
+export { optimism, optimismSepolia };

@@ -1,19 +1,31 @@
 import React from 'react';
-import { WagmiConfig } from 'wagmi';
-import { RainbowKitProvider, getDefaultWallets, connectorsForWallets } from '@rainbow-me/rainbowkit';
-import { wagmiConfig, chains } from '../config/wagmi';
+import { WagmiProvider } from 'wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { config } from '../config/wagmi';
+
 import '@rainbow-me/rainbowkit/styles.css';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 interface Web3ProviderProps {
   children: React.ReactNode;
 }
 
-export function Web3Provider({ children }: Web3ProviderProps) {
+export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} theme="light">
-        {children}
-      </RainbowKitProvider>
-    </WagmiConfig>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
-}
+};
