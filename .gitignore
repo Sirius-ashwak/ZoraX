@@ -24,3 +24,50 @@ dist-ssr
 *.sw?
 .env
 .bolt
+
+# Task files and documentation (development/internal use)
+tasks/
+*.md
+!README.md
+!CONTRIBUTING.md
+TASK*.md
+task*.md
+*-guide.md
+*-troubleshooting.md
+*-completion*.md
+*-summary.md
+*-report.md
+onboarding-debug-guide.md
+startup-troubleshooting.md
+test-*.md
+
+# Build artifacts and caches
+artifacts/
+dist/
+build/
+coverage/
+.nyc_output/
+
+# Test files (if not needed in production)
+e2e/
+playwright-report/
+test-results/
+
+# Backend files (if separate repo)
+backend/
+
+# Batch files and scripts (Windows specific)
+*.bat
+
+# Hardhat/Blockchain artifacts
+cache/
+typechain/
+deployments/
+
+# Jest config duplicates
+jest.config.js
+
+# Temporary and duplicate files
+*.backup
+*.tmp
+*.temp
