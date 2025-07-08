@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CredVault Test</title>
+  <script type="module">
+    // Simple test to check if main imports work
+    import('./src/main.tsx').then(() => {
+      console.log('App loaded successfully');
+    }).catch(error => {
+      console.error('Error loading app:', error);
+    });
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>

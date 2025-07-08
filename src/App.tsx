@@ -4,7 +4,7 @@ import { ConnectWallet } from './components/ConnectWallet';
 import { Dashboard } from './pages/Dashboard';
 import { Explore } from './pages/Explore';
 import { Creators } from './pages/Creators';
-import { LandingPage } from './pages/Landing';
+import LandingPage from './pages/Landing';
 import { onboardingUtils } from './utils/onboarding';
 import { Zap, Menu, X } from 'lucide-react';
 
@@ -241,7 +241,15 @@ function App() {
       case 'creators':
         return <Creators />;
       case 'dashboard':
-        return isConnected ? <Dashboard /> : <ConnectWallet />;
+        return isConnected ? <Dashboard /> : (
+          <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="text-center max-w-md mx-auto p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Connect Your Wallet</h2>
+              <p className="text-gray-600 mb-6">You need to connect your wallet to access the dashboard.</p>
+              <ConnectWallet />
+            </div>
+          </div>
+        );
       default:
         return <HomePage onNavigate={setCurrentPage} />;
     }
