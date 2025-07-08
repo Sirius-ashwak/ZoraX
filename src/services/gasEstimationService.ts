@@ -23,7 +23,7 @@ class GasEstimationService {
   constructor() {
     this.publicClient = createPublicClient({
       chain: optimism,
-      transport: http(process.env.OPTIMISM_RPC_URL || 'https://mainnet.optimism.io'),
+      transport: http(import.meta.env.VITE_OPTIMISM_RPC_URL || 'https://mainnet.optimism.io'),
     });
   }
 

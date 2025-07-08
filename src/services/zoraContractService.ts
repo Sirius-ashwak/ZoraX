@@ -30,12 +30,12 @@ class ZoraContractService {
     // Initialize public client for reading blockchain data
     this.publicClient = createPublicClient({
       chain: optimism,
-      transport: http(process.env.OPTIMISM_RPC_URL || 'https://mainnet.optimism.io'),
+      transport: http(import.meta.env.VITE_OPTIMISM_RPC_URL || 'https://mainnet.optimism.io'),
     });
 
     // Initialize wallet client for transactions
     // Initialize wallet functionality when needed
-    if (!process.env.PRIVATE_KEY) {
+    if (!import.meta.env.VITE_PRIVATE_KEY) {
       console.warn('PRIVATE_KEY not set - deployment features will be limited');
     }
   }
