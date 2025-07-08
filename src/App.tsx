@@ -33,7 +33,7 @@ const Header = ({
               onClick={() => onNavigate('home')}
               className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
             >
-              CredVault
+              ZoraX
             </button>
           </div>
           

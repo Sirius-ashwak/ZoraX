@@ -1,9 +1,9 @@
 {
-  "name": "credvault-mvp",
+  "name": "zorax-mvp",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "CredVault - Creator-Supporter Economic Platform MVP",
+  "description": "ZoraX - Creator-Supporter Economic Platform MVP",
   "scripts": {
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "vite",
@@ -11,6 +11,9 @@
     "build": "npm run build:frontend && npm run build:backend",
     "build:frontend": "vite build",
     "build:backend": "cd backend && npm run build",
+    "start": "npm run start:backend",
+    "start:backend": "cd backend && npm start",
+    "postinstall": "cd backend && npm install",
     "lint": "npm run lint:frontend && npm run lint:backend",
     "lint:frontend": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:backend": "cd backend && npm run lint",
@@ -25,7 +28,7 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:all": "npm run test:ci && npm run test:e2e",
-    "debug:report": "node -e \"console.log('Debug tools available at window.credvaultDebug')\"",
+    "debug:report": "node -e \"console.log('Debug tools available at window.zoraxDebug')\"",
     "setup": "npm install && cd backend && npm install",
     "clean": "rm -rf dist && cd backend && rm -rf dist"
   },

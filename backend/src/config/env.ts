@@ -17,7 +17,7 @@ interface Config {
 export const config: Config = {
   port: parseInt(process.env.PORT || '3001', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
-  frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
+  frontendUrl: process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://zorax-frontend.onrender.com' : 'http://localhost:5173'),
   optimismRpcUrl: process.env.OPTIMISM_RPC_URL || 'https://mainnet.optimism.io',
   optimismSepoliaRpcUrl: process.env.OPTIMISM_SEPOLIA_RPC_URL || 'https://sepolia.optimism.io',
   zoraApiKey: process.env.ZORA_API_KEY,

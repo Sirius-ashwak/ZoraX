@@ -87,7 +87,7 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
             <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
               <Zap className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-bold text-white">CredVault</span>
+            <span className="text-2xl font-bold text-white">ZoraX</span>
           </div>
           
           <nav className="hidden md:flex items-center space-x-8">
@@ -199,7 +199,7 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Monetize better with CredVault
+            Monetize better with ZoraX
           </motion.h1>
 
           {/* Subtitle */}
@@ -253,7 +253,7 @@ export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
             </h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto">
               Mirror the way your mind works by connecting supporters through onchain campaigns.
-              <br />CredVault builds you a second brain that you can reference anytime.
+              <br />ZoraX builds you a second brain that you can reference anytime.
             </p>
           </motion.div>
 

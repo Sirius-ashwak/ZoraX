@@ -15,7 +15,9 @@ const app = express();
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: config.frontendUrl,
+  origin: config.nodeEnv === 'production' 
+    ? [config.frontendUrl, /\.onrender\.com$/] 
+    : [config.frontendUrl, 'http://localhost:3000', 'http://localhost:5173'],
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -42,7 +44,7 @@ app.use('*', (_req: express.Request, res: express.Response) => {
 });
 
 app.listen(config.port, () => {
-  console.log(`🚀 CredVault Backend running on port ${config.port}`);
+  console.log(`🚀 ZoraX Backend running on port ${config.port}`);
   console.log(`📡 Environment: ${config.nodeEnv}`);
   console.log(`🌐 Frontend URL: ${config.frontendUrl}`);
 });

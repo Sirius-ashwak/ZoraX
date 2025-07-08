@@ -2,7 +2,7 @@
  * Utility functions for managing onboarding state
  */
 
-const ONBOARDING_COMPLETED_KEY = 'credvault-onboarding-completed';
+const ONBOARDING_COMPLETED_KEY = 'zorax-onboarding-completed';
 
 export const onboardingUtils = {
   /**
@@ -43,7 +43,7 @@ export const onboardingUtils = {
    */
   addDebugTools(): void {
     if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-      (window as any).credvaultDebug = {
+      (window as any).zoraxDebug = {
         resetOnboarding: this.resetOnboarding,
         hasCompletedOnboarding: this.hasCompletedOnboarding,
       };
