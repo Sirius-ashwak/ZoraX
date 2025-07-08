@@ -1,14 +1,31 @@
 import React from 'react';
-import { useParams, Navigate } from 'react-router-dom';
 import { CreatorProfile } from '../components/CreatorProfile';
 import { isAddress } from 'viem';
 
-export const Profile: React.FC = () => {
-  const { address } = useParams<{ address: string }>();
+interface ProfileProps {
+  address?: string;
+  onNavigateBack?: () => void;
+}
 
+export const Profile: React.FC<ProfileProps> = ({ address, onNavigateBack }) => {
   // Validate that address is a valid Ethereum address
   if (!address || !isAddress(address)) {
-    return <Navigate to="/explore" replace />;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Invalid Address</h2>
+          <p className="text-gray-600 mb-6">Please provide a valid Ethereum address.</p>
+          {onNavigateBack && (
+            <button
+              onClick={onNavigateBack}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Go Back
+            </button>
+          )}
+        </div>
+      </div>
+    );
   }
 
   return (

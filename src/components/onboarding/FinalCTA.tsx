@@ -4,13 +4,12 @@ import { Wallet, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
 import { useConnect, useAccount } from 'wagmi';
 
 interface FinalCTAProps {
-  isActive: boolean;
   onGetStarted?: () => void;
 }
 
-export const FinalCTA = ({ isActive, onGetStarted }: FinalCTAProps) => {
+export const FinalCTA = ({ onGetStarted }: FinalCTAProps) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { threshold: 0.3, once: false });
+  const isInView = useInView(ref, { amount: 0.3, once: false });
   const [isHovered, setIsHovered] = useState(false);
   
   const { connect, connectors, isPending } = useConnect();

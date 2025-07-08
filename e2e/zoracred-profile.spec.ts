@@ -66,7 +66,7 @@ test.describe('ZoraCred Profile Generation', () => {
     await expect(campaignsElement).toContainText('campaigns');
     
     // Check that numbers are properly formatted
-    await expect(volumeElement).toMatch(/\d+\.?\d*\s*ETH/);
+    await expect(volumeElement).toHaveText(/\d+\.?\d*\s*ETH/);
   });
 
   test('should handle profiles with no campaigns', async ({ page }) => {

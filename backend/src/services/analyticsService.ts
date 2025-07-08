@@ -67,10 +67,10 @@ export class AnalyticsService {
         id: this.generateEventId(),
         campaignId,
         eventType: 'view',
-        userAgent,
-        referrer,
         timestamp: Date.now(),
-        metadata
+        ...(userAgent && { userAgent }),
+        ...(referrer && { referrer }),
+        ...(metadata && { metadata })
       };
 
       await this.storeEvent(event);
@@ -94,9 +94,9 @@ export class AnalyticsService {
         id: this.generateEventId(),
         campaignId,
         eventType: 'interaction',
-        userAddress,
         timestamp: Date.now(),
-        metadata: { action, ...metadata }
+        metadata: { action, ...metadata },
+        ...(userAddress && { userAddress })
       };
 
       await this.storeEvent(event);
@@ -147,9 +147,9 @@ export class AnalyticsService {
         id: this.generateEventId(),
         campaignId,
         eventType: 'error',
-        userAddress,
         timestamp: Date.now(),
-        metadata: { errorMessage, ...metadata }
+        metadata: { errorMessage, ...metadata },
+        ...(userAddress && { userAddress })
       };
 
       await this.storeEvent(event);

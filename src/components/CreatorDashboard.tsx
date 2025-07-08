@@ -132,7 +132,7 @@ const StatsCard: React.FC<{
 );
 
 export const CreatorDashboard: React.FC<CreatorDashboardProps> = ({ onCreateCampaign }) => {
-  const { isConnected, address } = useAccount();
+  const { address } = useAccount();
   const { campaigns, loading, error } = useCampaigns();
   const [activeTab, setActiveTab] = useState<'campaigns' | 'frames'>('campaigns');
 
@@ -308,10 +308,19 @@ export const CreatorDashboard: React.FC<CreatorDashboardProps> = ({ onCreateCamp
                 title: c.nftName,
                 description: c.description,
                 imageUri: c.imageIPFSHash ? `/api/uploads/${c.imageIPFSHash}` : '',
-                creator: c.creator || 'Unknown Creator',
+                creator: c.creatorAddress || 'Unknown Creator',
                 price: c.priceETH,
                 totalSupply: c.supply,
                 minted: 0 // TODO: Get actual minted count
+              } as {
+                id: string;
+                title: string;
+                description: string;
+                imageUri: string;
+                creator: string;
+                price: string;
+                totalSupply?: number;
+                minted?: number;
               }))}
             />
           </motion.div>

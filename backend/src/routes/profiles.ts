@@ -5,7 +5,7 @@ const router = Router();
 // Placeholder routes for creator profiles
 // These will be implemented in Task 4
 
-router.get('/', (req, res) => {
+router.get('/', (_req, res) => {
   res.json({ 
     message: 'Profile routes - Coming in Task 4',
     available_endpoints: [

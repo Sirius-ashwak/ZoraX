@@ -42,8 +42,7 @@ export const ScrollManager = ({ currentSection, totalSections }: ScrollManagerPr
       >
         <motion.div
           className="h-full bg-gradient-to-r from-accent via-purple-400 to-blue-400"
-          style={{ scaleX: scrollYProgress }}
-          transformOrigin="0%"
+          style={{ scaleX: scrollYProgress, transformOrigin: "0%" }}
         />
       </motion.div>
 

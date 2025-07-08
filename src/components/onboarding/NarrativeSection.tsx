@@ -29,7 +29,7 @@ export const NarrativeSection = ({
   onGetStarted 
 }: NarrativeSectionProps) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { threshold: 0.3, once: false });
+  const isInView = useInView(ref, { amount: 0.3, once: false });
   const IconComponent = sectionIcons[index] || Sparkles;
 
   // Trigger haptic feedback on mobile when section becomes active

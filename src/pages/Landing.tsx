@@ -14,7 +14,7 @@ interface LandingPageProps {
   onNavigate?: (page: Page) => void;
 }
 
-export const LandingPage = ({ onGetStarted, onNavigate }: LandingPageProps) => {
+export const LandingPage = ({ onGetStarted }: LandingPageProps) => {
   const { scrollYProgress } = useScroll();
   const [currentSection, setCurrentSection] = useState(0);
 
@@ -124,7 +124,6 @@ export const LandingPage = ({ onGetStarted, onNavigate }: LandingPageProps) => {
         {/* Final CTA */}
         <section className="min-h-screen">
           <FinalCTA 
-            isActive={currentSection === 8}
             onGetStarted={onGetStarted}
           />
         </section>

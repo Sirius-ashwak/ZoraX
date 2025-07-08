@@ -223,7 +223,7 @@ function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
-    const hasCompletedOnboarding = onboardingUtils.isOnboardingCompleted();
+    const hasCompletedOnboarding = onboardingUtils.hasCompletedOnboarding();
     if (!hasCompletedOnboarding) {
       setShowOnboarding(true);
     }

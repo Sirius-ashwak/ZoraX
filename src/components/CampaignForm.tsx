@@ -402,7 +402,7 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({
 }) => {
   const { address } = useAccount();
   const [currentStep, setCurrentStep] = useState(1);
-  const [gasEstimation, setGasEstimation] = useState<GasEstimation | null>(null);
+  const [_gasEstimation, setGasEstimation] = useState<GasEstimation | null>(null);
   const [formData, setFormData] = useState<CampaignFormData>({
     nftName: '',
     nftSymbol: '',

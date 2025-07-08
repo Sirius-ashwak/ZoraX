@@ -153,7 +153,10 @@ test.describe('Performance Testing', () => {
     
     // Measure First Input Delay (FID) simulation
     await page.click('button:first-of-type');
-    const navigationTiming = await page.evaluate(() => performance.getEntriesByType('navigation')[0]);
+    const navigationTiming = await page.evaluate(() => {
+      const entries = performance.getEntriesByType('navigation') as PerformanceNavigationTiming[];
+      return entries[0];
+    });
     expect(navigationTiming.loadEventEnd - navigationTiming.loadEventStart).toBeLessThan(100);
   });
 
@@ -163,7 +166,7 @@ test.describe('Performance Testing', () => {
     // Main bundle should be under 1MB
     const resourceSizes = await page.evaluate(() => {
       return performance.getEntriesByType('resource')
-        .filter(entry => entry.name.includes('.js'))
+        .filter((entry): entry is PerformanceResourceTiming => entry.name.includes('.js'))
         .map(entry => ({ name: entry.name, size: entry.transferSize }));
     });
     

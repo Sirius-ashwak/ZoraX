@@ -1,4 +1,4 @@
-import { Campaign } from '../models/Campaign';
+// Frame service interfaces and implementations
 
 export interface FrameMetadata {
   title: string;
@@ -219,6 +219,10 @@ export class FrameService {
    */
   async getFrameAnalytics(campaignId: string, timeRange: '24h' | '7d' | '30d'): Promise<FrameAnalytics> {
     try {
+      // Note: campaignId would be used in production to fetch specific campaign analytics
+      // Currently using mock data for development
+      console.log(`Fetching analytics for campaign: ${campaignId}, timeRange: ${timeRange}`);
+      
       // Mock analytics data - in production, this would fetch from analytics database
       const views = Math.floor(Math.random() * 2000) + 500;
       const interactions = Math.floor(views * 0.15);

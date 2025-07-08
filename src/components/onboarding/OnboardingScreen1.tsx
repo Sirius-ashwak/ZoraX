@@ -11,11 +11,11 @@ interface OnboardingScreen1Props {
 }
 
 export const OnboardingScreen1: React.FC<OnboardingScreen1Props> = ({ 
-  onNext, 
-  onPrevious, 
-  onSkip, 
-  onComplete, 
-  isTransitioning 
+  onNext: _onNext, 
+  onPrevious: _onPrevious, 
+  onSkip: _onSkip, 
+  onComplete: _onComplete, 
+  isTransitioning: _isTransitioning 
 }) => {
   return (
     <div className="h-full flex items-center justify-center px-4 sm:px-6 lg:px-8">

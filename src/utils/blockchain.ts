@@ -2,15 +2,15 @@ import { createPublicClient, http, type PublicClient } from 'viem';
 import { optimism, optimismSepolia } from 'wagmi/chains';
 
 // Create public clients for blockchain data fetching
-export const optimismClient: PublicClient = createPublicClient({
+export const optimismClient = createPublicClient({
   chain: optimism,
   transport: http(import.meta.env.VITE_OPTIMISM_RPC_URL || 'https://mainnet.optimism.io')
-});
+}) as PublicClient;
 
-export const optimismSepoliaClient: PublicClient = createPublicClient({
+export const optimismSepoliaClient = createPublicClient({
   chain: optimismSepolia,
   transport: http(import.meta.env.VITE_OPTIMISM_SEPOLIA_RPC_URL || 'https://sepolia.optimism.io')
-});
+}) as PublicClient;
 
 // Get the appropriate client based on environment
 export const getBlockchainClient = (): PublicClient => {

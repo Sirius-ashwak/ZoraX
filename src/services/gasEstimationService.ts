@@ -53,7 +53,7 @@ class GasEstimationService {
       this.ethPriceUSD = data.ethereum.usd;
       this.lastEthPriceFetch = now;
       
-      return this.ethPriceUSD;
+      return this.ethPriceUSD || 0;
     } catch (error) {
       console.warn('Failed to fetch ETH price, using cached value or null:', error);
       return this.ethPriceUSD || 0;
@@ -93,7 +93,7 @@ class GasEstimationService {
    */
   async estimateContractDeployment(
     contractBytecode: string,
-    constructorArgs: any[] = [],
+    _constructorArgs: any[] = [],
     options: GasOptions = { speed: 'standard' }
   ): Promise<GasEstimation> {
     try {
