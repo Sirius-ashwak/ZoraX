@@ -6,6 +6,7 @@ import { config } from './config/wagmi';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 // Import pages
+import { CoinbaseHome } from './pages/CoinbaseHome';
 import { Home } from './pages/Home';
 import { Explore } from './pages/Explore';
 import { Dashboard } from './pages/Dashboard';
@@ -15,9 +16,8 @@ import { CreatorProfile } from './pages/CreatorProfile';
 import { NotFound } from './pages/NotFound';
 
 // Import components
-import { Navbar } from './components/layout/Navbar';
+import { CoinbaseLayout } from './components/layout/CoinbaseLayout';
 import { Toaster } from './components/ui/toaster';
-import { FloatingOrbs } from './components/ui/floating-orbs';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
@@ -27,24 +27,22 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <BrowserRouter>
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative">
-              <FloatingOrbs />
-              <div className="relative z-10">
-                <Navbar />
-                <main>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/explore" element={<Explore />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/create" element={<CreateCampaign />} />
-                    <Route path="/campaign/:id" element={<CampaignDetails />} />
-                    <Route path="/creator/:address" element={<CreatorProfile />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-              </div>
-              <Toaster />
-            </div>
+            <CoinbaseLayout>
+              <Routes>
+                <Route path="/" element={<CoinbaseHome />} />
+                <Route path="/assets" element={<Dashboard />} />
+                <Route path="/explore" element={<Explore />} />
+                <Route path="/trade" element={<Dashboard />} />
+                <Route path="/earn" element={<Dashboard />} />
+                <Route path="/web3" element={<CreateCampaign />} />
+                <Route path="/pay" element={<Dashboard />} />
+                <Route path="/create" element={<CreateCampaign />} />
+                <Route path="/campaign/:id" element={<CampaignDetails />} />
+                <Route path="/creator/:address" element={<CreatorProfile />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </CoinbaseLayout>
+            <Toaster />
           </BrowserRouter>
         </RainbowKitProvider>
       </QueryClientProvider>

@@ -39,10 +39,15 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom cosmic colors
-        'cosmic-purple': '#9a5bff',
-        'cosmic-blue': '#3b82f6',
-        'cosmic-cyan': '#06b6d4',
+        // Coinbase theme colors
+        'coinbase-blue': '#3e5ce8',
+        'coinbase-dark': '#0f0f23',
+        'coinbase-card': '#1a1b2e',
+        'coinbase-border': '#262840',
+        'success': 'hsl(var(--success))',
+        'warning': 'hsl(var(--warning))',
+        'sidebar': 'hsl(var(--sidebar))',
+        'sidebar-hover': 'hsl(var(--sidebar-hover))',
       },
       fontFamily: {
         'heading': ['Inter', 'sans-serif'],

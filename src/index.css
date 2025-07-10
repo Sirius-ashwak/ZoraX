@@ -7,30 +7,39 @@
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* Coinbase Dark Theme Colors */
+    --background: 217 25% 7%;          /* #0f0f23 - Dark background */
+    --foreground: 210 20% 95%;         /* #f0f0f5 - Light text */
+    --card: 217 32% 12%;               /* #1a1b2e - Card background */
+    --card-foreground: 210 20% 95%;   /* #f0f0f5 - Card text */
+    --popover: 217 32% 12%;
+    --popover-foreground: 210 20% 95%;
+    --primary: 214 84% 56%;            /* #3e5ce8 - Coinbase blue */
+    --primary-foreground: 210 20% 95%;
+    --secondary: 217 32% 15%;          /* #20213b - Secondary bg */
+    --secondary-foreground: 210 15% 75%; /* #a8a8b3 - Secondary text */
+    --muted: 217 32% 15%;
+    --muted-foreground: 210 15% 65%;   /* #898999 - Muted text */
+    --accent: 214 84% 56%;             /* Coinbase blue accent */
+    --accent-foreground: 210 20% 95%;
+    --destructive: 0 75% 60%;          /* #e53e3e - Error red */
+    --destructive-foreground: 210 20% 95%;
+    --border: 217 32% 18%;             /* #262840 - Border color */
+    --input: 217 32% 15%;              /* #20213b - Input background */
+    --ring: 214 84% 56%;               /* Focus ring */
+    
+    /* Chart colors matching Coinbase style */
+    --chart-1: 214 84% 56%;            /* Coinbase blue */
+    --chart-2: 142 76% 36%;            /* Green */
+    --chart-3: 38 92% 50%;             /* Orange */
+    --chart-4: 280 100% 70%;           /* Purple */
+    --chart-5: 340 82% 52%;            /* Pink */
+    
+    /* Custom Coinbase-style variables */
+    --success: 142 76% 36%;            /* #00d924 - Success green */
+    --warning: 38 92% 50%;             /* #ff8500 - Warning orange */
+    --sidebar: 217 25% 6%;             /* #0d0d1f - Sidebar darker */
+    --sidebar-hover: 217 32% 12%;      /* Sidebar item hover */
   }
 }
 
@@ -44,36 +53,57 @@
 }
 
 @layer components {
-  .glass-card {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl;
+  /* Coinbase-style components */
+  .coinbase-card {
+    @apply bg-card border border-border rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md;
   }
   
-  .hover-lift {
-    @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-white/10;
+  .coinbase-button {
+    @apply bg-primary text-primary-foreground rounded-xl px-6 py-3 font-medium transition-all duration-200 hover:bg-primary/90 active:scale-95;
   }
   
-  .gradient-text {
-    @apply bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent;
+  .coinbase-button-secondary {
+    @apply bg-secondary text-secondary-foreground border border-border rounded-xl px-6 py-3 font-medium transition-all duration-200 hover:bg-secondary/80;
   }
   
-  .cosmic-glow {
-    @apply shadow-lg shadow-purple-500/25;
+  .coinbase-input {
+    @apply bg-input text-foreground border border-border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent;
   }
   
-  .cosmic-border {
-    @apply border border-purple-500/30;
+  .sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-sidebar-hover transition-all duration-200;
   }
   
-  .neon-glow {
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 40px rgba(168, 85, 247, 0.2);
+  .sidebar-item-active {
+    @apply bg-primary text-primary-foreground;
   }
   
-  .floating-animation {
-    animation: float 3s ease-in-out infinite;
+  .progress-bar {
+    @apply w-full bg-secondary rounded-full h-2 overflow-hidden;
   }
   
-  .pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite alternate;
+  .progress-fill {
+    @apply h-full bg-primary rounded-full transition-all duration-300;
+  }
+  
+  .crypto-card {
+    @apply coinbase-card p-4 hover:shadow-lg transition-all duration-200;
+  }
+  
+  .status-pill {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .status-pill-success {
+    @apply status-pill bg-success/20 text-success border border-success/30;
+  }
+  
+  .status-pill-warning {
+    @apply status-pill bg-warning/20 text-warning border border-warning/30;
+  }
+  
+  .status-pill-error {
+    @apply status-pill bg-destructive/20 text-destructive border border-destructive/30;
   }
 }
 
