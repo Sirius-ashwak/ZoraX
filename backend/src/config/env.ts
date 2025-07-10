@@ -1,50 +1,53 @@
 import dotenv from 'dotenv';
+import { z } from 'zod';
+import path from 'path';
 
-// Load environment variables
-dotenv.config();
+// Load environment variables from multiple locations
+dotenv.config({ path: path.join(__dirname, '../../.env') }); // backend/.env
+dotenv.config({ path: path.join(__dirname, '../../../.env') }); // project root .env
 
-interface Config {
-  port: number;
-  nodeEnv: string;
-  frontendUrl: string;
-  optimismRpcUrl: string;
-  optimismSepoliaRpcUrl: string;
-  zoraApiKey: string | undefined;
-  databaseUrl: string | undefined;
-  jwtSecret: string;
-}
-
-export const config: Config = {
-  port: parseInt(process.env.PORT || '3001', 10),
-  nodeEnv: process.env.NODE_ENV || 'development',
-  frontendUrl: process.env.FRONTEND_URL || (process.env.NODE_ENV === 'production' ? 'https://zorax-frontend.onrender.com' : 'http://localhost:5173'),
-  optimismRpcUrl: process.env.OPTIMISM_RPC_URL || 'https://mainnet.optimism.io',
-  optimismSepoliaRpcUrl: process.env.OPTIMISM_SEPOLIA_RPC_URL || 'https://sepolia.optimism.io',
-  zoraApiKey: process.env.ZORA_API_KEY,
-  databaseUrl: process.env.DATABASE_URL,
-  jwtSecret: process.env.JWT_SECRET || 'change-this-in-production'
-};
-
-// Validate required environment variables
-export const validateConfig = (): void => {
-  const requiredVars = ['PORT', 'FRONTEND_URL'];
+// Environment variable schema
+const envSchema = z.object({
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  PORT: z.string().transform(Number).default(3001),
+  FRONTEND_URL: z.string().default('http://localhost:5173'),
   
-  for (const varName of requiredVars) {
-    if (!process.env[varName] && varName !== 'PORT') {
-      console.warn(`⚠️  Warning: ${varName} environment variable not set`);
-    }
-  }
+  // Blockchain Configuration
+  OPTIMISM_RPC_URL: z.string().default('https://mainnet.optimism.io'),
+  OPTIMISM_SEPOLIA_RPC_URL: z.string().default('https://sepolia.optimism.io'),
+  
+  // API Keys (optional for development)
+  ZORA_API_KEY: z.string().optional(),
+  DATABASE_URL: z.string().optional(),
+  
+  // Security
+  JWT_SECRET: z.string().default('your_jwt_secret_here_change_in_production'),
+});
 
-  if (config.nodeEnv === 'production') {
-    if (!config.zoraApiKey) {
-      console.warn('⚠️  Warning: ZORA_API_KEY not set for production');
-    }
-    if (!config.databaseUrl) {
-      console.warn('⚠️  Warning: DATABASE_URL not set for production');
-    }
-    if (config.jwtSecret === 'change-this-in-production') {
-      console.error('🚨 Error: JWT_SECRET must be changed in production');
-      process.exit(1);
-    }
-  }
-};
+// Validate and export environment variables
+export const env = envSchema.parse(process.env);
+
+// Export individual variables for convenience
+export const {
+  NODE_ENV,
+  PORT,
+  FRONTEND_URL,
+  OPTIMISM_RPC_URL,
+  OPTIMISM_SEPOLIA_RPC_URL,
+  ZORA_API_KEY,
+  DATABASE_URL,
+  JWT_SECRET,
+} = env;
+
+// Log configuration in development
+if (NODE_ENV === 'development') {
+  console.log('🔧 Environment configuration loaded:', {
+    NODE_ENV,
+    PORT,
+    FRONTEND_URL,
+    OPTIMISM_RPC_URL: OPTIMISM_RPC_URL.substring(0, 30) + '...',
+    ZORA_API_KEY: ZORA_API_KEY ? '***' : 'not set',
+    DATABASE_URL: DATABASE_URL ? '***' : 'not set',
+    JWT_SECRET: JWT_SECRET ? '***' : 'not set',
+  });
+}

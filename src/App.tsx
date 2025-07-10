@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { ConnectWallet } from './components/ConnectWallet';
 import { Dashboard } from './pages/Dashboard';
 import { Explore } from './pages/Explore';
 import { Creators } from './pages/Creators';
-import LandingPage from './pages/Landing';
-import { onboardingUtils } from './utils/onboarding';
 import { Zap, Menu, X } from 'lucide-react';
 
 type Page = 'home' | 'explore' | 'dashboard' | 'creators';
@@ -220,19 +218,6 @@ const HomePage = ({ onNavigate }: { onNavigate: (page: Page) => void }) => (
 function App() {
   const { isConnected } = useAccount();
   const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [showOnboarding, setShowOnboarding] = useState(false);
-
-  useEffect(() => {
-    const hasCompletedOnboarding = onboardingUtils.hasCompletedOnboarding();
-    if (!hasCompletedOnboarding) {
-      setShowOnboarding(true);
-    }
-  }, []);
-
-  const handleOnboardingComplete = () => {
-    onboardingUtils.markOnboardingCompleted();
-    setShowOnboarding(false);
-  };
 
   const renderPage = () => {
     switch (currentPage) {
@@ -254,11 +239,6 @@ function App() {
         return <HomePage onNavigate={setCurrentPage} />;
     }
   };
-
-  // Show onboarding overlay if user hasn't completed it
-  if (showOnboarding) {
-    return <LandingPage onGetStarted={handleOnboardingComplete} onNavigate={setCurrentPage} />;
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">
