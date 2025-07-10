@@ -1,20 +1,10 @@
-[deployment]
-run = ["npm", "run", "dev"]
+run = "npm run dev"
 
-[interpreter]
-command = ["npm", "run", "dev"]
+[deployment]
+run = "npm run dev"
 
 [nix]
 channel = "stable-24_05"
-
-[workflows]
-
-[workflows."Start application"]
-run = "npm run dev"
-author = "replit"
-
-[workflows."Start application".metadata]
-agentRequirement = "auto"
 
 [env]
 NODE_ENV = "development"
