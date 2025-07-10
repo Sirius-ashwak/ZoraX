@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch, Link } from 'wouter';
-import { PicaLayout } from './components/layout/PicaLayout';
-import { PicaHome } from './pages/PicaHome';
-import { PicaDashboard } from './pages/PicaDashboard';
+import { ZoraxLayout } from './components/layout/ZoraxLayout';
+import { ZoraxHome } from './pages/ZoraxHome';
+import { ZoraxDashboard } from './pages/ZoraxDashboard';
 import { Web3Provider } from './components/Web3Provider';
 import { UserProvider } from './context/UserContext';
 
@@ -10,10 +10,10 @@ function App() {
   return (
     <Web3Provider>
       <UserProvider>
-        <PicaLayout>
+        <ZoraxLayout>
           <Switch>
-            <Route path="/" component={PicaHome} />
-            <Route path="/dashboard" component={PicaDashboard} />
+            <Route path="/" component={ZoraxHome} />
+            <Route path="/dashboard" component={ZoraxDashboard} />
             <Route path="/products" component={() => (
               <div className="pica-section text-center">
                 <h1 className="pica-hero-text">Products</h1>
@@ -176,7 +176,7 @@ function App() {
               </div>
             </Route>
           </Switch>
-        </PicaLayout>
+        </ZoraxLayout>
       </UserProvider>
     </Web3Provider>
   );

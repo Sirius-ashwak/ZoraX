@@ -3,7 +3,7 @@ import { Link } from 'wouter';
 import { Settings, Users, Zap, TrendingUp, Calendar, Award, ArrowUpRight } from 'lucide-react';
 import { useUser } from '../context/UserContext';
 
-export const PicaDashboard: React.FC = () => {
+export const ZoraxDashboard: React.FC = () => {
   const { address, isConnected } = useUser();
 
   // Mock data - in production this would come from your API

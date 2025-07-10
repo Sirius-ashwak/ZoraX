@@ -2,11 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'wouter';
 import { Hash, Star, Github, LogIn, UserPlus } from 'lucide-react';
 
-interface PicaLayoutProps {
+interface ZoraxLayoutProps {
   children: React.ReactNode;
 }
 
-export const PicaLayout: React.FC<PicaLayoutProps> = ({ children }) => {
+export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
   const [location] = useLocation();
 
   return (
@@ -26,28 +26,28 @@ export const PicaLayout: React.FC<PicaLayoutProps> = ({ children }) => {
             {/* Center Navigation */}
             <div className="hidden md:flex items-center gap-8">
               <Link 
-                href="/products" 
+                href="/campaigns" 
                 className={`text-sm font-medium transition-colors ${
-                  location === '/products' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                  location === '/campaigns' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                Products
+                Campaigns
               </Link>
               <Link 
-                href="/features" 
+                href="/reputation" 
                 className={`text-sm font-medium transition-colors ${
-                  location === '/features' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                  location === '/reputation' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                Features
+                Reputation
               </Link>
               <Link 
-                href="/pricing" 
+                href="/community" 
                 className={`text-sm font-medium transition-colors ${
-                  location === '/pricing' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                  location === '/community' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
-                Pricing
+                Community
               </Link>
               <Link 
                 href="/docs" 
@@ -105,12 +105,12 @@ export const PicaLayout: React.FC<PicaLayoutProps> = ({ children }) => {
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Product</h3>
+              <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link href="/features" className="hover:text-foreground transition-colors">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-foreground transition-colors">Pricing</Link></li>
-                <li><Link href="/docs" className="hover:text-foreground transition-colors">Documentation</Link></li>
-                <li><Link href="/api" className="hover:text-foreground transition-colors">API</Link></li>
+                <li><Link href="/campaigns" className="hover:text-foreground transition-colors">Campaigns</Link></li>
+                <li><Link href="/reputation" className="hover:text-foreground transition-colors">Reputation</Link></li>
+                <li><Link href="/analytics" className="hover:text-foreground transition-colors">Analytics</Link></li>
+                <li><Link href="/supporters" className="hover:text-foreground transition-colors">Supporters</Link></li>
               </ul>
             </div>
             

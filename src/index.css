@@ -1,4 +1,4 @@
-/* Import Inter font for clean, modern typography like Pica */
+/* Import Inter font for clean, modern typography */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -7,8 +7,8 @@
 
 @layer base {
   :root {
-    /* Pica-inspired Dark Theme Colors */
-    --background: 240 10% 3.9%;        /* #0a0a0a - Pure dark like Pica */
+    /* ZoraX Dark Theme Colors */
+    --background: 240 10% 3.9%;        /* #0a0a0a - Pure dark background */
     --foreground: 0 0% 100%;            /* #ffffff - Pure white text */
     --card: 240 10% 6.5%;               /* #111111 - Card surfaces */
     --card-foreground: 0 0% 100%;       /* White text on cards */
@@ -54,7 +54,7 @@
 }
 
 @layer components {
-  /* Pica-inspired Components */
+  /* ZoraX UI Components */
   .pica-card {
     @apply bg-card border border-border rounded-2xl transition-all duration-300 hover:border-border/60;
     background: #111111;
@@ -93,7 +93,7 @@
     background: #1a1a1a;
   }
   
-  /* Pica layout utilities */
+  /* Layout utilities */
   .pica-section {
     @apply py-24 px-4;
   }

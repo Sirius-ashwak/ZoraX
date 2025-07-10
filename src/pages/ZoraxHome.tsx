@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'wouter';
-import { ArrowRight, Play, Settings, Globe, Zap, Layers } from 'lucide-react';
+import { ArrowRight, Play, Settings, Globe, Zap, Layers, Coins, Users, TrendingUp } from 'lucide-react';
 
-export const PicaHome: React.FC = () => {
+export const ZoraxHome: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -10,17 +10,17 @@ export const PicaHome: React.FC = () => {
         <div className="max-w-7xl mx-auto text-center">
           {/* Built with badge */}
           <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-8">
-            Built with Rust 🦀
+            Powered by Web3 ⚡
             <span className="ml-2 inline-flex items-center gap-1 text-accent">
               <span className="w-2 h-2 bg-accent rounded-full"></span>
-              Open Source
+              On Optimism
             </span>
           </div>
 
           {/* Main headline */}
           <h1 className="pica-hero-text mb-8">
             Build creator reputation.<br />
-            <span className="text-accent">Fast.</span>
+            <span className="text-accent">Earn together.</span>
           </h1>
 
           {/* Subtitle */}
@@ -82,20 +82,63 @@ console.log(\`Campaign created: \${campaign.id}\`)`}</code>
       <section className="py-16 border-b border-border">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <p className="text-sm text-accent font-medium mb-4">New platforms added every day 😎</p>
+            <p className="text-sm text-accent font-medium mb-4">Powered by leading Web3 infrastructure</p>
             <h2 className="text-4xl font-semibold mb-4">
-              Integrate Web3 reputation & over 13,000 APIs
+              Built on Zora Protocol & Optimism Network
             </h2>
           </div>
           
           {/* Platform logos grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-6 items-center opacity-60">
-            {/* Mock platform logos - in real implementation, use actual SVG icons */}
-            {Array.from({ length: 18 }).map((_, i) => (
-              <div key={i} className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
-                <div className="w-6 h-6 bg-accent/30 rounded"></div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-8 items-center opacity-60">
+            {/* Web3 platform representations */}
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                <div className="w-6 h-6 bg-red-500 rounded"></div>
               </div>
-            ))}
+              <span className="text-xs text-muted-foreground">Optimism</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                <div className="w-6 h-6 bg-blue-500 rounded"></div>
+              </div>
+              <span className="text-xs text-muted-foreground">Zora</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                <div className="w-6 h-6 bg-purple-500 rounded"></div>
+              </div>
+              <span className="text-xs text-muted-foreground">Farcaster</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                <div className="w-6 h-6 bg-orange-500 rounded"></div>
+              </div>
+              <span className="text-xs text-muted-foreground">IPFS</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                <div className="w-6 h-6 bg-pink-500 rounded"></div>
+              </div>
+              <span className="text-xs text-muted-foreground">Uniswap</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                <div className="w-6 h-6 bg-green-500 rounded"></div>
+              </div>
+              <span className="text-xs text-muted-foreground">WalletConnect</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                <div className="w-6 h-6 bg-yellow-500 rounded"></div>
+              </div>
+              <span className="text-xs text-muted-foreground">MetaMask</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                <div className="w-6 h-6 bg-blue-600 rounded"></div>
+              </div>
+              <span className="text-xs text-muted-foreground">Coinbase</span>
+            </div>
           </div>
         </div>
       </section>
@@ -104,58 +147,58 @@ console.log(\`Campaign created: \${campaign.id}\`)`}</code>
       <section className="pica-section">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-semibold mb-6">Products</h2>
+            <h2 className="text-5xl font-semibold mb-6">Core Features</h2>
             <p className="pica-subtitle mx-auto">
-              Three tools, one goal: "Get real reputation done fast."
+              Everything you need to build and scale your creator economy
             </p>
           </div>
 
           <div className="pica-grid">
-            {/* CreatorTool */}
+            {/* Campaign Creation */}
             <div className="pica-feature-card text-center">
               <div className="pica-icon mx-auto">
-                <Settings className="w-6 h-6" />
+                <Coins className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-semibold mb-4">CreatorTool</h3>
+              <h3 className="text-2xl font-semibold mb-4">Campaign Creation</h3>
               <p className="text-muted-foreground mb-6">
-                Every NFT campaign,<br />
-                right the first time
+                Launch NFT campaigns<br />
+                with just a few clicks
               </p>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p>Full campaigns • minting intelligence</p>
-                <p>safety baked in</p>
+                <p>Easy setup • Smart contracts</p>
+                <p>IPFS storage • Gas optimization</p>
               </div>
             </div>
 
-            {/* ReputationKit */}
+            {/* ZoraCred Reputation */}
             <div className="pica-feature-card text-center">
               <div className="pica-icon mx-auto">
-                <Globe className="w-6 h-6" />
+                <TrendingUp className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-semibold mb-4">ReputationKit</h3>
+              <h3 className="text-2xl font-semibold mb-4">ZoraCred Reputation</h3>
               <p className="text-muted-foreground mb-6">
-                Instant reputation,<br />
-                systems that never expire
+                Dynamic reputation<br />
+                that grows with success
               </p>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p>OAuth flows • auto rotation</p>
-                <p>MCP Store-as-a-Service</p>
+                <p>Transparent scoring • Visual badges</p>
+                <p>Creator profiles • Supporter tracking</p>
               </div>
             </div>
 
-            {/* SupportKit */}
+            {/* Supporter Networks */}
             <div className="pica-feature-card text-center">
               <div className="pica-icon mx-auto">
-                <Layers className="w-6 h-6" />
+                <Users className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-semibold mb-4">SupportKit</h3>
+              <h3 className="text-2xl font-semibold mb-4">Supporter Networks</h3>
               <p className="text-muted-foreground mb-6">
-                From supporters to<br />
-                live integration in seconds
+                Connect with fans<br />
+                and build communities
               </p>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p>Unlimited integrations • 13,000+ actions</p>
-                <p>zero config</p>
+                <p>Social sharing • Farcaster frames</p>
+                <p>Community tools • Analytics</p>
               </div>
             </div>
           </div>
@@ -176,11 +219,21 @@ console.log(\`Campaign created: \${campaign.id}\`)`}</code>
           <div className="pica-grid">
             <div className="pica-feature-card">
               <div className="pica-icon">
-                <Settings className="w-6 h-6" />
+                <Coins className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Creator-First</h3>
+              <h3 className="text-xl font-semibold mb-3">NFT Campaigns</h3>
               <p className="text-muted-foreground">
-                Built from the ground up for creators and their audiences with Web3 tools
+                Launch professional NFT campaigns with smart contracts, IPFS storage, and gas optimization
+              </p>
+            </div>
+
+            <div className="pica-feature-card">
+              <div className="pica-icon">
+                <TrendingUp className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Reputation System</h3>
+              <p className="text-muted-foreground">
+                Build transparent reputation through campaign success, supporter engagement, and community growth
               </p>
             </div>
 
@@ -188,9 +241,9 @@ console.log(\`Campaign created: \${campaign.id}\`)`}</code>
               <div className="pica-icon">
                 <Globe className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">13,000+ Integrations</h3>
+              <h3 className="text-xl font-semibold mb-3">Social Integration</h3>
               <p className="text-muted-foreground">
-                Connect to thousands of services with natural Web3 interactions
+                Share campaigns on Farcaster with auto-generated frames and viral social features
               </p>
             </div>
 
@@ -198,19 +251,9 @@ console.log(\`Campaign created: \${campaign.id}\`)`}</code>
               <div className="pica-icon">
                 <Zap className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Fast & Reliable</h3>
+              <h3 className="text-xl font-semibold mb-3">Layer 2 Speed</h3>
               <p className="text-muted-foreground">
-                Streaming execution with human-verifiable campaigns
-              </p>
-            </div>
-
-            <div className="pica-feature-card">
-              <div className="pica-icon">
-                <Layers className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Open + Extensible</h3>
-              <p className="text-muted-foreground">
-                SDKs for Web3, React, and more
+                Built on Optimism for fast transactions and low fees, perfect for creator economies
               </p>
             </div>
           </div>
@@ -224,15 +267,15 @@ console.log(\`Campaign created: \${campaign.id}\`)`}</code>
             Ready to build your creator economy?
           </h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of creators already building sustainable businesses with Zorax.
+            Join creators building sustainable businesses through NFT campaigns and reputation systems.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/get-started" className="pica-button">
-              Get started for free
+            <Link href="/dashboard" className="pica-button">
+              Launch your campaign
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
-            <Link href="/docs" className="pica-button-secondary">
-              View documentation
+            <Link href="/about" className="pica-button-secondary">
+              Learn more about ZoraX
             </Link>
           </div>
         </div>
