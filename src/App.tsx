@@ -3,6 +3,7 @@ import { Route, Switch, Link } from 'wouter';
 import { ZoraxLayout } from './components/layout/ZoraxLayout';
 import { ZoraxHome } from './pages/ZoraxHome';
 import { ZoraxDashboard } from './pages/ZoraxDashboard';
+import { ZoraCreditProfile } from './pages/ZoraCreditProfile';
 import { Web3Provider } from './components/Web3Provider';
 import { UserProvider } from './context/UserContext';
 
@@ -14,6 +15,8 @@ function App() {
           <Switch>
             <Route path="/" component={ZoraxHome} />
             <Route path="/dashboard" component={ZoraxDashboard} />
+            <Route path="/profile" component={ZoraCreditProfile} />
+            <Route path="/profile/:address" component={({ params }) => <ZoraCreditProfile address={params.address} />} />
             <Route path="/products" component={() => (
               <div className="pica-section text-center">
                 <h1 className="pica-hero-text">Products</h1>

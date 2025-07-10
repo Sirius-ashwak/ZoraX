@@ -42,6 +42,14 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
                 Reputation
               </Link>
               <Link 
+                href="/profile" 
+                className={`text-sm font-medium transition-colors ${
+                  location === '/profile' || location.startsWith('/profile/') ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                ZoraCred
+              </Link>
+              <Link 
                 href="/community" 
                 className={`text-sm font-medium transition-colors ${
                   location === '/community' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
@@ -109,6 +117,7 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><Link href="/campaigns" className="hover:text-foreground transition-colors">Campaigns</Link></li>
                 <li><Link href="/reputation" className="hover:text-foreground transition-colors">Reputation</Link></li>
+                <li><Link href="/profile" className="hover:text-foreground transition-colors">ZoraCred Profile</Link></li>
                 <li><Link href="/analytics" className="hover:text-foreground transition-colors">Analytics</Link></li>
                 <li><Link href="/supporters" className="hover:text-foreground transition-colors">Supporters</Link></li>
               </ul>
