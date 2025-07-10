@@ -32,30 +32,44 @@ const mockCampaigns = [
 ];
 
 // GET /api/campaigns - Get all campaigns
-router.get('/', (req, res) => {
-  res.json({
-    success: true,
-    data: mockCampaigns,
-    total: mockCampaigns.length
-  });
+router.get('/', (_req, res) => {
+  try {
+    return res.json({
+      success: true,
+      data: mockCampaigns,
+      total: mockCampaigns.length
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to fetch campaigns'
+    });
+  }
 });
 
 // GET /api/campaigns/:id - Get campaign by ID
 router.get('/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const campaign = mockCampaigns.find(c => c.id === id);
-  
-  if (!campaign) {
-    return res.status(404).json({
+  try {
+    const id = parseInt(req.params.id);
+    const campaign = mockCampaigns.find(c => c.id === id);
+    
+    if (!campaign) {
+      return res.status(404).json({
+        success: false,
+        error: 'Campaign not found'
+      });
+    }
+    
+    return res.json({
+      success: true,
+      data: campaign
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
-      error: 'Campaign not found'
+      error: 'Failed to fetch campaign'
     });
   }
-  
-  res.json({
-    success: true,
-    data: campaign
-  });
 });
 
 // POST /api/campaigns - Create new campaign
@@ -82,12 +96,12 @@ router.post('/', (req, res) => {
     
     mockCampaigns.push(newCampaign);
     
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: newCampaign
     });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       error: 'Invalid campaign data',
       details: error instanceof z.ZodError ? error.errors : 'Unknown error'

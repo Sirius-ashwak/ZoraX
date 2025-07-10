@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { env } from './config/env';
+import path from 'path';
 
 // Import routes
 import campaignsRouter from './routes/campaigns';
@@ -56,12 +57,22 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 });
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use('*', (_req, res) => {
   res.status(404).json({
     error: 'Not found',
-    message: `Route ${req.originalUrl} not found`
+    message: `Route not found`
   });
 });
+
+// Serve frontend static files in production
+if (env.NODE_ENV === 'production') {
+  const frontendPath = path.resolve(__dirname, '../../dist');
+  app.use(express.static(frontendPath));
+  // SPA fallback
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
+}
 
 // Start server
 const server = app.listen(env.PORT, () => {

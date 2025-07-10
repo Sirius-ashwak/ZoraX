@@ -33,55 +33,64 @@ const mockCreators = [
 ];
 
 // GET /api/creators - Get all creators
-router.get('/', (req, res) => {
-  res.json({
-    success: true,
-    data: mockCreators,
-    total: mockCreators.length
-  });
+router.get('/', (_req, res) => {
+  try {
+    return res.json({
+      success: true,
+      data: mockCreators,
+      total: mockCreators.length
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to fetch creators'
+    });
+  }
 });
 
 // GET /api/creators/:address - Get creator by address
 router.get('/:address', (req, res) => {
-  const address = req.params.address;
-  const creator = mockCreators.find(c => c.address === address);
-  
-  if (!creator) {
-    return res.status(404).json({
+  try {
+    const creator = mockCreators.find(c => c.address === req.params.address);
+    if (!creator) {
+      return res.status(404).json({
+        success: false,
+        error: 'Creator not found'
+      });
+    }
+    return res.json({
+      success: true,
+      data: creator
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
-      error: 'Creator not found'
+      error: 'Failed to fetch creator'
     });
   }
-  
-  res.json({
-    success: true,
-    data: creator
-  });
 });
 
 // GET /api/creators/:address/reputation - Get creator reputation
 router.get('/:address/reputation', (req, res) => {
-  const address = req.params.address;
-  const creator = mockCreators.find(c => c.address === address);
-  
-  if (!creator) {
-    return res.status(404).json({
+  try {
+    const creator = mockCreators.find(c => c.address === req.params.address);
+    if (!creator) {
+      return res.status(404).json({
+        success: false,
+        error: 'Creator not found'
+      });
+    }
+    // Replace with actual reputation logic
+    return res.json({
+      success: true,
+      data: { reputation: 100, badges: [] }
+    });
+  } catch (error) {
+    return res.status(500).json({
       success: false,
-      error: 'Creator not found'
+      error: 'Failed to fetch reputation'
     });
   }
-  
-  res.json({
-    success: true,
-    data: {
-      zoracredScore: creator.zoracredScore,
-      reputation: creator.reputation,
-      campaigns: creator.campaigns,
-      supporters: creator.supporters,
-      totalRaised: creator.totalRaised,
-      verified: creator.verified,
-    }
-  });
 });
 
 export default router;

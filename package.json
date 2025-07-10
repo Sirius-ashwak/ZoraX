@@ -30,14 +30,15 @@
     "test:all": "npm run test:ci && npm run test:e2e",
     "debug:report": "node -e \"console.log('Debug tools available at window.zoraxDebug')\"",
     "setup": "npm install && cd backend && npm install",
-    "clean": "rm -rf dist && cd backend && rm -rf dist"
+    "clean": "rm -rf dist && cd backend && rm -rf dist",
+    "prod": "npm run build && NODE_ENV=production npm start",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@lens-protocol/react-web": "^1.0.0",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-toast": "^1.2.14",
     "@rainbow-me/rainbowkit": "^2.2.8",
-    "@rollup/rollup-linux-x64-gnu": "^4.44.2",
     "@tanstack/react-query": "^5.81.5",
     "@types/cors": "^2.8.19",
     "@zoralabs/protocol-sdk": "^0.13.10",
