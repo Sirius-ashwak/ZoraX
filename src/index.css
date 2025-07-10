@@ -1,6 +1,5 @@
-/* Import Satoshi and Inter fonts */
+/* Import Inter font for clean, modern typography like Pica */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import url('https://api.fontsource.org/v1/fonts/satoshi/css?weights=400,500,600,700,800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,47 +7,29 @@
 
 @layer base {
   :root {
-    /* Cosmic Dark Theme Colors */
-    --bg-dark: #0a0a0a;
-    --bg-glass: rgba(20, 20, 30, 0.5);
-    --primary: #6366f1;
-    --primary-hover: #4f46e5;
-    --accent-glow: #7f5af0;
-    --text-light: #f5f5f5;
-    --text-muted: #9ca3af;
-    --card-hover: rgba(255, 255, 255, 0.05);
-    
-    /* Shadcn-compatible color variables */
-    --background: 240 10% 3.9%;        /* #0a0a0a - Cosmic dark */
-    --foreground: 0 0% 96%;             /* #f5f5f5 - Light text */
-    --card: 240 10% 8%;                 /* Glass card background */
-    --card-foreground: 0 0% 96%;       /* Card text */
-    --popover: 240 10% 8%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 239 84% 67%;             /* #6366f1 - Cosmic purple */
-    --primary-foreground: 0 0% 96%;
-    --secondary: 240 10% 15%;           /* Secondary glass */
-    --secondary-foreground: 0 0% 68%;   /* #9ca3af - Muted text */
-    --muted: 240 10% 15%;
-    --muted-foreground: 0 0% 68%;       /* #9ca3af */
-    --accent: 258 90% 66%;              /* #7f5af0 - Accent glow */
-    --accent-foreground: 0 0% 96%;
-    --destructive: 0 63% 31%;           /* Error red */
-    --destructive-foreground: 0 0% 96%;
-    --border: 240 10% 18%;              /* Glass border */
-    --input: 240 10% 15%;               /* Input background */
-    --ring: 239 84% 67%;                /* Focus ring */
-    
-    /* Chart colors cosmic theme */
-    --chart-1: 239 84% 67%;             /* Cosmic purple */
-    --chart-2: 158 64% 52%;             /* Cosmic green */
-    --chart-3: 43 96% 56%;              /* Cosmic orange */
-    --chart-4: 258 90% 66%;             /* Cosmic accent */
-    --chart-5: 316 70% 68%;             /* Cosmic pink */
+    /* Pica-inspired Dark Theme Colors */
+    --background: 240 10% 3.9%;        /* #0a0a0a - Pure dark like Pica */
+    --foreground: 0 0% 100%;            /* #ffffff - Pure white text */
+    --card: 240 10% 6.5%;               /* #111111 - Card surfaces */
+    --card-foreground: 0 0% 100%;       /* White text on cards */
+    --popover: 240 10% 6.5%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;               /* White primary buttons */
+    --primary-foreground: 0 0% 0%;      /* Black text on white */
+    --secondary: 240 10% 10%;           /* #1a1a1a - Secondary surfaces */
+    --secondary-foreground: 0 0% 64%;   /* #a1a1aa - Secondary text */
+    --muted: 240 10% 10%;
+    --muted-foreground: 0 0% 45%;       /* #71717a - Muted text */
+    --accent: 239 84% 67%;              /* #6366f1 - Accent purple */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 10% 15%;              /* #262626 - Subtle borders */
+    --input: 240 10% 10%;               /* Input backgrounds */
+    --ring: 239 84% 67%;                /* Focus rings */
     
     /* Typography */
-    --font-heading: 'Satoshi', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --font-family: 'Inter', sans-serif;
   }
 }
 
@@ -58,32 +39,45 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-body);
-    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.1) 0%, #0a0a0a 70%);
+    font-family: var(--font-family);
+    background: #0a0a0a;
     min-height: 100vh;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+    font-weight: 600;
+    line-height: 1.2;
   }
 }
 
 @layer components {
-  /* Cosmic Glass Components */
-  .glass-card {
-    @apply bg-card/50 border border-border/30 rounded-2xl shadow-lg backdrop-blur-md transition-all duration-300 hover:bg-card/70 hover:border-border/50;
-    background: rgba(20, 20, 30, 0.5);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  /* Pica-inspired Components */
+  .pica-card {
+    @apply bg-card border border-border rounded-2xl transition-all duration-300 hover:border-border/60;
+    background: #111111;
+    border: 1px solid #262626;
   }
   
-  .glass-button {
-    @apply bg-primary/90 text-primary-foreground rounded-xl px-6 py-3 font-medium transition-all duration-300 hover:bg-primary backdrop-blur-md active:scale-95;
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+  .pica-button {
+    @apply bg-primary text-primary-foreground rounded-xl px-6 py-3 font-medium transition-all duration-300 hover:bg-primary/90 active:scale-95;
+    background: #ffffff;
+    color: #000000;
   }
   
-  .glass-button-secondary {
-    @apply bg-secondary/50 text-secondary-foreground border border-border/30 rounded-xl px-6 py-3 font-medium transition-all duration-300 hover:bg-secondary/70 backdrop-blur-md;
+  .pica-button-secondary {
+    @apply bg-secondary text-secondary-foreground border border-border rounded-xl px-6 py-3 font-medium transition-all duration-300 hover:bg-secondary/80;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #262626;
   }
   
-  .glass-input {
-    @apply bg-input/50 text-foreground border border-border/30 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent backdrop-blur-md;
+  .pica-input {
+    @apply bg-input text-foreground border border-border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent;
+    background: #1a1a1a;
+    border: 1px solid #262626;
   }
   
   .nav-item {
@@ -91,362 +85,65 @@
   }
   
   .nav-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    background: #1a1a1a;
   }
   
   .nav-item-active {
-    @apply bg-primary/20 text-primary-foreground border border-primary/30;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
+    @apply bg-secondary text-foreground;
+    background: #1a1a1a;
   }
   
-  .cosmic-progress {
-    @apply w-full bg-secondary/30 rounded-full h-2 overflow-hidden backdrop-blur-sm;
+  /* Pica layout utilities */
+  .pica-section {
+    @apply py-24 px-4;
   }
   
-  .cosmic-progress-fill {
-    @apply h-full rounded-full transition-all duration-500;
-    background: linear-gradient(90deg, #6366f1 0%, #7f5af0 100%);
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  .pica-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
   
-  .floating-card {
-    @apply glass-card p-6 hover:shadow-2xl transition-all duration-500;
-    transform: translateY(0);
+  .pica-hero-text {
+    @apply text-5xl md:text-6xl lg:text-7xl font-semibold leading-tight;
   }
   
-  .floating-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
+  .pica-subtitle {
+    @apply text-xl text-muted-foreground max-w-2xl;
   }
   
-  .cosmic-badge {
-    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-md;
+  .pica-feature-card {
+    @apply pica-card p-8 hover:border-accent/30 transition-all duration-300;
   }
   
-  .cosmic-badge-success {
-    @apply cosmic-badge bg-green-500/20 text-green-400 border border-green-500/30;
-  }
-  
-  .cosmic-badge-warning {
-    @apply cosmic-badge bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
-  }
-  
-  .cosmic-badge-error {
-    @apply cosmic-badge bg-red-500/20 text-red-400 border border-red-500/30;
-  }
-  
-  .cosmic-badge-primary {
-    @apply cosmic-badge bg-primary/20 text-primary border border-primary/30;
-  }
-  
-  .glow-effect {
-    box-shadow: 0 0 20px rgba(127, 90, 240, 0.3);
-  }
-  
-  .glow-effect:hover {
-    box-shadow: 0 0 30px rgba(127, 90, 240, 0.5);
-  }
-  
-  .text-cosmic-gradient {
-    background: linear-gradient(135deg, #6366f1 0%, #7f5af0 50%, #3b82f6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .heading-cosmic {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    @apply text-cosmic-gradient;
+  .pica-icon {
+    @apply w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-accent mb-6;
   }
 }
 
-/* Cosmic Animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6), 0 0 60px rgba(127, 90, 240, 0.3);
-  }
-}
-
-@keyframes cosmic-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes particle-float {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-    scale: 0;
-  }
-  50% {
-    opacity: 1;
-    scale: 1;
-  }
-  100% {
-    transform: translateY(-100px) rotate(180deg);
-    opacity: 0;
-    scale: 0;
-  }
-}
-
-/* Custom cosmic scrollbar */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
+  background: #1a1a1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #6366f1, #7f5af0);
+  background: #262626;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #4f46e5, #6d28d9);
+  background: #404040;
 }
 
-/* Loading spinner */
-.spinner {
-  @apply animate-spin rounded-full border-2 border-gray-300 border-t-purple-500;
+/* Selection styling */
+::selection {
+  background: #6366f1;
+  color: white;
 }
 
-@layer base {
-  :root {
-    /* Color palette */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --accent: #6366f1;
-    
-    /* Typography */
-    --font-heading: 'Inter', sans-serif;
-    --font-body: 'Inter', sans-serif;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-  
-  html {
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-  }
-  
-  body {
-    font-family: var(--font-body);
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-  }
-
-  #root {
-    min-height: 100vh;
-  }
-
-  /* Custom scrollbar styling */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: #f1f5f9;
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
-
-  /* Selection colors */
-  ::selection {
-    background: var(--accent);
-    color: white;
-  }
-
-  ::-moz-selection {
-    background: var(--accent);
-    color: white;
-  }
-}
-
-@layer components {
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .backdrop-blur-xs {
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
-  }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .user-select-none {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  .backdrop-blur-sm {
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-  }
-  
-  .backdrop-blur-md {
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-  }
-
-  /* Glass morphism effects */
-  .glass {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .glass-strong {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  /* Cosmic animations */
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-
-  @keyframes glow {
-    0% { box-shadow: 0 0 10px #9a5bff, 0 0 20px #9a5bff; }
-    50% { box-shadow: 0 0 30px #9a5bff, 0 0 60px #9a5bff; }
-    100% { box-shadow: 0 0 10px #9a5bff, 0 0 20px #9a5bff; }
-  }
-
-  @keyframes cosmic-rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  @keyframes particles {
-    0% { 
-      transform: translateY(0) rotate(0deg); 
-      opacity: 1; 
-      scale: 0;
-    }
-    50% { 
-      opacity: 1; 
-      scale: 1;
-    }
-    100% { 
-      transform: translateY(-100px) rotate(180deg); 
-      opacity: 0; 
-      scale: 0;
-    }
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-glow {
-    animation: glow 2s infinite alternate;
-  }
-
-  .animate-cosmic-rotate {
-    animation: cosmic-rotate 20s linear infinite;
-  }
-
-  .animate-particles {
-    animation: particles 4s ease-in-out infinite;
-  }
-
-  /* Cosmic gradient backgrounds */
-  .bg-cosmic {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #3b82f6 100%);
-  }
-
-  .bg-cosmic-dark {
-    background: linear-gradient(135deg, #1e1b4b 0%, #581c87 50%, #1e3a8a 100%);
-  }
-
-  /* Text gradients */
-  .text-cosmic {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Cosmic glow utilities */
-  .glow-purple {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-  }
-
-  .glow-blue {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-  }
-
-  .glow-cosmic {
-    box-shadow: 
-      0 0 60px rgba(139, 92, 246, 0.2), 
-      0 0 100px rgba(59, 130, 246, 0.1);
-  }
+::-moz-selection {
+  background: #6366f1;
+  color: white;
 }
