@@ -92,7 +92,7 @@ const CredVaultABI = [
   }
 ] as const;
 
-const CONTRACT_ADDRESS = import.meta.env.VITE_CREDVAULT_CONTRACT_ADDRESS || '0x1234567890123456789012345678901234567890';
+const CONTRACT_ADDRESS = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_CREDVAULT_CONTRACT_ADDRESS) || '0x1234567890123456789012345678901234567890';
 
 export function useCredVault() {
   return {

@@ -26,8 +26,8 @@ class IPFSService {
       host: 'ipfs.infura.io',
       port: 5001,
       protocol: 'https',
-      headers: process.env.VITE_INFURA_IPFS_AUTH ? {
-        authorization: `Basic ${Buffer.from(process.env.VITE_INFURA_IPFS_AUTH!).toString('base64')}`
+      headers: (typeof process !== 'undefined' && process.env?.VITE_INFURA_IPFS_AUTH) ? {
+        authorization: `Basic ${Buffer.from(process.env.VITE_INFURA_IPFS_AUTH).toString('base64')}`
       } : {},
     });
   }
