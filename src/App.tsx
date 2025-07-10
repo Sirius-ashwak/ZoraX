@@ -8,6 +8,22 @@ import { Zap, Menu, X } from 'lucide-react';
 
 type Page = 'home' | 'explore' | 'dashboard' | 'creators';
 
+// Simple error boundary component
+const ErrorFallback = ({ error }: { error: Error }) => (
+  <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="text-center p-8">
+      <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
+      <p className="text-gray-600 mb-4">{error.message}</p>
+      <button 
+        onClick={() => window.location.reload()} 
+        className="bg-blue-600 text-white px-4 py-2 rounded"
+      >
+        Reload Page
+      </button>
+    </div>
+  </div>
+);
+
 const Header = ({ 
   currentPage, 
   onNavigate, 
@@ -218,40 +234,56 @@ const HomePage = ({ onNavigate }: { onNavigate: (page: Page) => void }) => (
 function App() {
   const { isConnected } = useAccount();
   const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [error, setError] = useState<Error | null>(null);
+
+  // Simple error boundary
+  if (error) {
+    return <ErrorFallback error={error} />;
+  }
 
   const renderPage = () => {
-    switch (currentPage) {
-      case 'explore':
-        return <Explore />;
-      case 'creators':
-        return <Creators />;
-      case 'dashboard':
-        return isConnected ? <Dashboard /> : (
-          <div className="min-h-screen flex items-center justify-center bg-gray-50">
-            <div className="text-center max-w-md mx-auto p-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Connect Your Wallet</h2>
-              <p className="text-gray-600 mb-6">You need to connect your wallet to access the dashboard.</p>
-              <ConnectWallet />
+    try {
+      switch (currentPage) {
+        case 'explore':
+          return <Explore />;
+        case 'creators':
+          return <Creators />;
+        case 'dashboard':
+          return isConnected ? <Dashboard /> : (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+              <div className="text-center max-w-md mx-auto p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Connect Your Wallet</h2>
+                <p className="text-gray-600 mb-6">You need to connect your wallet to access the dashboard.</p>
+                <ConnectWallet />
+              </div>
             </div>
-          </div>
-        );
-      default:
-        return <HomePage onNavigate={setCurrentPage} />;
+          );
+        default:
+          return <HomePage onNavigate={setCurrentPage} />;
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Unknown error'));
+      return null;
     }
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Header 
-        currentPage={currentPage} 
-        onNavigate={setCurrentPage}
-        isConnected={isConnected}
-      />
-      <main>
-        {renderPage()}
-      </main>
-    </div>
-  );
+  try {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header 
+          currentPage={currentPage} 
+          onNavigate={setCurrentPage}
+          isConnected={isConnected}
+        />
+        <main>
+          {renderPage()}
+        </main>
+      </div>
+    );
+  } catch (err) {
+    setError(err instanceof Error ? err : new Error('Unknown error'));
+    return null;
+  }
 }
 
 export default App;
