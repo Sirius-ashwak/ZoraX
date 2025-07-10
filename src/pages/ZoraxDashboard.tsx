@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'wouter';
-import { Settings, Users, Zap, TrendingUp, Calendar, Award, ArrowUpRight } from 'lucide-react';
+import { Settings, Users, Zap, TrendingUp, Calendar, Award, ArrowUpRight, Bell } from 'lucide-react';
 import { useUser } from '../context/UserContext';
+import { InteractiveDashboard } from '../components/dashboard/InteractiveDashboard';
+import { NotificationCenter } from '../components/dashboard/NotificationCenter';
 
 export const ZoraxDashboard: React.FC = () => {
   const { address, isConnected } = useUser();
+  const [showNotifications, setShowNotifications] = useState(false);
 
   // Mock data - in production this would come from your API
   const stats = {
@@ -48,7 +51,14 @@ export const ZoraxDashboard: React.FC = () => {
                 Welcome back, {address?.slice(0, 6)}...{address?.slice(-4)}
               </p>
             </div>
-            <div className="mt-4 md:mt-0">
+            <div className="flex items-center gap-3 mt-4 md:mt-0">
+              <button
+                onClick={() => setShowNotifications(true)}
+                className="p-2 bg-secondary/30 hover:bg-secondary/50 rounded-lg transition-colors relative"
+              >
+                <Bell className="w-4 h-4" />
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse" />
+              </button>
               <Link href="/create-campaign" className="pica-button">
                 Create Campaign
               </Link>
@@ -58,144 +68,92 @@ export const ZoraxDashboard: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="pica-card p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-accent/10 rounded-lg">
+        {/* Interactive Dashboard */}
+        <InteractiveDashboard />
+
+        {/* Legacy Stats Summary - Simplified */}
+        <div className="mt-12 pt-8 border-t border-border">
+          <h2 className="text-xl font-semibold mb-6">Quick Overview</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="pica-card p-6 text-center">
+              <div className="p-2 bg-accent/10 rounded-lg w-fit mx-auto mb-3">
                 <Settings className="w-5 h-5 text-accent" />
               </div>
-              <span className="text-xs text-muted-foreground">Total</span>
-            </div>
-            <div>
               <p className="text-2xl font-semibold">{stats.totalCampaigns}</p>
-              <p className="text-sm text-muted-foreground">Campaigns</p>
+              <p className="text-sm text-muted-foreground">Total Campaigns</p>
             </div>
-          </div>
 
-          <div className="pica-card p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-accent/10 rounded-lg">
+            <div className="pica-card p-6 text-center">
+              <div className="p-2 bg-accent/10 rounded-lg w-fit mx-auto mb-3">
                 <Users className="w-5 h-5 text-accent" />
               </div>
-              <span className="text-xs text-muted-foreground">Active</span>
-            </div>
-            <div>
               <p className="text-2xl font-semibold">{stats.activeSupporters}</p>
-              <p className="text-sm text-muted-foreground">Supporters</p>
+              <p className="text-sm text-muted-foreground">Active Supporters</p>
             </div>
-          </div>
 
-          <div className="pica-card p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-accent/10 rounded-lg">
+            <div className="pica-card p-6 text-center">
+              <div className="p-2 bg-accent/10 rounded-lg w-fit mx-auto mb-3">
                 <TrendingUp className="w-5 h-5 text-accent" />
               </div>
-              <span className="text-xs text-muted-foreground">Lifetime</span>
-            </div>
-            <div>
               <p className="text-2xl font-semibold">{stats.totalRaised}</p>
-              <p className="text-sm text-muted-foreground">Raised</p>
+              <p className="text-sm text-muted-foreground">Total Raised</p>
             </div>
-          </div>
 
-          <div className="pica-card p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-2 bg-accent/10 rounded-lg">
+            <div className="pica-card p-6 text-center">
+              <div className="p-2 bg-accent/10 rounded-lg w-fit mx-auto mb-3">
                 <Award className="w-5 h-5 text-accent" />
               </div>
-              <span className="text-xs text-muted-foreground">Level</span>
-            </div>
-            <div>
               <p className="text-2xl font-semibold">{stats.reputation}</p>
-              <p className="text-sm text-muted-foreground">Reputation</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Recent Campaigns */}
-          <div className="lg:col-span-2">
-            <div className="pica-card p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold">Recent Campaigns</h2>
-                <Link href="/campaigns" className="text-accent hover:text-accent/80 text-sm font-medium">
-                  View All
-                </Link>
-              </div>
-              
-              <div className="space-y-4">
-                {recentCampaigns.map((campaign) => (
-                  <div key={campaign.id} className="flex items-center justify-between p-4 bg-secondary/30 rounded-xl">
-                    <div>
-                      <h3 className="font-medium mb-1">{campaign.title}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {campaign.supporters} supporters • {campaign.raised} raised
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        campaign.status === 'active' 
-                          ? 'bg-accent/10 text-accent' 
-                          : 'bg-green-500/10 text-green-400'
-                      }`}>
-                        {campaign.status}
-                      </span>
-                      <ArrowUpRight className="w-4 h-4 text-muted-foreground" />
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p className="text-sm text-muted-foreground">Reputation Level</p>
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div>
-            <div className="pica-card p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-6">Quick Actions</h2>
-              <div className="space-y-3">
-                <Link href="/create-campaign" className="flex items-center gap-3 p-3 bg-secondary/30 rounded-xl hover:bg-secondary/50 transition-colors">
-                  <div className="p-2 bg-accent/10 rounded-lg">
-                    <Zap className="w-4 h-4 text-accent" />
-                  </div>
-                  <span className="font-medium">Create Campaign</span>
-                </Link>
-                
-                <Link href="/analytics" className="flex items-center gap-3 p-3 bg-secondary/30 rounded-xl hover:bg-secondary/50 transition-colors">
-                  <div className="p-2 bg-accent/10 rounded-lg">
-                    <TrendingUp className="w-4 h-4 text-accent" />
-                  </div>
-                  <span className="font-medium">View Analytics</span>
-                </Link>
-                
-                <Link href="/supporters" className="flex items-center gap-3 p-3 bg-secondary/30 rounded-xl hover:bg-secondary/50 transition-colors">
-                  <div className="p-2 bg-accent/10 rounded-lg">
-                    <Users className="w-4 h-4 text-accent" />
-                  </div>
-                  <span className="font-medium">Manage Supporters</span>
-                </Link>
-              </div>
-            </div>
-
-            {/* Reputation Card */}
-            <div className="pica-card p-6">
-              <h2 className="text-xl font-semibold mb-4">Reputation Status</h2>
-              <div className="text-center">
-                <div className="w-20 h-20 mx-auto mb-4 bg-accent/10 rounded-full flex items-center justify-center">
-                  <Award className="w-10 h-10 text-accent" />
+          {/* Quick Actions Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link href="/create-campaign" className="pica-card p-6 hover:border-accent/30 transition-colors group">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                  <Zap className="w-5 h-5 text-accent" />
                 </div>
-                <p className="text-lg font-semibold mb-2">{stats.reputation}</p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  You've built strong creator reputation
-                </p>
-                <Link href="/reputation" className="text-accent hover:text-accent/80 text-sm font-medium">
-                  View Details
-                </Link>
+                <div>
+                  <h3 className="font-medium">Create Campaign</h3>
+                  <p className="text-sm text-muted-foreground">Launch new NFT collection</p>
+                </div>
               </div>
-            </div>
+            </Link>
+            
+            <Link href="/analytics" className="pica-card p-6 hover:border-accent/30 transition-colors group">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                  <TrendingUp className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <h3 className="font-medium">Advanced Analytics</h3>
+                  <p className="text-sm text-muted-foreground">Deep dive into metrics</p>
+                </div>
+              </div>
+            </Link>
+            
+            <Link href="/supporters" className="pica-card p-6 hover:border-accent/30 transition-colors group">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                  <Users className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <h3 className="font-medium">Supporter Hub</h3>
+                  <p className="text-sm text-muted-foreground">Manage your community</p>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
+
+      {/* Notification Center */}
+      <NotificationCenter 
+        isOpen={showNotifications} 
+        onClose={() => setShowNotifications(false)} 
+      />
     </div>
   );
 };
