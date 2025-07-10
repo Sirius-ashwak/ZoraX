@@ -69,6 +69,10 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
 
             {/* Right Actions */}
             <div className="flex items-center gap-4">
+              <Link href="/settings" className="p-2 text-muted-foreground hover:text-foreground transition-colors">
+                <UserPlus className="w-5 h-5" />
+              </Link>
+              
               <a 
                 href="https://github.com/zorax" 
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -120,6 +124,7 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
                 <li><Link href="/profile" className="hover:text-foreground transition-colors">ZoraCred Profile</Link></li>
                 <li><Link href="/analytics" className="hover:text-foreground transition-colors">Analytics</Link></li>
                 <li><Link href="/supporters" className="hover:text-foreground transition-colors">Supporters</Link></li>
+                <li><Link href="/docs" className="hover:text-foreground transition-colors">Documentation</Link></li>
               </ul>
             </div>
             

@@ -4,6 +4,12 @@ import { ZoraxLayout } from './components/layout/ZoraxLayout';
 import { ZoraxHome } from './pages/ZoraxHome';
 import { ZoraxDashboard } from './pages/ZoraxDashboard';
 import { ZoraCreditProfile } from './pages/ZoraCreditProfile';
+import { CampaignsPage } from './pages/CampaignsPage';
+import { CreateCampaignPage } from './pages/CreateCampaignPage';
+import { AnalyticsPage } from './pages/AnalyticsPage';
+import { SupportersPage } from './pages/SupportersPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { DocsPage } from './pages/DocsPage';
 import { Web3Provider } from './components/Web3Provider';
 import { UserProvider } from './context/UserContext';
 
@@ -35,12 +41,8 @@ function App() {
                 <p className="pica-subtitle mx-auto">Coming soon...</p>
               </div>
             )} />
-            <Route path="/docs" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Documentation</h1>
-                <p className="pica-subtitle mx-auto">Coming soon...</p>
-              </div>
-            )} />
+            <Route path="/docs" component={DocsPage} />
+            <Route path="/settings" component={SettingsPage} />
             <Route path="/get-started" component={() => (
               <div className="pica-section text-center">
                 <h1 className="pica-hero-text">Get Started</h1>
@@ -68,33 +70,10 @@ function App() {
                 </div>
               </div>
             )} />
-            <Route path="/create-campaign" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Create Campaign</h1>
-                <p className="pica-subtitle mx-auto">Launch your NFT campaign and connect with supporters</p>
-                <div className="mt-8">
-                  <button className="pica-button">Start Creating</button>
-                </div>
-              </div>
-            )} />
-            <Route path="/campaigns" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">All Campaigns</h1>
-                <p className="pica-subtitle mx-auto">Browse all your creator campaigns</p>
-              </div>
-            )} />
-            <Route path="/analytics" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Analytics</h1>
-                <p className="pica-subtitle mx-auto">Track your campaign performance and supporter engagement</p>
-              </div>
-            )} />
-            <Route path="/supporters" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Supporters</h1>
-                <p className="pica-subtitle mx-auto">Manage your supporter community</p>
-              </div>
-            )} />
+            <Route path="/create-campaign" component={CreateCampaignPage} />
+            <Route path="/campaigns" component={CampaignsPage} />
+            <Route path="/analytics" component={AnalyticsPage} />
+            <Route path="/supporters" component={SupportersPage} />
             <Route path="/reputation" component={() => (
               <div className="pica-section text-center">
                 <h1 className="pica-hero-text">Reputation</h1>
