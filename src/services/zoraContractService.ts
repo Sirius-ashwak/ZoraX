@@ -33,10 +33,11 @@ class ZoraContractService {
       transport: http(import.meta.env.VITE_OPTIMISM_RPC_URL || 'https://mainnet.optimism.io'),
     });
 
-    // Initialize wallet client for transactions
-    // Initialize wallet functionality when needed
-    if (!import.meta.env.VITE_PRIVATE_KEY) {
-      console.warn('PRIVATE_KEY not set - deployment features will be limited');
+    // Check if we're in browser environment before accessing process
+    if (typeof window === 'undefined' && typeof process !== 'undefined') {
+      if (!process.env.VITE_PRIVATE_KEY) {
+        console.warn('PRIVATE_KEY not set - deployment features will be limited');
+      }
     }
   }
 

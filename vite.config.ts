@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react()],
   define: {
     global: 'globalThis',
+    'process.env': {},
   },
   resolve: {
     alias: {
@@ -20,5 +21,9 @@ export default defineConfig({
   optimizeDeps: {
     include: ['buffer', 'process'],
     exclude: ['lucide-react'],
+  },
+  server: {
+    port: 5173,
+    host: true,
   },
 });
