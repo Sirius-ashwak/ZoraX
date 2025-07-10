@@ -1,47 +1,54 @@
 # Multi-stage build for ZoraX
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS base
 
-# Set working directory
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 COPY backend/package*.json ./backend/
+RUN npm ci --only=production && npm cache clean --force
 
-# Install dependencies
+# Build the frontend
+FROM base AS frontend-builder
+WORKDIR /app
+COPY package*.json ./
 RUN npm ci
-RUN cd backend && npm ci
-
-# Copy source code
 COPY . .
+RUN npm run build:frontend
 
-# Build the application
-RUN npm run build
+# Build the backend
+FROM base AS backend-builder
+WORKDIR /app
+COPY backend/package*.json ./backend/
+RUN cd backend && npm ci
+COPY backend/ ./backend/
+RUN cd backend && npm run build
 
-# Production stage
-FROM node:18-alpine AS production
-
-# Set working directory
+# Production image
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-# Copy built backend
-COPY --from=builder /app/backend/dist ./backend/dist
-COPY --from=builder /app/backend/package*.json ./backend/
-COPY --from=builder /app/backend/node_modules ./backend/node_modules
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# Copy built frontend (for serving static files if needed)
-COPY --from=builder /app/dist ./frontend/dist
+# Copy built applications
+COPY --from=frontend-builder /app/dist ./dist
+COPY --from=backend-builder /app/backend/dist ./backend/dist
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/backend/node_modules ./backend/node_modules
 
-# Set environment variables
+# Copy necessary files
+COPY backend/package.json ./backend/
+COPY --chown=nextjs:nodejs . .
+
+USER nextjs
+
+EXPOSE 3001
+
 ENV NODE_ENV=production
-ENV PORT=10000
+ENV PORT=3001
 
-# Expose port
-EXPOSE 10000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:10000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
-
-# Start the backend server
-CMD ["npm", "run", "start:backend"]
+CMD ["npm", "run", "start"]

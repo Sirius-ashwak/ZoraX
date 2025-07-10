@@ -1,14 +1,14 @@
-# ZoraX - Creator-Supporter Economic Platform
-
-![ZoraX Logo](./docs/images/zorax-logo.png)
+# ZoraX - Web3 Creator Economy Platform
 
 **A revolutionary Web3 platform connecting creators and supporters through transparent reputation systems and seamless blockchain interactions on Optimism.**
 
-[![Built for Zora Coinathon](https://img.shields.io/badge/Built%20for-Zora%20Coinathon-blue)](https://zora.co/coinathon)
+[![Deploy to Render](https://img.shields.io/badge/Deploy%20to-Render-46E3B7.svg)](https://render.com)
+[![Deploy to Vercel](https://img.shields.io/badge/Deploy%20to-Vercel-000000.svg)](https://vercel.com)
+[![Deploy to Netlify](https://img.shields.io/badge/Deploy%20to-Netlify-00C7B7.svg)](https://netlify.com)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![Deploy to Render](https://img.shields.io/badge/Deploy%20to-Render-46E3B7.svg)](https://render.com)
 
 ## 🌟 Overview
 
@@ -50,43 +50,72 @@ ZoraX transforms how creators and supporters interact by introducing a transpare
 - **CI/CD**: GitHub Actions ready configuration
 - **Monitoring**: Health checks and error logging
 
-## 🚀 Quick Deploy to Render
+## 🚀 Deployment Options
 
-### One-Click Deployment
+### 🟢 Option 1: Render (Recommended)
 
-1. **Fork this repository** to your GitHub account
+**One-Click Deployment**:
+1. Fork this repository to your GitHub account
+2. Go to [Render.com](https://render.com) and connect your GitHub
+3. Create a new "Web Service" from your forked repository
+4. Configure the deployment:
+   - **Build Command**: `npm run build`
+   - **Start Command**: `npm run start`
+   - **Environment**: Node
+   - **Plan**: Starter ($7/month)
 
-2. **Connect to Render**:
-   - Go to [Render.com](https://render.com) and sign up
-   - Connect your GitHub account
-   - Select "New" → "Blueprint"
-   - Choose this repository
+**Environment Variables**:
+```env
+NODE_ENV=production
+PORT=3001
+JWT_SECRET=your-secure-jwt-secret-here
+ZORA_API_KEY=your-zora-api-key
+VITE_WALLET_CONNECT_PROJECT_ID=your-wallet-connect-project-id
+```
 
-3. **Configure Environment Variables** in Render Dashboard:
-   ```
-   NODE_ENV=production
-   JWT_SECRET=your-secure-jwt-secret-here
-   ZORA_API_KEY=your-zora-api-key
-   VITE_WALLET_CONNECT_PROJECT_ID=your-wallet-connect-project-id
-   ```
+### 🟡 Option 2: Vercel
 
-4. **Deploy**: Render will automatically build and deploy both frontend and backend
+1. Push your code to GitHub
+2. Go to [Vercel](https://vercel.com) and import your repository
+3. Vercel will automatically detect the configuration from `vercel.json`
+4. Add environment variables in Vercel dashboard
+5. Deploy with one click
 
-### Manual Render Setup
+### 🔵 Option 3: Netlify
 
-If you prefer manual setup:
+1. Connect your GitHub repository to [Netlify](https://netlify.com)
+2. Configuration is automatically loaded from `netlify.toml`
+3. Set environment variables in Netlify dashboard
+4. Deploy automatically on every push
 
-1. **Create Web Service for Backend**:
-   - Build Command: `npm install && npm run build`
-   - Start Command: `npm start`
-   - Environment: Node
-   - Plan: Starter ($7/month)
+### 🐳 Option 4: Docker
 
-2. **Create Static Site for Frontend**:
-   - Build Command: `npm install && npm run build:frontend`
-   - Publish Directory: `./dist`
-   - Environment: Static Site
-   - Plan: Free
+**Local Docker Deployment**:
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or build manually
+docker build -t zorax-app .
+docker run -p 3001:3001 -p 5173:5173 zorax-app
+```
+
+**Production Docker**:
+```bash
+# Use the deployment script
+./deploy.sh
+```
+
+### ⚡ Option 5: Quick Deploy Script
+
+For any platform with shell access:
+```bash
+# Clone and deploy
+git clone https://github.com/yourusername/zorax.git
+cd zorax
+chmod +x deploy.sh
+./deploy.sh
+```
 
 ## 🔧 Local Development
 
@@ -97,6 +126,236 @@ If you prefer manual setup:
 - **Git** for version control
 
 ### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/zorax.git
+cd zorax
+
+# Install dependencies
+npm install
+
+# Install backend dependencies
+cd backend && npm install && cd ..
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your API keys and configuration
+
+# Start development servers
+npm run dev
+```
+
+### Development Commands
+
+```bash
+# Development (runs both frontend and backend)
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+
+# Run tests
+npm test
+
+# Run E2E tests
+npm run test:e2e
+
+# Lint code
+npm run lint
+
+# Type checking
+npm run type-check
+```
+
+## 🌍 Environment Variables
+
+### Required for Production
+
+```env
+NODE_ENV=production
+PORT=3001
+JWT_SECRET=your-secure-jwt-secret-here
+FRONTEND_URL=https://your-domain.com
+```
+
+### Optional Services
+
+```env
+# Zora Protocol
+ZORA_API_KEY=your-zora-api-key
+
+# Blockchain RPCs
+OPTIMISM_RPC_URL=https://mainnet.optimism.io
+OPTIMISM_SEPOLIA_RPC_URL=https://sepolia.optimism.io
+
+# Database (for production)
+DATABASE_URL=postgresql://user:password@localhost:5432/zorax
+
+# Redis (for session management)
+REDIS_URL=redis://localhost:6379
+
+# WalletConnect (for frontend)
+VITE_WALLET_CONNECT_PROJECT_ID=your-wallet-connect-project-id
+```
+
+## 🚀 Production Deployment Checklist
+
+### Before Deployment
+
+- [ ] Set all required environment variables
+- [ ] Update `FRONTEND_URL` to your production domain
+- [ ] Generate a secure `JWT_SECRET`
+- [ ] Obtain API keys for Zora and WalletConnect
+- [ ] Test the build process locally: `npm run build`
+- [ ] Run tests: `npm test`
+
+### After Deployment
+
+- [ ] Verify health endpoint: `https://your-domain.com/api/health`
+- [ ] Test wallet connection functionality
+- [ ] Verify campaign creation flow
+- [ ] Check Farcaster Frame integration
+- [ ] Monitor application logs
+- [ ] Set up monitoring and alerts
+
+## 🔧 Platform-Specific Deployment
+
+### Render.com
+
+1. **Connect Repository**: Link your GitHub repository
+2. **Service Configuration**:
+   - **Build Command**: `npm run build`
+   - **Start Command**: `npm run start`
+   - **Environment**: Node
+3. **Environment Variables**: Add all required env vars
+4. **Auto-Deploy**: Enable automatic deployments from main branch
+
+### Vercel
+
+1. **Import Project**: Connect your repository
+2. **Framework**: Vercel auto-detects configuration
+3. **Environment Variables**: Set in Vercel dashboard
+4. **Deployment**: Automatic on every push
+
+### Netlify
+
+1. **Site Configuration**: Uses `netlify.toml` automatically
+2. **Build Settings**: Automatically configured
+3. **Environment Variables**: Set in Netlify dashboard
+4. **Deploy**: Automatic on every commit
+
+### Docker
+
+**Development**:
+```bash
+docker-compose up -d
+```
+
+**Production**:
+```bash
+# Build production image
+docker build -t zorax-app:latest .
+
+# Run with production environment
+docker run -p 3001:3001 \
+  -e NODE_ENV=production \
+  -e JWT_SECRET=your-secret \
+  zorax-app:latest
+```
+
+## 📊 Monitoring and Maintenance
+
+### Health Checks
+
+The application provides several health check endpoints:
+
+- **API Health**: `GET /api/health`
+- **System Status**: `GET /api/status`
+- **Database Health**: `GET /api/db-health` (when database is configured)
+
+### Logging
+
+- **Development**: Console logging with detailed output
+- **Production**: Structured JSON logging
+- **Error Tracking**: Automatic error capture and reporting
+
+### Performance
+
+- **Frontend**: Vite with optimized production builds
+- **Backend**: Express with compression and caching
+- **Database**: Connection pooling and query optimization
+- **CDN**: Static asset optimization
+
+## 🔐 Security Considerations
+
+### Production Security
+
+- **Environment Variables**: Never commit secrets to version control
+- **JWT Secret**: Use a cryptographically secure random string
+- **HTTPS**: Always use HTTPS in production
+- **CORS**: Configure proper CORS policies
+- **Headers**: Security headers configured with Helmet.js
+
+### Web3 Security
+
+- **Wallet Integration**: Uses secure wallet connection protocols
+- **Transaction Safety**: Proper gas estimation and validation
+- **Smart Contract**: Audited Zora Protocol integration
+- **Network Security**: Optimism L2 for reduced fees and faster transactions
+
+## 🆘 Troubleshooting
+
+### Common Issues
+
+**Build Failures**:
+- Ensure Node.js version is 18.x or higher
+- Clear node_modules and reinstall: `rm -rf node_modules && npm install`
+- Check for missing environment variables
+
+**Deployment Issues**:
+- Verify all environment variables are set correctly
+- Check that build command completes successfully
+- Ensure start command is configured properly
+
+**Web3 Connection Issues**:
+- Verify WalletConnect Project ID is valid
+- Check that users are on the correct network (Optimism)
+- Ensure proper RPC URLs are configured
+
+### Support
+
+For additional support:
+- Check the [Issues](https://github.com/yourusername/zorax/issues) page
+- Review the [Documentation](./docs/) folder
+- Contact the development team
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## 📈 Roadmap
+
+- [ ] Database integration (PostgreSQL)
+- [ ] Redis caching layer
+- [ ] Advanced analytics dashboard
+- [ ] Mobile app development
+- [ ] Multi-chain support
+- [ ] Enhanced reputation algorithms
+- [ ] Creator tools expansion
+
+---
+
+**Built with ❤️ for the Web3 Creator Economy**
 
 1. **Clone the repository**
    ```bash
