@@ -1,105 +1,96 @@
-import { Router } from 'express';
+import express from 'express';
 import { z } from 'zod';
-import { Campaign } from '../types';
 
-const router = Router();
+const router = express.Router();
 
-// Validation schema for creating/updating a campaign
-const campaignSchema = z.object({
-  title: z.string().min(5, 'Title must be at least 5 characters'),
-  description: z.string().min(20, 'Description must be at least 20 characters'),
-  goalAmount: z.number().positive('Goal amount must be positive'),
-  duration: z.number().int().positive('Duration must be a positive integer'),
-  creatorAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid Ethereum address'),
-});
-
-// Sample campaigns data (in-memory storage for now)
-const campaigns: Campaign[] = [
+// Mock campaign data for cosmic platform
+const mockCampaigns = [
   {
-    id: '1',
-    title: 'Sample Campaign',
-    description: 'This is a sample campaign for testing purposes',
-    goalAmount: 1000,
-    raisedAmount: 250,
-    duration: 30,
-    creatorAddress: '0x1234567890123456789012345678901234567890',
+    id: 1,
+    title: 'Cosmic Art Collection',
+    description: 'A stunning collection of cosmic art pieces',
+    creator: '0x1234...5678',
+    price: '0.1 ETH',
+    raised: '2.5 ETH',
+    supporters: 42,
     status: 'active',
-    createdAt: new Date().toISOString()
+    imageUri: 'https://via.placeholder.com/400x300?text=Cosmic+Art',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    title: 'Space Exploration NFT',
+    description: 'Journey through the cosmos with these unique NFTs',
+    creator: '0x9876...5432',
+    price: '0.2 ETH',
+    raised: '5.2 ETH',
+    supporters: 89,
+    status: 'completed',
+    imageUri: 'https://via.placeholder.com/400x300?text=Space+NFT',
+    createdAt: new Date().toISOString(),
   }
 ];
 
-// Get all campaigns
-router.get('/', (_req, res) => {
-  try {
-    res.json({
-      success: true,
-      data: campaigns,
-      total: campaigns.length
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Failed to fetch campaigns'
-    });
-  }
+// GET /api/campaigns - Get all campaigns
+router.get('/', (req, res) => {
+  res.json({
+    success: true,
+    data: mockCampaigns,
+    total: mockCampaigns.length
+  });
 });
 
-// Get campaign by ID
+// GET /api/campaigns/:id - Get campaign by ID
 router.get('/:id', (req, res) => {
-  try {
-    const campaign = campaigns.find(c => c.id === req.params.id);
-    
-    if (!campaign) {
-      return res.status(404).json({
-        success: false,
-        error: 'Campaign not found'
-      });
-    }
-    
-    res.json({
-      success: true,
-      data: campaign
-    });
-  } catch (error) {
-    res.status(500).json({
+  const id = parseInt(req.params.id);
+  const campaign = mockCampaigns.find(c => c.id === id);
+  
+  if (!campaign) {
+    return res.status(404).json({
       success: false,
-      error: 'Failed to fetch campaign'
+      error: 'Campaign not found'
     });
   }
+  
+  res.json({
+    success: true,
+    data: campaign
+  });
 });
 
-// Create a new campaign
+// POST /api/campaigns - Create new campaign
 router.post('/', (req, res) => {
   try {
-    const validationResult = campaignSchema.safeParse(req.body);
+    const campaignSchema = z.object({
+      title: z.string().min(1),
+      description: z.string().min(1),
+      price: z.string(),
+      creator: z.string(),
+    });
     
-    if (!validationResult.success) {
-      return res.status(400).json({
-        success: false,
-        error: 'Validation failed',
-        details: validationResult.error.format()
-      });
-    }
+    const data = campaignSchema.parse(req.body);
     
-    const newCampaign: Campaign = {
-      id: (campaigns.length + 1).toString(),
-      ...validationResult.data,
-      raisedAmount: 0,
+    const newCampaign = {
+      id: mockCampaigns.length + 1,
+      ...data,
+      raised: '0 ETH',
+      supporters: 0,
       status: 'active',
-      createdAt: new Date().toISOString()
+      imageUri: 'https://via.placeholder.com/400x300?text=New+Campaign',
+      createdAt: new Date().toISOString(),
     };
     
-    campaigns.push(newCampaign);
+    mockCampaigns.push(newCampaign);
     
     res.status(201).json({
       success: true,
-      data: newCampaign,
-      message: 'Campaign created successfully'
+      data: newCampaign
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      error: 'Failed to create campaign'
+      error: 'Invalid campaign data',
+      details: error instanceof z.ZodError ? error.errors : 'Unknown error'
     });
   }
 });

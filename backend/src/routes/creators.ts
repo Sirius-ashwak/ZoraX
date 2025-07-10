@@ -1,121 +1,87 @@
-import { Router, Request, Response } from 'express';
-import { z } from 'zod';
-import { Creator } from '../types';
+import express from 'express';
 
-const router = Router();
+const router = express.Router();
 
-// Validation schema for creating/updating a creator profile
-const creatorProfileSchema = z.object({
-  address: z.string().regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid Ethereum address'),
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  bio: z.string().optional(),
-  avatar: z.string().url('Invalid avatar URL').optional(),
-  socialLinks: z.object({
-    twitter: z.string().url('Invalid Twitter URL').optional(),
-    instagram: z.string().url('Invalid Instagram URL').optional(),
-    website: z.string().url('Invalid website URL').optional()
-  }).optional()
-});
-
-// Sample creators data (in-memory storage for now)
-const creators: Creator[] = [
+// Mock creator data for cosmic platform
+const mockCreators = [
   {
-    id: '1',
-    address: '0x1234567890123456789012345678901234567890',
-    name: 'Sample Creator',
-    bio: 'This is a sample creator profile',
-    avatar: 'https://via.placeholder.com/150',
-    socialLinks: {
-      twitter: 'https://twitter.com/samplecreator',
-      website: 'https://example.com'
-    },
-    campaignCount: 1,
-    totalRaised: 250,
-    createdAt: new Date().toISOString()
+    id: 1,
+    address: '0x1234...5678',
+    name: 'CosmicArtist',
+    bio: 'Creating stunning cosmic art in the Web3 space',
+    avatar: 'https://via.placeholder.com/150x150?text=CA',
+    zoracredScore: 750,
+    reputation: 'Expert',
+    campaigns: 5,
+    supporters: 127,
+    totalRaised: '12.5 ETH',
+    verified: true,
+  },
+  {
+    id: 2,
+    address: '0x9876...5432',
+    name: 'SpaceExplorer',
+    bio: 'Exploring the digital cosmos through NFTs',
+    avatar: 'https://via.placeholder.com/150x150?text=SE',
+    zoracredScore: 892,
+    reputation: 'Legend',
+    campaigns: 8,
+    supporters: 234,
+    totalRaised: '25.8 ETH',
+    verified: true,
   }
 ];
 
-// Get all creators
-router.get('/', (_req: Request, res: Response) => {
-  try {
-    res.json({
-      success: true,
-      data: creators,
-      total: creators.length
-    });
-  } catch (error) {
-    res.status(500).json({
+// GET /api/creators - Get all creators
+router.get('/', (req, res) => {
+  res.json({
+    success: true,
+    data: mockCreators,
+    total: mockCreators.length
+  });
+});
+
+// GET /api/creators/:address - Get creator by address
+router.get('/:address', (req, res) => {
+  const address = req.params.address;
+  const creator = mockCreators.find(c => c.address === address);
+  
+  if (!creator) {
+    return res.status(404).json({
       success: false,
-      error: 'Failed to fetch creators'
+      error: 'Creator not found'
     });
   }
+  
+  res.json({
+    success: true,
+    data: creator
+  });
 });
 
-// Get creator by address
-router.get('/:address', (req: Request, res: Response) => {
-  try {
-    const creator = creators.find(c => c.address.toLowerCase() === req.params.address.toLowerCase());
-    
-    if (!creator) {
-      res.status(404).json({ error: 'Creator not found' });
-      return;
-    }
-    
-    res.json({ creator });
-    return;
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch creator' });
-    return;
+// GET /api/creators/:address/reputation - Get creator reputation
+router.get('/:address/reputation', (req, res) => {
+  const address = req.params.address;
+  const creator = mockCreators.find(c => c.address === address);
+  
+  if (!creator) {
+    return res.status(404).json({
+      success: false,
+      error: 'Creator not found'
+    });
   }
-});
-
-// Create or update a creator profile
-router.post('/', (req: Request, res: Response) => {
-  try {
-    const validationResult = creatorProfileSchema.safeParse(req.body);
-    
-    if (!validationResult.success) {
-      res.status(400).json({ error: 'Invalid creator data', details: validationResult.error });
-      return;
+  
+  res.json({
+    success: true,
+    data: {
+      zoracredScore: creator.zoracredScore,
+      reputation: creator.reputation,
+      campaigns: creator.campaigns,
+      supporters: creator.supporters,
+      totalRaised: creator.totalRaised,
+      verified: creator.verified,
     }
-    
-    const data = validationResult.data;
-    const existingCreatorIndex = creators.findIndex(c => c.address.toLowerCase() === data.address.toLowerCase());
-    
-    if (existingCreatorIndex !== -1) {
-      // Update existing creator
-      creators[existingCreatorIndex] = {
-        ...creators[existingCreatorIndex],
-        ...data,
-        bio: data.bio ?? '',
-        avatar: data.avatar ?? '',
-        socialLinks: data.socialLinks ?? {},
-      };
-      
-      res.json({ creator: creators[existingCreatorIndex] });
-      return;
-    } else {
-      // Create new creator
-      const newCreator: Creator = {
-        campaignCount: 0,
-        totalRaised: 0,
-        createdAt: new Date().toISOString(),
-        ...data,
-        bio: data.bio ?? '',
-        avatar: data.avatar ?? '',
-        socialLinks: data.socialLinks ?? {},
-        id: String(Date.now()),
-      };
-      
-      creators.push(newCreator);
-      
-      res.status(201).json({ creator: newCreator });
-      return;
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create/update creator' });
-    return;
-  }
+  });
 });
 
 export default router;
