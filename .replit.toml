@@ -1,19 +1,17 @@
-run = "npm run dev"
+run = "./start-dev-fixed.sh"
 
 [deployment]
-run = "npm run dev"
-
-[env]
-FRONTEND_PORT = "5173"
-BACKEND_PORT = "3001"
-
-[nix]
-channel = "stable-24_05"
+run = "./start-dev-fixed.sh"
 
 [env]
 NODE_ENV = "development"
 PORT = "3001"
 FRONTEND_PORT = "5173"
+BACKEND_PORT = "3001"
+VITE_HOST = "0.0.0.0"
+
+[nix]
+channel = "stable-24_05"
 
 [[ports]]
 localPort = 3001
