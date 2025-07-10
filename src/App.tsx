@@ -6,8 +6,8 @@ import { config } from './config/wagmi';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 // Import pages
-import { CoinbaseHome } from './pages/CoinbaseHome';
-import { Home } from './pages/Home';
+import { CosmicHome } from './pages/CosmicHome';
+import { SmartHub } from './pages/SmartHub';
 import { Explore } from './pages/Explore';
 import { Dashboard } from './pages/Dashboard';
 import { CreateCampaign } from './pages/CreateCampaign';
@@ -16,7 +16,7 @@ import { CreatorProfile } from './pages/CreatorProfile';
 import { NotFound } from './pages/NotFound';
 
 // Import components
-import { CoinbaseLayout } from './components/layout/CoinbaseLayout';
+import { CosmicLayout } from './components/layout/CosmicLayout';
 import { Toaster } from './components/ui/toaster';
 
 import '@rainbow-me/rainbowkit/styles.css';
@@ -27,19 +27,21 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <BrowserRouter>
-            <CoinbaseLayout>
+            <CosmicLayout>
               <Routes>
-                <Route path="/" element={<CoinbaseHome />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/" element={<CosmicHome />} />
+                <Route path="/hub" element={<SmartHub />} />
                 <Route path="/explore" element={<Explore />} />
                 <Route path="/create" element={<CreateCampaign />} />
-                <Route path="/web3" element={<CreateCampaign />} />
-                <Route path="/support" element={<Explore />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/campaign/:id" element={<CampaignDetails />} />
-                <Route path="/creator/:address" element={<CreatorProfile />} />
+                <Route path="/profile/:address" element={<CreatorProfile />} />
+                <Route path="/profile" element={<CreatorProfile />} />
+                <Route path="/frame/:id" element={<CampaignDetails />} />
+                <Route path="/settings" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </CoinbaseLayout>
+            </CosmicLayout>
             <Toaster />
           </BrowserRouter>
         </RainbowKitProvider>

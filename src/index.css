@@ -1,5 +1,6 @@
-/* Import Inter font */
+/* Import Satoshi and Inter fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://api.fontsource.org/v1/fonts/satoshi/css?weights=400,500,600,700,800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,39 +8,47 @@
 
 @layer base {
   :root {
-    /* Coinbase Dark Theme Colors */
-    --background: 217 25% 7%;          /* #0f0f23 - Dark background */
-    --foreground: 210 20% 95%;         /* #f0f0f5 - Light text */
-    --card: 217 32% 12%;               /* #1a1b2e - Card background */
-    --card-foreground: 210 20% 95%;   /* #f0f0f5 - Card text */
-    --popover: 217 32% 12%;
-    --popover-foreground: 210 20% 95%;
-    --primary: 214 84% 56%;            /* #3e5ce8 - Coinbase blue */
-    --primary-foreground: 210 20% 95%;
-    --secondary: 217 32% 15%;          /* #20213b - Secondary bg */
-    --secondary-foreground: 210 15% 75%; /* #a8a8b3 - Secondary text */
-    --muted: 217 32% 15%;
-    --muted-foreground: 210 15% 65%;   /* #898999 - Muted text */
-    --accent: 214 84% 56%;             /* Coinbase blue accent */
-    --accent-foreground: 210 20% 95%;
-    --destructive: 0 75% 60%;          /* #e53e3e - Error red */
-    --destructive-foreground: 210 20% 95%;
-    --border: 217 32% 18%;             /* #262840 - Border color */
-    --input: 217 32% 15%;              /* #20213b - Input background */
-    --ring: 214 84% 56%;               /* Focus ring */
+    /* Cosmic Dark Theme Colors */
+    --bg-dark: #0a0a0a;
+    --bg-glass: rgba(20, 20, 30, 0.5);
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --accent-glow: #7f5af0;
+    --text-light: #f5f5f5;
+    --text-muted: #9ca3af;
+    --card-hover: rgba(255, 255, 255, 0.05);
     
-    /* Chart colors matching Coinbase style */
-    --chart-1: 214 84% 56%;            /* Coinbase blue */
-    --chart-2: 142 76% 36%;            /* Green */
-    --chart-3: 38 92% 50%;             /* Orange */
-    --chart-4: 280 100% 70%;           /* Purple */
-    --chart-5: 340 82% 52%;            /* Pink */
+    /* Shadcn-compatible color variables */
+    --background: 240 10% 3.9%;        /* #0a0a0a - Cosmic dark */
+    --foreground: 0 0% 96%;             /* #f5f5f5 - Light text */
+    --card: 240 10% 8%;                 /* Glass card background */
+    --card-foreground: 0 0% 96%;       /* Card text */
+    --popover: 240 10% 8%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 239 84% 67%;             /* #6366f1 - Cosmic purple */
+    --primary-foreground: 0 0% 96%;
+    --secondary: 240 10% 15%;           /* Secondary glass */
+    --secondary-foreground: 0 0% 68%;   /* #9ca3af - Muted text */
+    --muted: 240 10% 15%;
+    --muted-foreground: 0 0% 68%;       /* #9ca3af */
+    --accent: 258 90% 66%;              /* #7f5af0 - Accent glow */
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 63% 31%;           /* Error red */
+    --destructive-foreground: 0 0% 96%;
+    --border: 240 10% 18%;              /* Glass border */
+    --input: 240 10% 15%;               /* Input background */
+    --ring: 239 84% 67%;                /* Focus ring */
     
-    /* Custom Coinbase-style variables */
-    --success: 142 76% 36%;            /* #00d924 - Success green */
-    --warning: 38 92% 50%;             /* #ff8500 - Warning orange */
-    --sidebar: 217 25% 6%;             /* #0d0d1f - Sidebar darker */
-    --sidebar-hover: 217 32% 12%;      /* Sidebar item hover */
+    /* Chart colors cosmic theme */
+    --chart-1: 239 84% 67%;             /* Cosmic purple */
+    --chart-2: 158 64% 52%;             /* Cosmic green */
+    --chart-3: 43 96% 56%;              /* Cosmic orange */
+    --chart-4: 258 90% 66%;             /* Cosmic accent */
+    --chart-5: 316 70% 68%;             /* Cosmic pink */
+    
+    /* Typography */
+    --font-heading: 'Satoshi', sans-serif;
+    --font-body: 'Inter', sans-serif;
   }
 }
 
@@ -49,99 +58,173 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.1) 0%, #0a0a0a 70%);
+    min-height: 100vh;
   }
 }
 
 @layer components {
-  /* Coinbase-style components */
-  .coinbase-card {
-    @apply bg-card border border-border rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md;
+  /* Cosmic Glass Components */
+  .glass-card {
+    @apply bg-card/50 border border-border/30 rounded-2xl shadow-lg backdrop-blur-md transition-all duration-300 hover:bg-card/70 hover:border-border/50;
+    background: rgba(20, 20, 30, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
-  .coinbase-button {
-    @apply bg-primary text-primary-foreground rounded-xl px-6 py-3 font-medium transition-all duration-200 hover:bg-primary/90 active:scale-95;
+  .glass-button {
+    @apply bg-primary/90 text-primary-foreground rounded-xl px-6 py-3 font-medium transition-all duration-300 hover:bg-primary backdrop-blur-md active:scale-95;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
   }
   
-  .coinbase-button-secondary {
-    @apply bg-secondary text-secondary-foreground border border-border rounded-xl px-6 py-3 font-medium transition-all duration-200 hover:bg-secondary/80;
+  .glass-button-secondary {
+    @apply bg-secondary/50 text-secondary-foreground border border-border/30 rounded-xl px-6 py-3 font-medium transition-all duration-300 hover:bg-secondary/70 backdrop-blur-md;
   }
   
-  .coinbase-input {
-    @apply bg-input text-foreground border border-border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent;
+  .glass-input {
+    @apply bg-input/50 text-foreground border border-border/30 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent backdrop-blur-md;
   }
   
-  .sidebar-item {
-    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-sidebar-hover transition-all duration-200;
+  .nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground transition-all duration-300;
   }
   
-  .sidebar-item-active {
-    @apply bg-primary text-primary-foreground;
+  .nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
   }
   
-  .progress-bar {
-    @apply w-full bg-secondary rounded-full h-2 overflow-hidden;
+  .nav-item-active {
+    @apply bg-primary/20 text-primary-foreground border border-primary/30;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.2);
   }
   
-  .progress-fill {
-    @apply h-full bg-primary rounded-full transition-all duration-300;
+  .cosmic-progress {
+    @apply w-full bg-secondary/30 rounded-full h-2 overflow-hidden backdrop-blur-sm;
   }
   
-  .crypto-card {
-    @apply coinbase-card p-4 hover:shadow-lg transition-all duration-200;
+  .cosmic-progress-fill {
+    @apply h-full rounded-full transition-all duration-500;
+    background: linear-gradient(90deg, #6366f1 0%, #7f5af0 100%);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
   }
   
-  .status-pill {
-    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium;
+  .floating-card {
+    @apply glass-card p-6 hover:shadow-2xl transition-all duration-500;
+    transform: translateY(0);
   }
   
-  .status-pill-success {
-    @apply status-pill bg-success/20 text-success border border-success/30;
+  .floating-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
   }
   
-  .status-pill-warning {
-    @apply status-pill bg-warning/20 text-warning border border-warning/30;
+  .cosmic-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium backdrop-blur-md;
   }
   
-  .status-pill-error {
-    @apply status-pill bg-destructive/20 text-destructive border border-destructive/30;
+  .cosmic-badge-success {
+    @apply cosmic-badge bg-green-500/20 text-green-400 border border-green-500/30;
+  }
+  
+  .cosmic-badge-warning {
+    @apply cosmic-badge bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
+  }
+  
+  .cosmic-badge-error {
+    @apply cosmic-badge bg-red-500/20 text-red-400 border border-red-500/30;
+  }
+  
+  .cosmic-badge-primary {
+    @apply cosmic-badge bg-primary/20 text-primary border border-primary/30;
+  }
+  
+  .glow-effect {
+    box-shadow: 0 0 20px rgba(127, 90, 240, 0.3);
+  }
+  
+  .glow-effect:hover {
+    box-shadow: 0 0 30px rgba(127, 90, 240, 0.5);
+  }
+  
+  .text-cosmic-gradient {
+    background: linear-gradient(135deg, #6366f1 0%, #7f5af0 50%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .heading-cosmic {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    @apply text-cosmic-gradient;
   }
 }
 
+/* Cosmic Animations */
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
 }
 
 @keyframes pulse-glow {
-  from {
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
   }
-  to {
-    box-shadow: 0 0 30px rgba(168, 85, 247, 0.8), 0 0 40px rgba(168, 85, 247, 0.4);
+  50% {
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6), 0 0 60px rgba(127, 90, 240, 0.3);
   }
 }
 
-/* Custom scrollbar */
+@keyframes cosmic-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    scale: 0;
+  }
+  50% {
+    opacity: 1;
+    scale: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(180deg);
+    opacity: 0;
+    scale: 0;
+  }
+}
+
+/* Custom cosmic scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #a855f7, #06b6d4);
+  background: linear-gradient(180deg, #6366f1, #7f5af0);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #9333ea, #0891b2);
+  background: linear-gradient(180deg, #4f46e5, #6d28d9);
 }
 
 /* Loading spinner */
