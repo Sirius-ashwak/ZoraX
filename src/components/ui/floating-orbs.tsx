@@ -1,70 +1,29 @@
 import { motion } from 'framer-motion';
 
 export function FloatingOrbs() {
+  const orbs = [
+    { size: 'w-64 h-64', position: 'top-10 -left-32', color: 'bg-purple-500/20', delay: 0 },
+    { size: 'w-96 h-96', position: 'top-1/2 -right-48', color: 'bg-cyan-500/20', delay: 2 },
+    { size: 'w-80 h-80', position: 'bottom-20 -left-40', color: 'bg-pink-500/20', delay: 4 },
+    { size: 'w-72 h-72', position: 'bottom-1/3 right-20', color: 'bg-blue-500/20', delay: 1 },
+  ];
+
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      {/* Large purple orb */}
-      <motion.div
-        className="absolute w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
-        initial={{ x: -200, y: -200 }}
-        animate={{
-          x: [-200, 100, -200],
-          y: [-200, 200, -200],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-      />
-      
-      {/* Medium cyan orb */}
-      <motion.div
-        className="absolute w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl right-0"
-        initial={{ x: 200, y: 200 }}
-        animate={{
-          x: [200, -100, 200],
-          y: [200, -100, 200],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-      />
-      
-      {/* Small pink orb */}
-      <motion.div
-        className="absolute w-48 h-48 bg-pink-500/15 rounded-full blur-2xl bottom-0 left-1/2"
-        initial={{ x: 0, y: 0 }}
-        animate={{
-          x: [-50, 50, -50],
-          y: [0, -100, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      
-      {/* Tiny floating particles */}
-      {Array.from({ length: 6 }).map((_, i) => (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      {orbs.map((orb, index) => (
         <motion.div
-          key={i}
-          className="absolute w-8 h-8 bg-white/10 rounded-full blur-sm"
-          initial={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-          }}
+          key={index}
+          className={`${orb.size} ${orb.position} ${orb.color} rounded-full blur-3xl absolute`}
           animate={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: [0, 30, -30, 0],
+            y: [0, -30, 30, 0],
+            scale: [1, 1.1, 0.9, 1],
           }}
           transition={{
-            duration: 10 + Math.random() * 10,
+            duration: 20 + orb.delay * 2,
             repeat: Infinity,
-            ease: "linear"
+            ease: "linear",
+            delay: orb.delay,
           }}
         />
       ))}
