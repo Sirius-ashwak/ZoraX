@@ -1,6 +1,10 @@
 import { createPublicClient, http, Address } from 'viem';
 import { optimism } from 'viem/chains';
 import { CampaignFormData } from '../components/CampaignForm';
+import { ethers } from 'ethers';
+import CoinV4ABI from '../abi/CoinV4.json';
+
+const COINV4_CONTRACT_ADDRESS = '0xYourCoinV4ContractAddress'; // TODO: Replace with your deployed contract address
 
 export interface ZoraContractDeployment {
   contractAddress: Address;
@@ -181,6 +185,55 @@ class ZoraContractService {
 
 // Export singleton instance
 export const zoraContractService = new ZoraContractService();
+
+/**
+ * Mint an edition NFT using Zora CoinV4
+ */
+export async function mintEdition({ metadataUrl, supply, price }: { metadataUrl: string; supply?: number; price: string; }) {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const contract = new ethers.Contract(COINV4_CONTRACT_ADDRESS, CoinV4ABI, signer);
+  // Adjust the function name and params to match your ABI
+  const tx = await contract.mintEdition(metadataUrl, supply || 0, ethers.utils.parseEther(price));
+  const receipt = await tx.wait();
+  const tokenId = receipt.events?.find(e => e.event === 'Transfer')?.args?.tokenId?.toString() ?? '1';
+  return {
+    contractAddress: COINV4_CONTRACT_ADDRESS,
+    tokenId,
+  };
+}
+
+/**
+ * Get total supply of minted NFTs
+ */
+export async function getTotalSupply() {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const contract = new ethers.Contract(COINV4_CONTRACT_ADDRESS, CoinV4ABI, provider);
+  return await contract.totalSupply();
+}
+
+/**
+ * Get all addresses that have minted NFTs
+ */
+export async function getMintedAddresses(fromBlock = 0, toBlock: number | string = 'latest') {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const contract = new ethers.Contract(COINV4_CONTRACT_ADDRESS, CoinV4ABI, provider);
+  const filter = contract.filters.Transfer(null, null);
+  const events = await contract.queryFilter(filter, fromBlock, toBlock);
+  return events.map(e => e.args?.to);
+}
+
+/**
+ * Listen to real-time mint events
+ */
+export function listenToMints(onMint: (event: any) => void) {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const contract = new ethers.Contract(COINV4_CONTRACT_ADDRESS, CoinV4ABI, provider);
+  contract.on('Transfer', (from, to, tokenId, event) => {
+    onMint({ from, to, tokenId, event });
+  });
+  // To remove listener: contract.off('Transfer', listener);
+}
 
 // Helper function to convert campaign form data to Zora deployment params
 export function campaignToZoraParams(

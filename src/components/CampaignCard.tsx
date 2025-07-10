@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Users, Clock, TrendingUp, Eye, Heart } from 'lucide-react';
 import { useCampaign } from '../hooks/useCredVault';
 import { SupportModal } from './SupportModal';
 import { ShareOnFarcaster } from './ShareOnFarcaster';
 import { UniswapBadge } from './UniswapBadge';
+import { getTotalSupply, getMintedAddresses, listenToMints } from '../services/zoraContractService';
 
 interface CampaignCardProps {
   campaignId: number;
@@ -13,6 +14,30 @@ interface CampaignCardProps {
 export const CampaignCard: React.FC<CampaignCardProps> = ({ campaignId, isOwner = false }) => {
   const [showSupportModal, setShowSupportModal] = useState(false);
   const { data: campaign, isLoading, error } = useCampaign(campaignId);
+  const [supply, setSupply] = useState<number | null>(null);
+  const [minters, setMinters] = useState<string[]>([]);
+  const [lastMint, setLastMint] = useState<{ from: string; to: string; tokenId: string } | null>(null);
+
+  useEffect(() => {
+    async function fetchStats() {
+      const total = await getTotalSupply();
+      setSupply(Number(total));
+      const addresses = await getMintedAddresses();
+      setMinters(addresses);
+    }
+    fetchStats();
+  }, []);
+
+  useEffect(() => {
+    function handleMint({ from, to, tokenId }: any) {
+      setLastMint({ from, to, tokenId: tokenId.toString() });
+      setSupply((prev) => (prev !== null ? prev + 1 : null));
+      setMinters((prev) => [...prev, to]);
+    }
+    listenToMints(handleMint);
+    // Cleanup: remove listener if needed
+    // return () => contract.off('Transfer', handleMint);
+  }, []);
 
   // Mock data for campaigns that don't exist on-chain yet
   const mockCampaigns = {
@@ -204,6 +229,18 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ campaignId, isOwner 
           {/* Compatibility Badge */}
           <div className="mb-4">
             <UniswapBadge variant="campaign" />
+          </div>
+
+          {/* Mint Stats */}
+          <div className="mt-4 p-3 bg-bg-primary rounded-lg">
+            <div className="font-bold text-accent mb-1">Mint Stats</div>
+            <div>Total Supply: {supply !== null ? supply : 'Loading...'}</div>
+            <div>Unique Minters: {minters.length}</div>
+            {lastMint && (
+              <div className="mt-1 text-xs text-accent">
+                Last Mint: Token #{lastMint.tokenId} to {lastMint.to}
+              </div>
+            )}
           </div>
 
           {/* Actions */}

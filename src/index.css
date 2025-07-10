@@ -148,8 +148,9 @@
   }
 
   @keyframes glow {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
+    0% { box-shadow: 0 0 10px #9a5bff, 0 0 20px #9a5bff; }
+    50% { box-shadow: 0 0 30px #9a5bff, 0 0 60px #9a5bff; }
+    100% { box-shadow: 0 0 10px #9a5bff, 0 0 20px #9a5bff; }
   }
 
   @keyframes cosmic-rotate {
@@ -179,7 +180,7 @@
   }
 
   .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
+    animation: glow 2s infinite alternate;
   }
 
   .animate-cosmic-rotate {

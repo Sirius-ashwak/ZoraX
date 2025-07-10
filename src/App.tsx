@@ -5,6 +5,19 @@ import { Dashboard } from './pages/Dashboard';
 import { Explore } from './pages/Explore';
 import { Creators } from './pages/Creators';
 import { Zap, Menu, X } from 'lucide-react';
+import { Web3Provider } from './components/Web3Provider';
+import { UserProvider, useUser } from './context/UserContext';
+import { Layout } from './components/Layout';
+import { Onboarding } from './pages/Onboarding';
+import { onboardingUtils } from './utils/onboarding';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ReputationProfile } from './pages/ReputationProfile';
+import { Frame } from './pages/Frame';
+import { SupporterDashboard } from './pages/SupporterDashboard';
+import { Discover } from './pages/Discover';
+import { Analytics } from './pages/Analytics';
+import { AdminTools } from './pages/AdminTools';
+import { Notifications } from './components/Notifications';
 
 type Page = 'home' | 'explore' | 'dashboard' | 'creators';
 
@@ -96,7 +109,8 @@ const Header = ({
             )}
           </nav>
           
-          <div className="hidden md:block">
+          <div className="hidden md:block flex items-center gap-4">
+            <Notifications />
             <ConnectWallet />
           </div>
           
@@ -235,6 +249,11 @@ function App() {
   const { isConnected } = useAccount();
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [error, setError] = useState<Error | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(!onboardingUtils.hasCompletedOnboarding());
+
+  if (showOnboarding) {
+    return <Onboarding onComplete={() => setShowOnboarding(false)} />;
+  }
 
   // Simple error boundary
   if (error) {
@@ -269,16 +288,40 @@ function App() {
 
   try {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header 
-          currentPage={currentPage} 
-          onNavigate={setCurrentPage}
-          isConnected={isConnected}
-        />
-        <main>
-          {renderPage()}
-        </main>
-      </div>
+      <BrowserRouter>
+        <Web3Provider>
+          <UserProvider>
+            <Layout>
+              <Header 
+                currentPage={currentPage} 
+                onNavigate={setCurrentPage}
+                isConnected={isConnected}
+              />
+              <main>
+                <Routes>
+                  <Route path="/" element={<Discover />} />
+                  <Route path="/explore" element={<Explore />} />
+                  <Route path="/creators" element={<Creators />} />
+                  <Route path="/dashboard" element={isConnected ? <Dashboard /> : (
+                    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                      <div className="text-center max-w-md mx-auto p-8">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-4">Connect Your Wallet</h2>
+                        <p className="text-gray-600 mb-6">You need to connect your wallet to access the dashboard.</p>
+                        <ConnectWallet />
+                      </div>
+                    </div>
+                  )} />
+                  <Route path="/reputation" element={<ReputationProfile />} />
+                  <Route path="/frame/:campaignId" element={<Frame />} />
+                  <Route path="/supporter" element={<SupporterDashboard />} />
+                  <Route path="/analytics" element={<Analytics />} />
+                  <Route path="/admin" element={<AdminTools />} />
+                </Routes>
+              </main>
+            </Layout>
+          </UserProvider>
+        </Web3Provider>
+      </BrowserRouter>
     );
   } catch (err) {
     setError(err instanceof Error ? err : new Error('Unknown error'));
