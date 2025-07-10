@@ -7,55 +7,40 @@ import { ANIMATION_VARIANTS } from '@/lib/constants';
 
 export function CreateCampaign() {
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          {...ANIMATION_VARIANTS.slideUp}
-          className="mb-8"
-        >
-          <Link to="/dashboard" className="inline-flex items-center text-purple-400 hover:text-purple-300 mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Dashboard
-          </Link>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Create Campaign
-          </h1>
-          <p className="text-xl text-gray-300">
-            Launch your NFT campaign and start building your onchain reputation
-          </p>
-        </motion.div>
+    <div className="p-6 space-y-6">
+      <div>
+        <Link to="/dashboard" className="inline-flex items-center text-primary hover:text-primary/80 mb-4 text-sm">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Dashboard
+        </Link>
+        <h1 className="text-3xl font-bold text-foreground mb-2">
+          Create Campaign
+        </h1>
+        <p className="text-muted-foreground">
+          Launch your NFT campaign and start building your onchain reputation
+        </p>
+      </div>
 
-        <motion.div
-          {...ANIMATION_VARIANTS.slideUp}
-          transition={{ delay: 0.2 }}
-        >
-          <Card className="glass-card">
-            <CardHeader>
-              <CardTitle className="text-white text-xl">Campaign Builder</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center py-12">
-              <h3 className="text-xl font-semibold text-white mb-4">
-                Campaign Builder Coming Soon
-              </h3>
-              <p className="text-gray-400 mb-6">
-                The campaign creation tool is under development. Soon you'll be able to create 
-                NFT campaigns with custom artwork, pricing, and rewards.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/explore">
-                  <Button className="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-700 hover:to-cyan-700 text-white">
-                    Explore Existing Campaigns
-                  </Button>
-                </Link>
-                <Link to="/dashboard">
-                  <Button variant="outline" className="glass-card border-white/20 text-white hover:bg-white/10">
-                    Return to Dashboard
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+      <div className="coinbase-card p-8 text-center">
+        <h3 className="text-xl font-semibold text-foreground mb-4">
+          Campaign Builder Coming Soon
+        </h3>
+        <p className="text-muted-foreground mb-6">
+          The campaign creation tool is under development. Soon you'll be able to create 
+          NFT campaigns with custom artwork, pricing, and rewards.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link to="/explore">
+            <button className="coinbase-button">
+              Explore Existing Campaigns
+            </button>
+          </Link>
+          <Link to="/dashboard">
+            <button className="coinbase-button-secondary">
+              Return to Dashboard
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

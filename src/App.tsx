@@ -30,13 +30,11 @@ function App() {
             <CoinbaseLayout>
               <Routes>
                 <Route path="/" element={<CoinbaseHome />} />
-                <Route path="/assets" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/explore" element={<Explore />} />
-                <Route path="/trade" element={<Dashboard />} />
-                <Route path="/earn" element={<Dashboard />} />
-                <Route path="/web3" element={<CreateCampaign />} />
-                <Route path="/pay" element={<Dashboard />} />
                 <Route path="/create" element={<CreateCampaign />} />
+                <Route path="/web3" element={<CreateCampaign />} />
+                <Route path="/support" element={<Explore />} />
                 <Route path="/campaign/:id" element={<CampaignDetails />} />
                 <Route path="/creator/:address" element={<CreatorProfile />} />
                 <Route path="*" element={<NotFound />} />

@@ -1,4 +1,5 @@
 import { ArrowUpRight, ArrowDownRight, TrendingUp, Gift, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const CoinbaseHome = () => {
   return (
@@ -168,9 +169,11 @@ export const CoinbaseHome = () => {
           <p className="text-sm text-muted-foreground mb-4">
             Launch your creator campaign with ZoraX
           </p>
-          <button className="coinbase-button w-full">
-            Get started
-          </button>
+          <Link to="/create">
+            <button className="coinbase-button w-full">
+              Get started
+            </button>
+          </Link>
         </div>
 
         <div className="coinbase-card p-6">
@@ -178,9 +181,11 @@ export const CoinbaseHome = () => {
           <p className="text-sm text-muted-foreground mb-4">
             Discover and support amazing creators
           </p>
-          <button className="coinbase-button-secondary w-full">
-            Explore now
-          </button>
+          <Link to="/explore">
+            <button className="coinbase-button-secondary w-full">
+              Explore now
+            </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -22,11 +22,11 @@ interface SidebarItem {
 
 const mainItems: SidebarItem[] = [
   { icon: Home, label: 'Home', href: '/' },
-  { icon: BarChart3, label: 'My assets', href: '/assets' },
-  { icon: TrendingUp, label: 'Trade', href: '/trade' },
-  { icon: Percent, label: 'Earn', href: '/earn' },
+  { icon: BarChart3, label: 'Dashboard', href: '/dashboard' },
+  { icon: TrendingUp, label: 'Explore', href: '/explore' },
+  { icon: Percent, label: 'Create', href: '/create' },
   { icon: Globe, label: 'Web3', href: '/web3', badge: 'NEW', isNew: true },
-  { icon: CreditCard, label: 'Pay', href: '/pay' },
+  { icon: CreditCard, label: 'Support', href: '/support' },
 ];
 
 const bottomItems: SidebarItem[] = [
