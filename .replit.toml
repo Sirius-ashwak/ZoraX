@@ -1,0 +1,27 @@
+[deployment]
+run = ["npm", "run", "dev"]
+
+[interpreter]
+command = ["npm", "run", "dev"]
+
+[env]
+NODE_ENV = "development"
+PORT = "3001"
+FRONTEND_PORT = "5173"
+
+[[ports]]
+localPort = 3001
+externalPort = 3001
+
+[[ports]]
+localPort = 5173
+externalPort = 5173
+
+[packager]
+language = "nodejs"
+
+[languages.javascript]
+pattern = "**/{*.js,*.jsx,*.ts,*.tsx}"
+
+[gitHubImport]
+requiredFiles = [".replit.toml"]
