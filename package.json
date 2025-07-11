@@ -50,6 +50,7 @@
     "drizzle-zod": "^0.8.2",
     "ethers": "^5.7.2",
     "express": "^5.1.0",
+    "firebase": "^11.10.0",
     "framer-motion": "^12.23.3",
     "ipfs-http-client": "^60.0.1",
     "lucide-react": "^0.344.0",

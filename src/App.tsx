@@ -12,12 +12,16 @@ import { SettingsPage } from './pages/SettingsPage';
 import { DocsPage } from './pages/DocsPage';
 import { Web3Provider } from './components/Web3Provider';
 import { UserProvider } from './context/UserContext';
+import { AuthProvider } from './components/FirebaseAuth';
+import { AuthRedirectHandler } from './components/AuthRedirectHandler';
 
 function App() {
   return (
-    <Web3Provider>
-      <UserProvider>
-        <ZoraxLayout>
+    <AuthProvider>
+      <Web3Provider>
+        <UserProvider>
+          <AuthRedirectHandler />
+          <ZoraxLayout>
           <Switch>
             <Route path="/" component={ZoraxHome} />
             <Route path="/dashboard" component={ZoraxDashboard} />
@@ -158,9 +162,10 @@ function App() {
               </div>
             </Route>
           </Switch>
-        </ZoraxLayout>
-      </UserProvider>
-    </Web3Provider>
+          </ZoraxLayout>
+        </UserProvider>
+      </Web3Provider>
+    </AuthProvider>
   );
 }
 

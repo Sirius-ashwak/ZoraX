@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Hash, Star, Github, LogIn, UserPlus } from 'lucide-react';
+import { Hash, Star, Github, LogIn, UserPlus, LogOut, User } from 'lucide-react';
+import { useAuth, FirebaseAuth } from '../FirebaseAuth';
 
 interface ZoraxLayoutProps {
   children: React.ReactNode;
@@ -8,6 +9,16 @@ interface ZoraxLayoutProps {
 
 export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
   const [location] = useLocation();
+  const [showAuth, setShowAuth] = useState(false);
+  const { user, loading, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -69,10 +80,6 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
 
             {/* Right Actions */}
             <div className="flex items-center gap-4">
-              <Link href="/settings" className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                <UserPlus className="w-5 h-5" />
-              </Link>
-              
               <a 
                 href="https://github.com/zorax" 
                 className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -84,14 +91,54 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
                 <span className="text-sm">1258</span>
               </a>
               
-              <Link href="/login" className="pica-button-secondary text-sm">
-                <LogIn className="w-4 h-4 mr-2" />
-                Log in
-              </Link>
-              
-              <Link href="/signup" className="pica-button text-sm">
-                Get Started
-              </Link>
+              {loading ? (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                  <span className="text-sm">Loading...</span>
+                </div>
+              ) : user ? (
+                <div className="flex items-center gap-4">
+                  <Link href="/dashboard" className="p-2 text-muted-foreground hover:text-foreground transition-colors">
+                    <User className="w-5 h-5" />
+                  </Link>
+                  
+                  <div className="flex items-center gap-2">
+                    <img 
+                      src={user.photoURL || `https://api.dicebear.com/6.x/initials/svg?seed=${user.email}`} 
+                      alt={user.displayName || user.email} 
+                      className="w-6 h-6 rounded-full"
+                    />
+                    <span className="text-sm text-foreground">
+                      {user.displayName || user.email?.split('@')[0]}
+                    </span>
+                  </div>
+                  
+                  <button 
+                    onClick={handleSignOut}
+                    className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                    title="Sign out"
+                  >
+                    <LogOut className="w-5 h-5" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => setShowAuth(true)}
+                    className="pica-button-secondary text-sm"
+                  >
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </button>
+                  
+                  <button 
+                    onClick={() => setShowAuth(true)}
+                    className="pica-button text-sm"
+                  >
+                    Get Started
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -164,6 +211,16 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
           </div>
         </div>
       </footer>
+
+      {/* Firebase Auth Modal */}
+      <FirebaseAuth 
+        isOpen={showAuth}
+        onClose={() => setShowAuth(false)}
+        onAuthSuccess={(user) => {
+          setShowAuth(false);
+          console.log('User signed in:', user);
+        }}
+      />
     </div>
   );
 };

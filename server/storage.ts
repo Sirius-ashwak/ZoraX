@@ -340,4 +340,11 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Import Firebase storage
+import { FirebaseStorage } from './firebase-storage';
+
+// Use Firebase storage instead of memory storage
+export const storage = new FirebaseStorage();
+
+// Keep MemStorage for development/testing purposes
+export const memStorage = new MemStorage();
