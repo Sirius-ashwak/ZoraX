@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { 
   signInWithGoogle, 
   signInWithEmail, 
@@ -7,8 +7,6 @@ import {
   onAuthStateChangedListener,
   createUserProfile
 } from '../config/firebase';
-import { Button } from './Button';
-import { Card } from './Card';
 import { Modal } from './Modal';
 
 interface FirebaseAuthProps {
@@ -85,14 +83,20 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
     setIsSignUp(false);
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
+
   return (
-    <Modal isOpen={isOpen} onClose={() => { onClose(); resetForm(); }}>
-      <Card className="w-full max-w-md mx-auto p-8">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-3">
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <Card className="w-full max-w-md mx-auto p-6">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold text-white mb-2">
             {isSignUp ? 'Create Account' : 'Welcome Back'}
           </h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-gray-400">
             {isSignUp ? 'Join ZoraX to start your creator journey' : 'Sign in to continue to ZoraX'}
           </p>
         </div>
@@ -105,7 +109,7 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
 
         <form onSubmit={handleEmailAuth} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
               Email Address
             </label>
             <input
@@ -113,14 +117,14 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your email"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-foreground mb-2">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
               Password
             </label>
             <input
@@ -128,7 +132,7 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+              className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your password"
               required
               minLength={6}
@@ -137,7 +141,7 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
 
           {isSignUp && (
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-semibold text-foreground mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
                 Confirm Password
               </label>
               <input
@@ -145,7 +149,7 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
                 id="confirmPassword"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Confirm your password"
                 required
                 minLength={6}
@@ -153,15 +157,15 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
             </div>
           )}
 
-          <Button
+          <button
             type="submit"
             variant="primary"
-            className="w-full py-3 text-lg font-semibold"
+            className="w-full"
             loading={loading}
             disabled={loading}
           >
             {loading ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}
-          </Button>
+          </button>
         </form>
 
         <div className="my-6">
@@ -170,14 +174,14 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-card px-4 text-muted-foreground font-medium">Or continue with</span>
+              <span className="bg-gray-900 px-2 text-gray-400">Or continue with</span>
             </div>
           </div>
 
-          <Button
+          <button
             onClick={handleGoogleSignIn}
             variant="outline"
-            className="w-full mt-6 py-3 text-lg font-semibold"
+            className="w-full mt-4"
             loading={loading}
             disabled={loading}
           >
@@ -185,10 +189,6 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
               <path
                 fill="currentColor"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="currentColor"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
               />
               <path
                 fill="currentColor"
@@ -200,7 +200,7 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
               />
             </svg>
             Continue with Google
-          </Button>
+          </button>
         </div>
 
         <div className="mt-8 text-center">
@@ -210,12 +210,12 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
               setIsSignUp(!isSignUp);
               resetForm();
             }}
-            className="text-primary hover:text-primary/80 text-base font-medium transition-colors"
+            className="text-blue-400 hover:text-blue-300 text-sm"
           >
             {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
           </button>
         </div>
-      </Card>
+      </div>
     </Modal>
   );
 };
@@ -227,7 +227,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
 }
 
-const AuthContext = React.createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null);
@@ -246,24 +246,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return unsubscribe;
   }, []);
 
-  const signOut = async () => {
+  const handleSignOut = async () => {
     try {
       await signOutUser();
       setUser(null);
     } catch (error) {
-      console.error('Sign out error:', error);
+      console.error('Error signing out:', error);
     }
   };
 
+  const value = {
+    user,
+    loading,
+    signOut: handleSignOut
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, signOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
-  const context = React.useContext(AuthContext);
+  const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
