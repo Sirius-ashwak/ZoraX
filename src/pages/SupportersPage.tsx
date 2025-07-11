@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Users, Star, Crown, Gift, MessageCircle, Calendar, TrendingUp,
-  Search, Filter, Download, Mail, Award, Heart, ExternalLink
+  Users, Star, Crown, Gift, MessageCircle, TrendingUp,
+  Search, Download, Mail, Award, Heart
 } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -13,67 +13,97 @@ const mockSupporters = [
     address: '0xa1b2c3d4e5f6789012345678901234567890abcd',
     ensName: 'cosmic-supporter.eth',
     avatar: '/api/placeholder/40/40',
-    totalSupported: 2.45,
-    campaignsSupported: 8,
-    firstSupport: '2024-12-15',
+    totalSupported: 12.45,
+    campaignsSupported: 15,
+    firstSupport: '2024-08-15',
     lastSupport: '2025-01-07',
     tier: 'legendary',
-    badges: ['early-supporter', 'top-contributor', 'loyal-fan'],
+    badges: ['early-supporter', 'top-contributor', 'loyal-fan', 'whale'],
     favorite: true,
-    totalInteractions: 156,
-    referrals: 12
+    totalInteractions: 256,
+    referrals: 23
   },
   {
     id: 2,
     address: '0xb2c3d4e5f6789012345678901234567890abcdef',
-    ensName: 'art-lover.eth',
+    ensName: 'art-collector.eth',
     avatar: '/api/placeholder/40/40',
-    totalSupported: 1.87,
-    campaignsSupported: 5,
-    firstSupport: '2025-01-01',
+    totalSupported: 8.87,
+    campaignsSupported: 12,
+    firstSupport: '2024-09-01',
     lastSupport: '2025-01-06',
-    tier: 'gold',
-    badges: ['art-enthusiast', 'consistent-supporter'],
+    tier: 'legendary',
+    badges: ['art-enthusiast', 'consistent-supporter', 'curator'],
     favorite: false,
-    totalInteractions: 89,
-    referrals: 7
+    totalInteractions: 189,
+    referrals: 18
   },
   {
     id: 3,
     address: '0xc3d4e5f6789012345678901234567890abcdef12',
-    ensName: 'music-fan.eth',
+    ensName: 'music-producer.eth',
     avatar: '/api/placeholder/40/40',
-    totalSupported: 1.23,
-    campaignsSupported: 6,
-    firstSupport: '2024-12-20',
+    totalSupported: 6.23,
+    campaignsSupported: 9,
+    firstSupport: '2024-10-20',
     lastSupport: '2025-01-05',
-    tier: 'silver',
-    badges: ['music-lover', 'community-builder'],
+    tier: 'gold',
+    badges: ['music-lover', 'community-builder', 'creator'],
     favorite: true,
-    totalInteractions: 67,
-    referrals: 3
+    totalInteractions: 167,
+    referrals: 15
   },
   {
     id: 4,
     address: '0xd4e5f6789012345678901234567890abcdef1234',
-    ensName: 'early-adopter.eth',
+    ensName: 'vr-enthusiast.eth',
     avatar: '/api/placeholder/40/40',
-    totalSupported: 0.95,
-    campaignsSupported: 3,
-    firstSupport: '2025-01-03',
+    totalSupported: 4.95,
+    campaignsSupported: 7,
+    firstSupport: '2024-11-03',
     lastSupport: '2025-01-04',
-    tier: 'bronze',
-    badges: ['newcomer'],
+    tier: 'gold',
+    badges: ['tech-pioneer', 'vr-supporter'],
     favorite: false,
-    totalInteractions: 34,
-    referrals: 1
+    totalInteractions: 134,
+    referrals: 9
+  },
+  {
+    id: 5,
+    address: '0xe5f6789012345678901234567890abcdef123456',
+    ensName: 'game-developer.eth',
+    avatar: '/api/placeholder/40/40',
+    totalSupported: 3.45,
+    campaignsSupported: 6,
+    firstSupport: '2024-11-15',
+    lastSupport: '2025-01-03',
+    tier: 'gold',
+    badges: ['gaming-enthusiast', 'developer'],
+    favorite: true,
+    totalInteractions: 98,
+    referrals: 7
+  },
+  {
+    id: 6,
+    address: '0xf6789012345678901234567890abcdef1234567',
+    ensName: 'photographer.eth',
+    avatar: '/api/placeholder/40/40',
+    totalSupported: 2.15,
+    campaignsSupported: 4,
+    firstSupport: '2024-12-01',
+    lastSupport: '2025-01-02',
+    tier: 'silver',
+    badges: ['visual-artist', 'supporter'],
+    favorite: false,
+    totalInteractions: 76,
+    referrals: 4
   }
 ];
 
 const supporterTiers = {
-  legendary: { color: 'from-purple-500 to-pink-500', icon: Crown, minSupport: 2.0 },
-  gold: { color: 'from-yellow-500 to-orange-500', icon: Star, minSupport: 1.0 },
-  silver: { color: 'from-gray-400 to-gray-600', icon: Award, minSupport: 0.5 },
+  legendary: { color: 'from-purple-500 to-pink-500', icon: Crown, minSupport: 8.0 },
+  gold: { color: 'from-yellow-500 to-orange-500', icon: Star, minSupport: 3.0 },
+  silver: { color: 'from-gray-400 to-gray-600', icon: Award, minSupport: 1.0 },
   bronze: { color: 'from-orange-600 to-red-600', icon: Heart, minSupport: 0.1 }
 };
 
@@ -81,10 +111,19 @@ const badgeInfo = {
   'early-supporter': { label: 'Early Supporter', color: 'bg-blue-500' },
   'top-contributor': { label: 'Top Contributor', color: 'bg-purple-500' },
   'loyal-fan': { label: 'Loyal Fan', color: 'bg-green-500' },
+  'whale': { label: 'Whale', color: 'bg-gradient-to-r from-purple-600 to-blue-600' },
   'art-enthusiast': { label: 'Art Enthusiast', color: 'bg-pink-500' },
   'consistent-supporter': { label: 'Consistent', color: 'bg-indigo-500' },
+  'curator': { label: 'Curator', color: 'bg-teal-500' },
   'music-lover': { label: 'Music Lover', color: 'bg-red-500' },
   'community-builder': { label: 'Community Builder', color: 'bg-yellow-500' },
+  'creator': { label: 'Creator', color: 'bg-orange-500' },
+  'tech-pioneer': { label: 'Tech Pioneer', color: 'bg-cyan-500' },
+  'vr-supporter': { label: 'VR Supporter', color: 'bg-violet-500' },
+  'gaming-enthusiast': { label: 'Gaming Fan', color: 'bg-emerald-500' },
+  'developer': { label: 'Developer', color: 'bg-slate-600' },
+  'visual-artist': { label: 'Visual Artist', color: 'bg-rose-500' },
+  'supporter': { label: 'Supporter', color: 'bg-blue-400' },
   'newcomer': { label: 'Newcomer', color: 'bg-gray-500' }
 };
 

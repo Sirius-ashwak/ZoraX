@@ -70,25 +70,25 @@ export const ModernDashboard: React.FC = () => {
     try {
       setLoading(true);
       
-      // Mock data - in production this would come from API
+      // Enhanced mock data - in production this would come from API
       const mockStats: DashboardStats = {
-        totalCampaigns: 8,
-        activeCampaigns: 3,
-        totalRaised: 12.5,
-        totalSupporters: 247,
-        reputationScore: 847,
-        monthlyGrowth: 23.5
+        totalCampaigns: 12,
+        activeCampaigns: 6,
+        totalRaised: 97.5,
+        totalSupporters: 1337,
+        reputationScore: 1247,
+        monthlyGrowth: 34.7
       };
 
       const mockCampaigns: Campaign[] = [
         {
           id: '1',
           title: 'Stellar Journey NFT Collection',
-          description: 'Navigate through distant galaxies with unique spaceship designs...',
-          imageUrl: 'https://picsum.photos/400/300?random=1',
-          targetAmount: 10,
-          raisedAmount: 7.2,
-          supporterCount: 89,
+          description: 'Navigate through distant galaxies with unique spaceship designs and immersive storylines across 50 collectible pieces',
+          imageUrl: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=400&q=80',
+          targetAmount: 25,
+          raisedAmount: 18.7,
+          supporterCount: 284,
           status: 'active',
           deadline: '2024-12-31',
           createdAt: '2024-07-01'
@@ -96,11 +96,11 @@ export const ModernDashboard: React.FC = () => {
         {
           id: '2',
           title: 'Neo Digital Art Series',
-          description: 'Futuristic digital artworks blending technology and creativity...',
-          imageUrl: 'https://picsum.photos/400/300?random=2',
-          targetAmount: 5,
-          raisedAmount: 5,
-          supporterCount: 67,
+          description: 'Futuristic digital artworks blending technology and creativity featuring AI-enhanced visuals and interactive elements',
+          imageUrl: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&w=400&q=80',
+          targetAmount: 15,
+          raisedAmount: 15,
+          supporterCount: 156,
           status: 'completed',
           deadline: '2024-06-30',
           createdAt: '2024-05-15'
@@ -108,14 +108,38 @@ export const ModernDashboard: React.FC = () => {
         {
           id: '3',
           title: 'Harmonic Blockchain Music',
-          description: 'Innovative music NFTs that change based on blockchain events...',
-          imageUrl: 'https://picsum.photos/400/300?random=3',
-          targetAmount: 8,
-          raisedAmount: 3.1,
-          supporterCount: 45,
+          description: 'Innovative music NFTs that change based on blockchain events with dynamic audio that evolves with network activity',
+          imageUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80',
+          targetAmount: 20,
+          raisedAmount: 12.4,
+          supporterCount: 198,
           status: 'active',
           deadline: '2024-11-15',
           createdAt: '2024-06-20'
+        },
+        {
+          id: '4',
+          title: 'Cosmic Photography Portfolio',
+          description: 'Professional astrophotography collection featuring deep space objects and celestial phenomena from around the world',
+          imageUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400&q=80',
+          targetAmount: 30,
+          raisedAmount: 27.8,
+          supporterCount: 432,
+          status: 'active',
+          deadline: '2025-01-31',
+          createdAt: '2024-08-10'
+        },
+        {
+          id: '5',
+          title: 'Virtual Reality Experience',
+          description: 'Immersive VR journey through alien worlds with interactive environments and multiplayer capabilities',
+          imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=400&q=80',
+          targetAmount: 50,
+          raisedAmount: 23.6,
+          supporterCount: 267,
+          status: 'active',
+          deadline: '2025-03-15',
+          createdAt: '2024-09-01'
         }
       ];
 
