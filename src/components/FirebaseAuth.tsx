@@ -91,7 +91,7 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <Card className="w-full max-w-md mx-auto p-6">
+      <div className="w-full max-w-md mx-auto p-6 bg-gray-900 rounded-lg border border-gray-700">
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-white mb-2">
             {isSignUp ? 'Create Account' : 'Welcome Back'}
@@ -159,9 +159,7 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
 
           <button
             type="submit"
-            variant="primary"
-            className="w-full"
-            loading={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={loading}
           >
             {loading ? 'Processing...' : (isSignUp ? 'Create Account' : 'Sign In')}
@@ -180,9 +178,7 @@ export const FirebaseAuth: React.FC<FirebaseAuthProps> = ({ isOpen, onClose, onA
 
           <button
             onClick={handleGoogleSignIn}
-            variant="outline"
-            className="w-full mt-4"
-            loading={loading}
+            className="w-full mt-4 bg-transparent border border-gray-600 hover:border-gray-500 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             disabled={loading}
           >
             <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24">
