@@ -1,12 +1,12 @@
-# CredVault Creator Guide
+# ZoraX Creator Guide
 
-Complete guide for creators to build successful campaigns and establish strong reputations on CredVault.
+Complete guide for creators to build successful campaigns and establish strong reputations on ZoraX.
 
 ## Getting Started as a Creator
 
 ### Understanding the Creator Economy
 
-CredVault empowers creators by providing:
+ZoraX empowers creators by providing:
 - **Direct Monetization**: Immediate revenue from supporter mints
 - **Transparent Reputation**: ZoraCred scoring builds trust
 - **Social Amplification**: Viral sharing through Farcaster Frames

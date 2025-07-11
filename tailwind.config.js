@@ -1,25 +1,53 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        // Cosmic background colors
-        'bg-primary': '#0a0a1a',
-        'bg-secondary': '#101020',
-        
-        // Text colors
-        'text-primary': '#f5f5f5',
-        'text-secondary': '#9999aa',
-        
-        // Accent colors
-        'accent': '#9a5bff',
-        'accent-hover': '#8b47ff',
-        
-        // Gradients
-        'purple-gradient': 'linear-gradient(135deg, #9a5bff 0%, #7c3aed 100%)',
-        'blue-gradient': 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-        'cosmic-gradient': 'linear-gradient(135deg, #9a5bff 0%, #7c3aed 50%, #3b82f6 100%)',
+        // shadcn color system
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        // Coinbase theme colors
+        'coinbase-blue': '#3e5ce8',
+        'coinbase-dark': '#0f0f23',
+        'coinbase-card': '#1a1b2e',
+        'coinbase-border': '#262840',
+        'success': 'hsl(var(--success))',
+        'warning': 'hsl(var(--warning))',
+        'sidebar': 'hsl(var(--sidebar))',
+        'sidebar-hover': 'hsl(var(--sidebar-hover))',
       },
       fontFamily: {
         'heading': ['Inter', 'sans-serif'],

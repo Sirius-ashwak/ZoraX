@@ -1,0 +1,10 @@
+{
+  "name": "zorax-dev-workflow",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "./run-dev.sh",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "vite --host 0.0.0.0 --port 5173",
+    "dev:backend": "cd backend && npx tsx src/index.ts"
+  }
+}

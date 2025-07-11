@@ -25,7 +25,7 @@ export const ConnectWallet: React.FC = () => {
                   <button 
                     onClick={openConnectModal} 
                     type="button"
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105"
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 animate-glow"
                   >
                     Connect Wallet
                   </button>

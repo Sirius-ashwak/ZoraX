@@ -1,20 +1,9 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { optimism, optimismSepolia } from 'wagmi/chains';
-import { http } from 'viem';
-
-// Define RPC URLs with fallbacks
-const optimismRpcUrl = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_OPTIMISM_RPC_URL) || 'https://mainnet.optimism.io';
-const optimismSepoliaRpcUrl = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_OPTIMISM_SEPOLIA_RPC_URL) || 'https://sepolia.optimism.io';
+import { mainnet, optimism, base, polygon, arbitrum } from 'wagmi/chains';
 
 export const config = getDefaultConfig({
   appName: 'ZoraX - Creator Economy Platform',
-  projectId: (typeof import.meta !== 'undefined' && import.meta.env?.VITE_WALLET_CONNECT_PROJECT_ID) || 'bc8552ee128eb75bef290f9ed41f7f41',
-  chains: [optimism, optimismSepolia],
-  transports: {
-    [optimism.id]: http(optimismRpcUrl),
-    [optimismSepolia.id]: http(optimismSepoliaRpcUrl),
-  },
+  projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID || 'demo',
+  chains: [mainnet, optimism, base, polygon, arbitrum],
   ssr: false,
 });
-
-export { optimism, optimismSepolia };

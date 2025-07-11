@@ -1,0 +1,12 @@
+{
+  "run": "npm run dev",
+  "language": "nodejs",
+  "onBoot": "npm run dev",
+  "packager": {
+    "language": "nodejs",
+    "features": {
+      "packageSearch": true,
+      "guessImports": true
+    }
+  }
+}

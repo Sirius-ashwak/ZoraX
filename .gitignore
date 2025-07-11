@@ -173,3 +173,6 @@ CHANGELOG.local.md
 # Always include environment examples
 !.env.example
 !backend/.env.example
+.replit.*
+.replit
+replit.*

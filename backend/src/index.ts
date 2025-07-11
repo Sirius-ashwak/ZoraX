@@ -1,86 +1,102 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
+import path from 'path';
+import { env } from './config/env';
 
-// Load environment variables
-dotenv.config();
+// Import routes
+import campaignsRouter from './routes/campaigns';
+import creatorsRouter from './routes/creators';
+import monitoringRouter from './routes/monitoring';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:", "blob:"],
+      scriptSrc: ["'self'"],
+      connectSrc: ["'self'", "https://api.github.com", "wss:", "https:"],
+    },
+  },
+}));
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: env.FRONTEND_URL,
   credentials: true,
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Serve static files from the frontend build (for production)
+if (env.NODE_ENV === 'production') {
+  const frontendPath = path.join(__dirname, '../../dist');
+  app.use(express.static(frontendPath));
+  console.log(`📁 Serving static files from: ${frontendPath}`);
+}
+
+// Routes
+app.use('/api/campaigns', campaignsRouter);
+app.use('/api/creators', creatorsRouter);
+app.use('/api', monitoringRouter);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get('/api/health', (_req, res) => {
   res.json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
-  });
-});
-
-// Basic campaigns endpoint
-app.get('/api/campaigns', (req, res) => {
-  res.json({
-    success: true,
-    campaigns: []
-  });
-});
-
-// Basic profiles endpoint
-app.get('/api/profiles/:address', (req, res) => {
-  const { address } = req.params;
-  res.json({
-    success: true,
-    profile: {
-      address,
-      name: 'Anonymous Creator',
-      bio: 'Building the future of Web3',
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${address}`,
-      metrics: {
-        totalContracts: 0,
-        totalMints: 0,
-        totalVolume: { eth: '0', usd: '0' },
-        uniqueSupporters: 0,
-        averageMintPrice: '0',
-        firstCampaignDate: new Date(),
-        successfulCampaigns: 0,
-        activeContracts: 0,
-      }
-    }
+    environment: env.NODE_ENV,
+    version: '1.0.0'
   });
 });
 
 // Error handling middleware
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Error:', err);
   res.status(500).json({
     error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+    message: env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
   });
 });
 
-// 404 handler
+// 404 handler - serve React app for client-side routing
 app.use('*', (req, res) => {
-  res.status(404).json({
-    error: 'Not found',
-    message: `Route ${req.originalUrl} not found`
-  });
+  if (env.NODE_ENV === 'production' && req.accepts('html')) {
+    const indexPath = path.join(__dirname, '../../dist/index.html');
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).json({
+      error: 'Not found',
+      message: `Route ${req.originalUrl} not found`
+    });
+  }
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🌐 CORS enabled for: ${process.env.FRONTEND_URL || 'http://localhost:5173'}`);
+const server = app.listen(env.PORT, () => {
+  console.log(`🚀 Server running on port ${env.PORT}`);
+  console.log(`📱 Frontend URL: ${env.FRONTEND_URL}`);
+  console.log(`🌍 Environment: ${env.NODE_ENV}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });
 
 export default app;
