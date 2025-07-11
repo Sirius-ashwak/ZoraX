@@ -3,20 +3,32 @@ services:
     name: zorax-app
     env: node
     plan: starter
-    buildCommand: npm run build
+    buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3001
-      - key: JWT_SECRET
-        generateValue: true
+        value: 10000
+      - key: RENDER_SERVICE_NAME
+        value: zorax-app
       - key: FRONTEND_URL
         fromService:
           type: web
           name: zorax-app
           property: url
+      # GitHub Integration
+      - key: VITE_GITHUB_ENABLED
+        value: "true"
+      - key: VITE_GITHUB_OWNER
+        value: "Sirius-ashwak"
+      - key: VITE_GITHUB_REPO
+        value: "ZoraX"
+      # Blockchain Configuration
+      - key: OPTIMISM_RPC_URL
+        value: "https://mainnet.optimism.io"
+      - key: OPTIMISM_SEPOLIA_RPC_URL
+        value: "https://sepolia.optimism.io"
     healthCheckPath: /api/health
     autoDeploy: true
     branch: main

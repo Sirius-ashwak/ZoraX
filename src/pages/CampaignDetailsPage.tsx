@@ -53,12 +53,12 @@ export const CampaignDetailsPage: React.FC<CampaignDetailsPageProps> = ({ params
         // Mock campaign data for now - in production this would fetch from API
         const mockCampaign: Campaign = {
           id: campaignId,
-          title: "Cosmic Travelers NFT Collection",
-          description: "An immersive journey through space and time, featuring unique cosmic travelers exploring distant galaxies. Each NFT represents a different character with their own backstory and special abilities in the Cosmic Travelers universe.",
-          imageUrl: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?auto=format&fit=crop&w=1200&q=80",
+          title: "Galactic Explorer NFT Collection",
+          description: "Join the ultimate space exploration adventure with unique galactic explorer characters. Each NFT represents a different explorer with their own spaceship, skills, and cosmic discoveries waiting to be made.",
+          imageUrl: "https://picsum.photos/1200/600?random=8",
           creatorAddress: "0xa1b2c3d4e5f6789012345678901234567890abcd",
-          creatorName: "Cosmic Creator",
-          creatorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+          creatorName: "Space Explorer",
+          creatorAvatar: "https://picsum.photos/150/150?random=9",
           targetAmount: 50,
           raisedAmount: 32.5,
           supporterCount: 247,
@@ -183,6 +183,10 @@ export const CampaignDetailsPage: React.FC<CampaignDetailsPageProps> = ({ params
                   src={campaign.imageUrl}
                   alt={campaign.title}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = `https://picsum.photos/1200/600?random=${campaign.id}`;
+                  }}
                 />
               </div>
 

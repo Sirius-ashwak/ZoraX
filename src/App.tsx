@@ -18,10 +18,10 @@ import { ApiDocsPage } from './pages/ApiDocsPage';
 import { BlogPage } from './pages/BlogPage';
 import { ContactPage } from './pages/ContactPage';
 import { ModernDashboard } from './pages/ModernDashboard';
+import { SmartDashboard } from './pages/SmartDashboard';
+import { SupporterDashboard } from './pages/SupporterDashboard';
 import { Web3Provider } from './components/Web3Provider';
 import { UserProvider } from './context/UserContext';
-import { AuthProvider } from './components/FirebaseAuth';
-import { AuthRedirectHandler } from './components/AuthRedirectHandler';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { analytics } from './services/analytics';
 import { performanceService } from './services/performance';
@@ -44,14 +44,15 @@ if (import.meta.env.PROD) {
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <Web3Provider>
-          <UserProvider>
-            <AuthRedirectHandler />
-            <ZoraxLayout>
+      <Web3Provider>
+        <UserProvider>
+          <ZoraxLayout>
           <Switch>
-            <Route path="/dashboard" component={ZoraxDashboard} />
-            <Route path="/modern-dashboard" component={ModernDashboard} />
+            <Route path="/" component={ZoraxHome} />
+            <Route path="/dashboard" component={SmartDashboard} />
+            <Route path="/modern-dashboard" component={SmartDashboard} />
+            <Route path="/creator-dashboard" component={ModernDashboard} />
+            <Route path="/supporter-dashboard" component={SupporterDashboard} />
             <Route path="/profile" component={() => <ZoraCreditProfile />} />
             <Route path="/profile" component={() => <ZoraCreditProfile />} />
             <Route path="/profile/:address" component={({ params }) => <ZoraCreditProfile address={params.address} />} />
@@ -467,9 +468,8 @@ function App() {
               </div>
             </Route>            </Switch>
           </ZoraxLayout>
-          </UserProvider>
-        </Web3Provider>
-      </AuthProvider>
+        </UserProvider>
+      </Web3Provider>
     </ErrorBoundary>
   );
 }

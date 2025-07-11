@@ -10,7 +10,13 @@ dotenv.config({ path: path.join(__dirname, '../../../.env') }); // project root 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().transform(Number).default('3001'),
-  FRONTEND_URL: z.string().default('http://localhost:5173'),
+  
+  // For Render deployment, FRONTEND_URL should be the same as the backend URL
+  FRONTEND_URL: z.string().default(
+    process.env.NODE_ENV === 'production' 
+      ? `https://${process.env.RENDER_SERVICE_NAME || 'zorax-app'}.onrender.com`
+      : 'http://localhost:5173'
+  ),
   
   // Blockchain Configuration
   OPTIMISM_RPC_URL: z.string().default('https://mainnet.optimism.io'),

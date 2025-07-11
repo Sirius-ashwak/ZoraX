@@ -20,8 +20,8 @@ export const ZoraxHome: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             className="flex items-center justify-center gap-6 mb-12"
           >
-            <div className="inline-flex items-center gap-2 bg-orange-500/10 text-orange-500 px-3 py-1 rounded-full text-sm font-medium">
-              Built with Firebase 🔥
+            <div className="inline-flex items-center gap-2 bg-purple-500/10 text-purple-500 px-3 py-1 rounded-full text-sm font-medium">
+              Built on Zora Protocol ⚡
             </div>
             <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-500 px-3 py-1 rounded-full text-sm font-medium">
               <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
@@ -53,7 +53,7 @@ export const ZoraxHome: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed"
+            className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
           >
             Connect creators to supporters with transparent NFT campaigns, ZoraCred reputation scoring, 
             and Farcaster Frame integration for viral social sharing.

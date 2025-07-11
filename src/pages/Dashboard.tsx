@@ -1,9 +1,9 @@
 import { useAccount } from 'wagmi';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { Plus, TrendingUp, Users, DollarSign, Eye } from 'lucide-react';
+import { Plus, TrendingUp, Users, DollarSign, Eye, Wallet } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { formatEth, formatNumber } from '@/lib/utils';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 interface DashboardStats {
   totalCampaigns: number;
@@ -25,7 +25,7 @@ interface Campaign {
 }
 
 export function Dashboard() {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
 
   const { data: stats } = useQuery({
     queryKey: ['/api/users/stats', address],
@@ -47,19 +47,7 @@ export function Dashboard() {
     enabled: !!address,
   });
 
-  if (!isConnected) {
-    return (
-      <div className="p-6 flex items-center justify-center min-h-96">
-        <div className="coinbase-card p-8 text-center max-w-md mx-auto">
-          <h2 className="text-2xl font-bold text-foreground mb-4">Connect Your Wallet</h2>
-          <p className="text-muted-foreground mb-6">
-            Connect your wallet to access your creator dashboard and manage your campaigns.
-          </p>
-          <ConnectButton />
-        </div>
-      </div>
-    );
-  }
+
 
   const dashboardStats: DashboardStats = stats?.data || {
     totalCampaigns: 0,
@@ -79,15 +67,25 @@ export function Dashboard() {
             Creator Dashboard
           </h1>
           <p className="text-muted-foreground">
-            Welcome back! Here's an overview of your campaigns and performance.
+            {address ? `Welcome back! Here's an overview of your campaigns and performance.` : 'Explore campaigns and discover amazing creators'}
           </p>
         </div>
-        <Link to="/create">
-          <button className="coinbase-button flex items-center gap-2">
-            <Plus className="w-5 h-5" />
-            Create Campaign
-          </button>
-        </Link>
+        {address ? (
+          <Link to="/create">
+            <button className="coinbase-button flex items-center gap-2">
+              <Plus className="w-5 h-5" />
+              Create Campaign
+            </button>
+          </Link>
+        ) : (
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg text-muted-foreground">
+              <Wallet className="w-4 h-4" />
+              <span className="text-sm">Connect to create</span>
+            </div>
+            <ConnectButton />
+          </div>
+        )}
       </div>
 
       {/* Stats Grid */}

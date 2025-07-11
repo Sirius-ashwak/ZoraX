@@ -3,7 +3,7 @@
  * Catches React errors and provides fallback UI
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle, RefreshCw, Home, Bug } from 'lucide-react';
 import { errorTracker } from '../services/errorTracking';
 

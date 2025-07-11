@@ -21,7 +21,7 @@ const mockCampaigns = [
     description: 'A unique audio-visual experience combining ambient music with cosmic visuals',
     creator: 'cosmic.eth',
     creatorAddress: '0xa1b2c3d4e5f6789012345678901234567890abcd',
-    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80',
+    image: 'https://picsum.photos/400/300?random=4',
     price: '0.05 ETH',
     totalSupply: 1000,
     minted: 756,
@@ -40,7 +40,7 @@ const mockCampaigns = [
     description: 'Capturing remote work culture around the world through stunning photography',
     creator: 'wanderer.eth',
     creatorAddress: '0xb2c3d4e5f6789012345678901234567890abcdef',
-    image: 'https://images.unsplash.com/photo-1452721226168-f28be95d8e15?auto=format&fit=crop&w=400&q=80',
+    image: 'https://picsum.photos/400/300?random=5',
     price: '0.08 ETH',
     totalSupply: 500,
     minted: 312,
@@ -59,7 +59,7 @@ const mockCampaigns = [
     description: 'Exploring the intersection of artificial intelligence and creative expression',
     creator: 'ai-artist.eth',
     creatorAddress: '0xc3d4e5f6789012345678901234567890abcdef12',
-    image: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&w=400&q=80',
+    image: 'https://picsum.photos/400/300?random=6',
     price: '0.15 ETH',
     totalSupply: 750,
     minted: 623,
@@ -78,7 +78,7 @@ const mockCampaigns = [
     description: 'Educational content about eco-friendly lifestyle choices and sustainability',
     creator: 'green-living.eth',
     creatorAddress: '0xd4e5f6789012345678901234567890abcdef1234',
-    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400&q=80',
+    image: 'https://picsum.photos/400/300?random=7',
     price: '0.05 ETH',
     totalSupply: 1200,
     minted: 1200,
@@ -165,6 +165,10 @@ export const CampaignsPage: React.FC = () => {
           src={campaign.image} 
           alt={campaign.title}
           className="w-full h-48 object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = `https://picsum.photos/400/300?random=${campaign.id}`;
+          }}
         />
         <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
           {campaign.status === 'active' ? 'Active' : campaign.status === 'completed' ? 'Completed' : 'Draft'}
@@ -240,6 +244,10 @@ export const CampaignsPage: React.FC = () => {
           src={campaign.image} 
           alt={campaign.title}
           className="w-32 h-32 object-cover rounded-lg flex-shrink-0"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = `https://picsum.photos/400/300?random=${campaign.id}`;
+          }}
         />
         
         <div className="flex-1 space-y-3">

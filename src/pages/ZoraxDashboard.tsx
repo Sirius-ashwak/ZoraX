@@ -4,6 +4,7 @@ import { Settings, Users, Zap, TrendingUp, Calendar, Award, ArrowUpRight, Bell }
 import { useUser } from '../context/UserContext';
 import { InteractiveDashboard } from '../components/dashboard/InteractiveDashboard';
 import { NotificationCenter } from '../components/dashboard/NotificationCenter';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export const ZoraxDashboard: React.FC = () => {
   const { address, isConnected } = useUser();
@@ -23,21 +24,7 @@ export const ZoraxDashboard: React.FC = () => {
     { id: 3, title: 'Digital Cosmos Series', raised: '0.4 ETH', supporters: 22, status: 'active' }
   ];
 
-  if (!isConnected) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-semibold mb-4">Connect Your Wallet</h1>
-          <p className="text-muted-foreground mb-8">
-            Connect your wallet to access your creator dashboard
-          </p>
-          <Link href="/" className="pica-button">
-            Go Home
-          </Link>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -48,20 +35,28 @@ export const ZoraxDashboard: React.FC = () => {
             <div>
               <h1 className="text-3xl font-semibold mb-2">Creator Dashboard</h1>
               <p className="text-muted-foreground">
-                Welcome back, {address?.slice(0, 6)}...{address?.slice(-4)}
+                {isConnected && address ? `Welcome back, ${address.slice(0, 6)}...${address.slice(-4)}` : 'Explore campaigns and discover creators'}
               </p>
             </div>
             <div className="flex items-center gap-3 mt-4 md:mt-0">
-              <button
-                onClick={() => setShowNotifications(true)}
-                className="p-2 bg-secondary/30 hover:bg-secondary/50 rounded-lg transition-colors relative"
-              >
-                <Bell className="w-4 h-4" />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse" />
-              </button>
-              <Link href="/create-campaign" className="pica-button">
-                Create Campaign
-              </Link>
+              {isConnected && (
+                <button
+                  onClick={() => setShowNotifications(true)}
+                  className="p-2 bg-secondary/30 hover:bg-secondary/50 rounded-lg transition-colors relative"
+                >
+                  <Bell className="w-4 h-4" />
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse" />
+                </button>
+              )}
+              {isConnected ? (
+                <Link href="/create-campaign" className="pica-button">
+                  Create Campaign
+                </Link>
+              ) : (
+                <div className="pica-button bg-accent/20 text-muted-foreground cursor-not-allowed">
+                  Connect Wallet to Create
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -110,17 +105,31 @@ export const ZoraxDashboard: React.FC = () => {
 
           {/* Quick Actions Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Link href="/create-campaign" className="pica-card p-6 hover:border-accent/30 transition-colors group">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
-                  <Zap className="w-5 h-5 text-accent" />
+            {isConnected ? (
+              <Link href="/create-campaign" className="pica-card p-6 hover:border-accent/30 transition-colors group">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-accent/10 rounded-lg group-hover:bg-accent/20 transition-colors">
+                    <Zap className="w-5 h-5 text-accent" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium">Create Campaign</h3>
+                    <p className="text-sm text-muted-foreground">Launch new NFT collection</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-medium">Create Campaign</h3>
-                  <p className="text-sm text-muted-foreground">Launch new NFT collection</p>
+              </Link>
+            ) : (
+              <div className="pica-card p-6 border-accent/20 opacity-60">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-accent/10 rounded-lg">
+                    <Zap className="w-5 h-5 text-accent/60" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-muted-foreground">Create Campaign</h3>
+                    <p className="text-sm text-muted-foreground">Connect wallet to start</p>
+                  </div>
                 </div>
               </div>
-            </Link>
+            )}
             
             <Link href="/analytics" className="pica-card p-6 hover:border-accent/30 transition-colors group">
               <div className="flex items-center gap-3">

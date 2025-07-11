@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'wouter';
-import { Hash, Star, Github, LogIn, LogOut, User, Wallet } from 'lucide-react';
+import { Zap, Star, Github, Wallet, Users } from 'lucide-react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAuth, FirebaseAuth } from '../FirebaseAuth';
+import { useAccount } from 'wagmi';
+import { useGitHub } from '../../hooks/useGitHub';
 
 interface ZoraxLayoutProps {
   children: React.ReactNode;
@@ -10,16 +11,8 @@ interface ZoraxLayoutProps {
 
 export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
   const [location] = useLocation();
-  const [showAuth, setShowAuth] = useState(false);
-  const { user, loading, signOut } = useAuth();
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
-  };
+  const { isConnected } = useAccount();
+  const { starCount, repoUrl, isEnabled } = useGitHub();
 
   return (
     <div className="min-h-screen bg-background">
@@ -30,7 +23,7 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 text-foreground hover:text-accent transition-colors">
               <div className="flex items-center gap-1">
-                <Hash className="w-6 h-6" />
+                <Zap className="w-6 h-6" />
                 <span className="text-xl font-semibold">Zorax</span>
               </div>
             </Link>
@@ -89,16 +82,64 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
 
             {/* Right Actions */}
             <div className="flex items-center gap-4">
-              <a 
-                href="https://github.com/zorax" 
-                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Github className="w-4 h-4" />
-                <Star className="w-4 h-4" />
-                <span className="text-sm">1258</span>
-              </a>
+              {isEnabled && (
+                <a 
+                  href={repoUrl}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Star us on GitHub${starCount ? ` (${starCount} stars)` : ''}`}
+                >
+                  <Github className="w-4 h-4" />
+                  <Star className="w-4 h-4" />
+                  {starCount !== null ? (
+                    <span className="text-sm">{starCount.toLocaleString()}</span>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">Star</span>
+                  )}
+                </a>
+              )}
+
+              {/* Role Switcher */}
+              {isConnected && (location.includes('dashboard') || location.includes('creator') || location.includes('supporter')) && (
+                <div className="relative group">
+                  <button className="flex items-center gap-2 px-3 py-2 bg-accent/10 hover:bg-accent/20 rounded-lg transition-colors">
+                    <Zap className="w-4 h-4 text-accent" />
+                    <span className="text-sm font-medium text-foreground">Switch View</span>
+                  </button>
+                  <div className="absolute right-0 top-full mt-2 w-56 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                    <Link href="/creator-dashboard" className="flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors">
+                      <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                        <Zap className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">Creator Dashboard</p>
+                        <p className="text-xs text-muted-foreground">Manage campaigns & analytics</p>
+                      </div>
+                    </Link>
+                    <Link href="/supporter-dashboard" className="flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-green-500 rounded-lg flex items-center justify-center">
+                        <Users className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">Supporter Dashboard</p>
+                        <p className="text-xs text-muted-foreground">Portfolio & collections</p>
+                      </div>
+                    </Link>
+                    <div className="border-t border-border mt-2 pt-2">
+                      <Link href="/dashboard" className="flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors">
+                        <div className="w-8 h-8 bg-muted/30 rounded-lg flex items-center justify-center">
+                          <Wallet className="w-4 h-4 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-foreground">Smart Dashboard</p>
+                          <p className="text-xs text-muted-foreground">Auto-detect experience</p>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Wallet Connection */}
               <div className="flex items-center gap-3">
@@ -208,55 +249,6 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
                   }}
                 </ConnectButton.Custom>
               </div>
-              
-              {loading ? (
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
-                  <span className="text-sm">Loading...</span>
-                </div>
-              ) : user ? (
-                <div className="flex items-center gap-4">
-                  <Link href="/dashboard" className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                    <User className="w-5 h-5" />
-                  </Link>
-                  
-                  <div className="flex items-center gap-2">
-                    <img 
-                      src={user.photoURL || `https://api.dicebear.com/6.x/initials/svg?seed=${user.email}`} 
-                      alt={user.displayName || user.email} 
-                      className="w-6 h-6 rounded-full"
-                    />
-                    <span className="text-sm text-foreground">
-                      {user.displayName || user.email?.split('@')[0]}
-                    </span>
-                  </div>
-                  
-                  <button 
-                    onClick={handleSignOut}
-                    className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-                    title="Sign out"
-                  >
-                    <LogOut className="w-5 h-5" />
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <button 
-                    onClick={() => setShowAuth(true)}
-                    className="pica-button-secondary text-sm"
-                  >
-                    <LogIn className="w-4 h-4 mr-2" />
-                    Sign In
-                  </button>
-                  
-                  <button 
-                    onClick={() => setShowAuth(true)}
-                    className="pica-button text-sm"
-                  >
-                    Get Started
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -273,7 +265,7 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Hash className="w-6 h-6" />
+                <Zap className="w-6 h-6" />
                 <span className="text-xl font-semibold">Zorax</span>
               </div>
               <p className="text-muted-foreground text-sm">
@@ -329,16 +321,6 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
           </div>
         </div>
       </footer>
-
-      {/* Firebase Auth Modal */}
-      <FirebaseAuth 
-        isOpen={showAuth}
-        onClose={() => setShowAuth(false)}
-        onAuthSuccess={(user) => {
-          setShowAuth(false);
-          console.log('User signed in:', user);
-        }}
-      />
     </div>
   );
 };

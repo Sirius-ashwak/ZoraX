@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  TrendingUp, TrendingDown, Users, DollarSign, Target, Calendar,
+  TrendingUp, TrendingDown, Users, DollarSign, Target,
   BarChart3, PieChart, Activity, RefreshCw, Download, Share2,
-  Eye, Heart, MessageCircle, ExternalLink
+  Heart, ExternalLink
 } from 'lucide-react';
 import { 
-  LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart as RechartsPieChart, Cell,
+  LineChart, Line, AreaChart, Area, PieChart as RechartsPieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
@@ -36,7 +36,9 @@ const mockAnalyticsData = {
     { name: 'Cosmic Soundscape', revenue: 37.8, supporters: 456, status: 'active' },
     { name: 'Digital Nomad Photos', revenue: 24.2, supporters: 312, status: 'active' },
     { name: 'AI Art Experiments', revenue: 45.1, supporters: 523, status: 'completed' },
-    { name: 'Sustainable Living', revenue: 20.4, supporters: 298, status: 'completed' }
+    { name: 'Sustainable Living', revenue: 20.4, supporters: 298, status: 'completed' },
+    { name: 'Stellar Journey', revenue: 18.6, supporters: 234, status: 'active' },
+    { name: 'Harmonic Blockchain', revenue: 12.3, supporters: 156, status: 'active' }
   ],
   
   categoryBreakdown: [
