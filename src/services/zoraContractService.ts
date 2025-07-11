@@ -39,7 +39,7 @@ class ZoraContractService {
 
     // Check if we're in browser environment before accessing process
     if (typeof window === 'undefined' && typeof process !== 'undefined' && process.env) {
-      if (!process.env.VITE_PRIVATE_KEY) {
+      if (!process.env.PRIVATE_KEY) {
         console.warn('PRIVATE_KEY not set - deployment features will be limited');
       }
     }
@@ -196,7 +196,7 @@ export async function mintEdition({ metadataUrl, supply, price }: { metadataUrl:
   // Adjust the function name and params to match your ABI
   const tx = await contract.mintEdition(metadataUrl, supply || 0, ethers.utils.parseEther(price));
   const receipt = await tx.wait();
-  const tokenId = receipt.events?.find(e => e.event === 'Transfer')?.args?.tokenId?.toString() ?? '1';
+  const tokenId = receipt.events?.find((e: any) => e.event === 'Transfer')?.args?.tokenId?.toString() ?? '1';
   return {
     contractAddress: COINV4_CONTRACT_ADDRESS,
     tokenId,

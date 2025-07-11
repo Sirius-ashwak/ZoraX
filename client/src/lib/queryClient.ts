@@ -1,4 +1,5 @@
-import { QueryClient } from '@tanstack/react-query';
+/// <reference types="vite/client" />
+import { QueryClient, QueryFunction } from '@tanstack/react-query';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,10 +20,10 @@ export const queryClient = new QueryClient({
   },
 });
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 // Default fetcher for react-query
-export const defaultQueryFn = async ({ queryKey }: { queryKey: string[] }) => {
+export const defaultQueryFn: QueryFunction = async ({ queryKey }) => {
   const url = `${API_BASE_URL}${queryKey[0]}`;
   const response = await fetch(url);
   
@@ -61,6 +62,6 @@ export const apiRequest = async (
 };
 
 // Set default query function
-queryClient.setQueryDefaults([''], {
+queryClient.setQueryDefaults(['api'], {
   queryFn: defaultQueryFn,
 });

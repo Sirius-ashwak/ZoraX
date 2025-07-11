@@ -2,11 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { env } from './config/env';
-import path from 'path';
 
 // Import routes
 import campaignsRouter from './routes/campaigns';
 import creatorsRouter from './routes/creators';
+import monitoringRouter from './routes/monitoring';
 
 const app = express();
 
@@ -19,23 +19,10 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Root route - redirect to frontend
-app.get('/', (_req, res) => {
-  res.json({
-    message: 'Zorax Cosmic Platform API',
-    version: '1.0.0',
-    frontend: env.FRONTEND_URL,
-    endpoints: {
-      health: '/api/health',
-      campaigns: '/api/campaigns',
-      creators: '/api/creators'
-    }
-  });
-});
-
 // Routes
 app.use('/api/campaigns', campaignsRouter);
 app.use('/api/creators', creatorsRouter);
+app.use('/api', monitoringRouter);
 
 // Health check endpoint
 app.get('/api/health', (_req, res) => {
@@ -57,22 +44,12 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 });
 
 // 404 handler
-app.use('*', (_req, res) => {
+app.use('*', (req, res) => {
   res.status(404).json({
     error: 'Not found',
-    message: `Route not found`
+    message: `Route ${req.originalUrl} not found`
   });
 });
-
-// Serve frontend static files in production
-if (env.NODE_ENV === 'production') {
-  const frontendPath = path.resolve(__dirname, '../../dist');
-  app.use(express.static(frontendPath));
-  // SPA fallback
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
-  });
-}
 
 // Start server
 const server = app.listen(env.PORT, () => {

@@ -44,7 +44,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ campaignId, isOwner 
     1: {
       title: "Digital Art Collection: Onchain Memories",
       description: "Creating a unique collection of digital art pieces that capture the essence of Web3 culture.",
-      imageUri: "https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageUri: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=800&q=80",
       goalAmount: "5.0",
       raisedAmount: "3.2",
       supporterCount: 47,
@@ -55,7 +55,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ campaignId, isOwner 
     2: {
       title: "Music Album: Sounds of Tomorrow",
       description: "Producing an experimental electronic music album exploring AI and human creativity.",
-      imageUri: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageUri: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80",
       goalAmount: "2.5",
       raisedAmount: "2.8",
       supporterCount: 32,
@@ -66,7 +66,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ campaignId, isOwner 
     3: {
       title: "Interactive Web3 Game Development",
       description: "Building an innovative blockchain-based game with NFT rewards.",
-      imageUri: "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageUri: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80",
       goalAmount: "10.0",
       raisedAmount: "7.3",
       supporterCount: 89,
@@ -135,12 +135,17 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({ campaignId, isOwner 
               src={imageUri} 
               alt={title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const fallback = target.nextElementSibling as HTMLElement;
+                if (fallback) fallback.style.display = 'flex';
+              }}
             />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <TrendingUp className="w-12 h-12 text-blue-400" />
-            </div>
-          )}
+          ) : null}
+          <div className={`w-full h-full items-center justify-center ${imageUri ? 'hidden' : 'flex'}`}>
+            <TrendingUp className="w-12 h-12 text-blue-400" />
+          </div>
           
           <div className="absolute top-4 right-4">
             <span className={`px-3 py-1 rounded-full text-xs font-medium ${

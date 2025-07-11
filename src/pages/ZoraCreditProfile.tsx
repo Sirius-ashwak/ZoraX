@@ -10,6 +10,7 @@ import { SupporterWall } from '../components/profile/SupporterWall';
 import { ReputationBadges } from '../components/profile/ReputationBadges';
 import { ActivityFeed } from '../components/profile/ActivityFeed';
 import { RemixTreeViewer } from '../components/profile/RemixTreeViewer';
+import { ProfileEditModal } from '../components/profile/ProfileEditModal';
 import { useUser } from '../context/UserContext';
 
 interface ZoraCreditProfileProps {
@@ -22,8 +23,8 @@ const mockProfileData = {
   address: '0xa1b2c3d4e5f6789012345678901234567890abcd',
   displayName: 'Cosmic Creator',
   bio: 'Digital artist exploring the intersection of technology and cosmic phenomena. Creating immersive NFT experiences that bridge the gap between art and science.',
-  avatar: '/api/placeholder/128/128',
-  coverImage: '/api/placeholder/800/300',
+  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+  coverImage: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=1200&q=80',
   reputationScore: 847,
   isVerified: true,
   followers: 1247,
@@ -45,6 +46,7 @@ export const ZoraCreditProfile: React.FC<ZoraCreditProfileProps> = ({
   const [profileData, setProfileData] = useState(mockProfileData);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'campaigns' | 'activity' | 'badges' | 'remix'>('overview');
+  const [showEditModal, setShowEditModal] = useState(false);
 
   // Use prop address or extract from URL or use connected address
   const profileAddress = propAddress || userAddress || mockProfileData.address;
@@ -61,8 +63,16 @@ export const ZoraCreditProfile: React.FC<ZoraCreditProfileProps> = ({
   }, [profileAddress]);
 
   const handleEditProfile = () => {
-    console.log('Edit profile');
-    // In a real app, navigate to edit page or open modal
+    setShowEditModal(true);
+  };
+
+  const handleSaveProfile = (updatedData: any) => {
+    setProfileData(prev => ({
+      ...prev,
+      ...updatedData
+    }));
+    setShowEditModal(false);
+    console.log('Profile updated:', updatedData);
   };
 
   const handleGoBack = () => {
@@ -246,6 +256,22 @@ export const ZoraCreditProfile: React.FC<ZoraCreditProfileProps> = ({
           </div>
         </motion.div>
       </div>
+
+      {/* Profile Edit Modal */}
+      {showEditModal && (
+        <ProfileEditModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          onSave={handleSaveProfile}
+          initialData={{
+            displayName: profileData.displayName,
+            bio: profileData.bio,
+            avatar: profileData.avatar,
+            coverImage: profileData.coverImage,
+            socialLinks: profileData.socialLinks
+          }}
+        />
+      )}
     </div>
   );
 };

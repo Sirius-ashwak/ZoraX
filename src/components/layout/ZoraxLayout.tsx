@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Hash, Star, Github, LogIn, UserPlus, LogOut, User } from 'lucide-react';
+import { Hash, Star, Github, LogIn, LogOut, User, Wallet } from 'lucide-react';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAuth, FirebaseAuth } from '../FirebaseAuth';
 
 interface ZoraxLayoutProps {
@@ -43,6 +44,14 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
                 }`}
               >
                 Campaigns
+              </Link>
+              <Link 
+                href="/modern-dashboard" 
+                className={`text-sm font-medium transition-colors ${
+                  location === '/modern-dashboard' || location === '/dashboard' ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Dashboard
               </Link>
               <Link 
                 href="/reputation" 
@@ -90,6 +99,115 @@ export const ZoraxLayout: React.FC<ZoraxLayoutProps> = ({ children }) => {
                 <Star className="w-4 h-4" />
                 <span className="text-sm">1258</span>
               </a>
+
+              {/* Wallet Connection */}
+              <div className="flex items-center gap-3">
+                <ConnectButton.Custom>
+                  {({
+                    account,
+                    chain,
+                    openAccountModal,
+                    openChainModal,
+                    openConnectModal,
+                    authenticationStatus,
+                    mounted,
+                  }) => {
+                    const ready = mounted && authenticationStatus !== 'loading';
+                    const connected =
+                      ready &&
+                      account &&
+                      chain &&
+                      (!authenticationStatus ||
+                        authenticationStatus === 'authenticated');
+
+                    return (
+                      <div
+                        {...(!ready && {
+                          'aria-hidden': true,
+                          'style': {
+                            opacity: 0,
+                            pointerEvents: 'none',
+                            userSelect: 'none',
+                          },
+                        })}
+                      >
+                        {(() => {
+                          if (!connected) {
+                            return (
+                              <button
+                                onClick={openConnectModal}
+                                type="button"
+                                className="pica-button-secondary text-sm flex items-center gap-2"
+                              >
+                                <Wallet className="w-4 h-4" />
+                                Connect Wallet
+                              </button>
+                            );
+                          }
+
+                          if (chain.unsupported) {
+                            return (
+                              <button
+                                onClick={openChainModal}
+                                type="button"
+                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                              >
+                                Wrong network
+                              </button>
+                            );
+                          }
+
+                          return (
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={openChainModal}
+                                type="button"
+                                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                              >
+                                {chain.hasIcon && (
+                                  <div
+                                    style={{
+                                      background: chain.iconBackground,
+                                      width: 16,
+                                      height: 16,
+                                      borderRadius: 999,
+                                      overflow: 'hidden',
+                                    }}
+                                  >
+                                    {chain.iconUrl && (
+                                      <img
+                                        alt={chain.name ?? 'Chain icon'}
+                                        src={chain.iconUrl}
+                                        style={{ width: 16, height: 16 }}
+                                      />
+                                    )}
+                                  </div>
+                                )}
+                                <span className="text-sm text-foreground">{chain.name}</span>
+                              </button>
+
+                              <button
+                                onClick={openAccountModal}
+                                type="button"
+                                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-accent/10 hover:bg-accent/20 transition-colors"
+                              >
+                                <span className="text-sm font-medium text-foreground">
+                                  {account.displayName || `${account.address?.slice(0, 6)}...${account.address?.slice(-4)}`}
+                                </span>
+                                {account.displayBalance && (
+                                  <span className="text-xs text-muted-foreground">
+                                    {account.displayBalance}
+                                  </span>
+                                )}
+                              </button>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    );
+                  }}
+                </ConnectButton.Custom>
+              </div>
               
               {loading ? (
                 <div className="flex items-center gap-2 text-muted-foreground">

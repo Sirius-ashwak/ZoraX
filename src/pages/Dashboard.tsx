@@ -1,13 +1,8 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Plus, TrendingUp, Users, DollarSign, Eye } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ANIMATION_VARIANTS } from '@/lib/constants';
 import { formatEth, formatNumber } from '@/lib/utils';
 
 interface DashboardStats {
@@ -32,7 +27,7 @@ interface Campaign {
 export function Dashboard() {
   const { address, isConnected } = useAccount();
 
-  const { data: stats, isLoading: statsLoading } = useQuery({
+  const { data: stats } = useQuery({
     queryKey: ['/api/users/stats', address],
     queryFn: async () => {
       const response = await fetch(`/api/users/stats?address=${address}`);
@@ -122,7 +117,7 @@ export function Dashboard() {
             icon: Eye,
             change: '+5%',
           },
-        ].map((stat, index) => (
+        ].map((stat) => (
           <div key={stat.title} className="coinbase-card p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -156,9 +151,13 @@ export function Dashboard() {
             {userCampaigns.map((campaign) => (
               <div key={campaign.id} className="coinbase-card p-4">
                 <img
-                  src={campaign.imageUri || '/api/placeholder/300/200'}
+                  src={campaign.imageUri || 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&w=400&q=80'}
                   alt={campaign.title}
                   className="w-full h-40 object-cover rounded-xl mb-4"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&w=400&q=80';
+                  }}
                 />
                 <h3 className="text-foreground font-semibold mb-2">
                   {campaign.title}

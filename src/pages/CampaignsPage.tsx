@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { Plus, Search, Filter, Grid, List, Star, Users, Calendar, TrendingUp } from 'lucide-react';
+import { Plus, Search, Grid, List, Star, Users, TrendingUp } from 'lucide-react';
 import { useUser } from '../context/UserContext';
+import { analytics } from '../services/analytics';
+import { seoService } from '../services/seo';
+
+// Set SEO meta for campaigns page
+seoService.updateMeta({
+  title: 'Browse NFT Campaigns | ZoraX',
+  description: 'Discover amazing creator projects and support innovative NFT campaigns on ZoraX. Find your next favorite creator today.',
+  keywords: ['NFT Campaigns', 'Creator Projects', 'Support Creators', 'Web3', 'Digital Art']
+});
 
 // Mock campaign data
 const mockCampaigns = [
@@ -12,8 +21,8 @@ const mockCampaigns = [
     description: 'A unique audio-visual experience combining ambient music with cosmic visuals',
     creator: 'cosmic.eth',
     creatorAddress: '0xa1b2c3d4e5f6789012345678901234567890abcd',
-    image: '/api/placeholder/300/200',
-    price: '0.1 ETH',
+    image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80',
+    price: '0.05 ETH',
     totalSupply: 1000,
     minted: 756,
     supporters: 234,
@@ -31,7 +40,7 @@ const mockCampaigns = [
     description: 'Capturing remote work culture around the world through stunning photography',
     creator: 'wanderer.eth',
     creatorAddress: '0xb2c3d4e5f6789012345678901234567890abcdef',
-    image: '/api/placeholder/300/200',
+    image: 'https://images.unsplash.com/photo-1452721226168-f28be95d8e15?auto=format&fit=crop&w=400&q=80',
     price: '0.08 ETH',
     totalSupply: 500,
     minted: 312,
@@ -50,7 +59,7 @@ const mockCampaigns = [
     description: 'Exploring the intersection of artificial intelligence and creative expression',
     creator: 'ai-artist.eth',
     creatorAddress: '0xc3d4e5f6789012345678901234567890abcdef12',
-    image: '/api/placeholder/300/200',
+    image: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&w=400&q=80',
     price: '0.15 ETH',
     totalSupply: 750,
     minted: 623,
@@ -69,7 +78,7 @@ const mockCampaigns = [
     description: 'Educational content about eco-friendly lifestyle choices and sustainability',
     creator: 'green-living.eth',
     creatorAddress: '0xd4e5f6789012345678901234567890abcdef1234',
-    image: '/api/placeholder/300/200',
+    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400&q=80',
     price: '0.05 ETH',
     totalSupply: 1200,
     minted: 1200,
@@ -89,7 +98,7 @@ const sortOptions = ['Latest', 'Popular', 'Trending', 'Ending Soon', 'Most Funde
 
 export const CampaignsPage: React.FC = () => {
   const { isConnected } = useUser();
-  const [campaigns, setCampaigns] = useState(mockCampaigns);
+  const [campaigns] = useState(mockCampaigns);
   const [filteredCampaigns, setFilteredCampaigns] = useState(mockCampaigns);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -97,6 +106,9 @@ export const CampaignsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
+    console.log('CampaignsPage: Initial campaigns loaded:', campaigns.length);
+    console.log('CampaignsPage: Mock campaigns data:', mockCampaigns);
+    
     let filtered = campaigns;
 
     // Filter by category
@@ -130,6 +142,7 @@ export const CampaignsPage: React.FC = () => {
         break;
     }
 
+    console.log('CampaignsPage: Filtered campaigns:', filtered.length);
     setFilteredCampaigns(filtered);
   }, [campaigns, selectedCategory, sortBy, searchQuery]);
 
@@ -326,14 +339,28 @@ export const CampaignsPage: React.FC = () => {
                 type="text"
                 placeholder="Search campaigns..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  if (e.target.value.length > 2) {
+                    analytics.track('campaign_search', { 
+                      query: e.target.value,
+                      category: selectedCategory 
+                    });
+                  }
+                }}
                 className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
             
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={(e) => {
+                setSelectedCategory(e.target.value);
+                analytics.track('campaign_filter', { 
+                  filter: 'category',
+                  value: e.target.value 
+                });
+              }}
               className="px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
             >
               {categories.map(category => (

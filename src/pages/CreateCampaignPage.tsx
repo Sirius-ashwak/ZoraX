@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Upload, Eye, Save, Send, Camera, Palette, Coins, Gift } from 'lucide-react';
+import { ArrowLeft, Upload, Save, Send, Camera } from 'lucide-react';
 import { useUser } from '../context/UserContext';
+import { useConnect } from 'wagmi';
+import { analytics } from '../services/analytics';
+import { seoService } from '../services/seo';
+import { WalletStatus } from '../components/WalletStatus';
 
 interface CampaignFormData {
   // Basic Information
@@ -62,13 +66,21 @@ const categories = [
 
 export const CreateCampaignPage: React.FC = () => {
   const [, setLocation] = useLocation();
-  const { isConnected, connectWallet } = useUser();
+  const { isConnected } = useUser();
+  const { connect, connectors } = useConnect();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<CampaignFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDraft, setIsDraft] = useState(false);
 
   const totalSteps = 5;
+
+  const handleConnectWallet = () => {
+    const firstConnector = connectors[0];
+    if (firstConnector) {
+      connect({ connector: firstConnector });
+    }
+  };
 
   const handleInputChange = (field: keyof CampaignFormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -89,6 +101,11 @@ export const CreateCampaignPage: React.FC = () => {
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
+      analytics.track('campaign_creation_step', {
+        step: currentStep + 1,
+        category: formData.category,
+        hasImage: !!formData.imageFile
+      });
       setCurrentStep(currentStep + 1);
     }
   };
@@ -114,12 +131,41 @@ export const CreateCampaignPage: React.FC = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
-    // Simulate campaign creation
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    console.log('Campaign created:', formData);
-    setIsSubmitting(false);
-    setLocation('/campaigns');
+    try {
+      // Track campaign creation start
+      analytics.track('campaign_creation_started', {
+        category: formData.category,
+        fundingGoal: formData.fundingGoal,
+        totalSupply: formData.totalSupply,
+        enableFarcasterFrame: formData.enableFarcasterFrame
+      });
+      
+      // Simulate campaign creation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      console.log('Campaign created:', formData);
+      
+      // Track successful campaign creation
+      analytics.trackConversion('campaign_created', {
+        value: parseFloat(formData.fundingGoal),
+        campaignId: 'mock-campaign-id'
+      });
+      
+      // Set SEO meta for success
+      seoService.updateMeta({
+        title: `${formData.title} - Campaign Created | ZoraX`,
+        description: `Successfully created "${formData.title}" NFT campaign. Start supporting this creator today!`
+      });
+      
+      setIsSubmitting(false);
+      setLocation('/campaigns');
+    } catch (error) {
+      console.error('Campaign creation failed:', error);
+      analytics.track('campaign_creation_failed', {
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      setIsSubmitting(false);
+    }
   };
 
   if (!isConnected) {
@@ -130,12 +176,7 @@ export const CreateCampaignPage: React.FC = () => {
           <p className="text-muted-foreground mb-6">
             You need to connect your wallet to create campaigns and launch NFT collections.
           </p>
-          <button
-            onClick={connectWallet}
-            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
-          >
-            Connect Wallet
-          </button>
+          <WalletStatus showConnectButton={true} />
         </div>
       </div>
     );

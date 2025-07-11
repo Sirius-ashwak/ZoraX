@@ -73,11 +73,11 @@ ZoraX is the most elegant way for Web3 creators to build reputation, launch NFT 
 
 ## Key Features
 
-- **Campaign Creation**: Launch NFT campaigns with customizable pricing and supply
-- **ZoraCred Reputation**: Build your onchain reputation through transparent metrics
-- **Supporter Management**: Engage with your community through tiered relationships
-- **Analytics Dashboard**: Track performance with comprehensive insights
-- **Farcaster Integration**: Share campaigns through social frames
+- <strong>Campaign Creation</strong>: Launch NFT campaigns with customizable pricing and supply
+- <strong>ZoraCred Reputation</strong>: Build your onchain reputation through transparent metrics
+- <strong>Supporter Management</strong>: Engage with your community through tiered relationships
+- <strong>Analytics Dashboard</strong>: Track performance with comprehensive insights
+- <strong>Farcaster Integration</strong>: Share campaigns through social frames
 
 ## Why ZoraX?
 
@@ -319,34 +319,51 @@ export const DocsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Documentation</h1>
-            <p className="text-muted-foreground">
-              Everything you need to know about building on ZoraX
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Search documentation..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 w-64"
-              />
-            </div>
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-primary/10 via-secondary/5 to-background border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 py-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6"
+            >
+              <Book className="w-16 h-16 text-primary mx-auto mb-4" />
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                ZoraX Documentation
+              </h1>
+              <p className="text-xl text-muted-foreground mb-8">
+                Everything you need to build, launch, and grow your NFT campaigns on ZoraX
+              </p>
+            </motion.div>
             
-            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
-              <Download className="w-4 h-4" />
-              Download PDF
-            </button>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            >
+              <div className="relative w-full max-w-md">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Search documentation..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-lg"
+                />
+              </div>
+              
+              <button className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium">
+                <Play className="w-5 h-5" />
+                Quick Start
+              </button>
+            </motion.div>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-8">
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar Navigation */}
