@@ -27,53 +27,31 @@ function App() {
             <Route path="/dashboard" component={ZoraxDashboard} />
             <Route path="/profile" component={ZoraCreditProfile} />
             <Route path="/profile/:address" component={({ params }) => <ZoraCreditProfile address={params.address} />} />
-            <Route path="/products" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Products</h1>
-                <p className="pica-subtitle mx-auto">Coming soon...</p>
-              </div>
-            )} />
-            <Route path="/features" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Features</h1>
-                <p className="pica-subtitle mx-auto">Coming soon...</p>
-              </div>
-            )} />
-            <Route path="/pricing" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Pricing</h1>
-                <p className="pica-subtitle mx-auto">Coming soon...</p>
+            <Route path="/community" component={() => (
+              <div className="min-h-screen bg-background py-16">
+                <div className="max-w-4xl mx-auto px-4">
+                  <h1 className="text-4xl font-bold text-center mb-8">ZoraX Community</h1>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="bg-card rounded-lg p-6 border">
+                      <h2 className="text-xl font-semibold mb-4">Discord Community</h2>
+                      <p className="text-muted-foreground mb-4">Join our vibrant creator community</p>
+                      <a href="https://discord.gg/zorax" className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
+                        Join Discord
+                      </a>
+                    </div>
+                    <div className="bg-card rounded-lg p-6 border">
+                      <h2 className="text-xl font-semibold mb-4">Creator Forums</h2>
+                      <p className="text-muted-foreground mb-4">Connect with fellow creators and supporters</p>
+                      <a href="/forums" className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
+                        Visit Forums
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             )} />
             <Route path="/docs" component={DocsPage} />
             <Route path="/settings" component={SettingsPage} />
-            <Route path="/get-started" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Get Started</h1>
-                <p className="pica-subtitle mx-auto">Connect your wallet to begin your creator journey</p>
-                <div className="mt-8">
-                  <button className="pica-button">Connect Wallet</button>
-                </div>
-              </div>
-            )} />
-            <Route path="/login" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Log In</h1>
-                <p className="pica-subtitle mx-auto">Connect your wallet to access your account</p>
-                <div className="mt-8">
-                  <button className="pica-button">Connect Wallet</button>
-                </div>
-              </div>
-            )} />
-            <Route path="/signup" component={() => (
-              <div className="pica-section text-center">
-                <h1 className="pica-hero-text">Sign Up</h1>
-                <p className="pica-subtitle mx-auto">Join Zorax and start building your creator reputation</p>
-                <div className="mt-8">
-                  <button className="pica-button">Get Started</button>
-                </div>
-              </div>
-            )} />
             <Route path="/create-campaign" component={CreateCampaignPage} />
             <Route path="/campaigns" component={CampaignsPage} />
             <Route path="/analytics" component={AnalyticsPage} />

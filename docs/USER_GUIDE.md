@@ -1,12 +1,12 @@
-# CredVault User Guide
+# ZoraX User Guide
 
-Welcome to CredVault! This guide will help you navigate and make the most of our creator-supporter platform.
+Welcome to ZoraX! This guide will help you navigate and make the most of our creator-supporter platform.
 
 ## Getting Started
 
-### What is CredVault?
+### What is ZoraX?
 
-CredVault is a Web3 platform that connects creators and supporters through:
+ZoraX is a Web3 platform that connects creators and supporters through:
 - **Creator Campaigns**: Launch NFT collections with transparent funding goals
 - **ZoraCred Reputation**: Build verifiable onchain credibility
 - **Social Integration**: Share campaigns on Farcaster and other social platforms
@@ -28,20 +28,28 @@ CredVault is a Web3 platform that connects creators and supporters through:
 
 ## Setting Up Your Account
 
-### 1. Connect Your Wallet
+### 1. Sign In with Firebase Authentication
 
-1. **Visit CredVault**: Go to [credvault.io](https://credvault.io)
-2. **Click "Connect Wallet"**: Located in the top-right corner
-3. **Choose Your Wallet**: 
+1. **Visit ZoraX**: Go to your ZoraX application
+2. **Click "Sign In"**: Located in the top-right corner
+3. **Choose Authentication Method**:
+   - Email/Password: Create account or sign in with email
+   - Google Sign-In: Use your Google account for quick access
+4. **Complete Profile**: Add your creator information and preferences
+
+### 2. Connect Your Wallet (Optional for Web3 Features)
+
+1. **Click "Connect Wallet"**: Available in dashboard or profile settings
+2. **Choose Your Wallet**: 
    - MetaMask (recommended)
    - WalletConnect
    - Coinbase Wallet
    - Rainbow Wallet
-4. **Approve Connection**: Sign the connection request in your wallet
+3. **Approve Connection**: Sign the connection request in your wallet
 
-### 2. Network Setup
+### 3. Network Setup (For Web3 Features)
 
-CredVault runs on **Optimism** for fast, cheap transactions:
+ZoraX runs on **Optimism** for fast, cheap transactions:
 
 1. **Add Optimism Network**: If not already added, your wallet will prompt you
 2. **Get ETH on Optimism**: Bridge ETH from Ethereum mainnet or buy directly
